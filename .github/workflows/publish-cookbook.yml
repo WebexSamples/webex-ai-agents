@@ -2,62 +2,34 @@ name: Publish AI Cookbook
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
     paths:
       - "AI_CookBook/**"
       - ".github/workflows/publish-cookbook.yml"
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Configure Git Credentials
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install dependencies
         run: pip install mkdocs mkdocs-material mkdocs-glightbox pymdown-extensions
 
-      - name: Build site
-        run: mkdocs build --config-file AI_CookBook/mkdocs.yml --site-dir ./_site/AI_CookBook
-
-      - name: Add root redirect
-        run: |
-          mkdir -p _site
-          cat > _site/index.html <<'EOF'
-          <!doctype html>
-          <html>
-            <head>
-              <meta http-equiv="refresh" content="0; url=./AI_CookBook/" />
-            </head>
-            <body>
-              <a href="./AI_CookBook/">Go to AI Cookbook</a>
-            </body>
-          </html>
-          EOF
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./_site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Deploy with MkDocs
+        working-directory: AI_CookBook
+        run: mkdocs gh-deploy --force
