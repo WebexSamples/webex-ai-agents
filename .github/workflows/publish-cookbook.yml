@@ -26,7 +26,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install mkdocs mkdocs-material
+        run: pip install mkdocs mkdocs-material mkdocs-glightbox pymdown-extensions
 
       - name: Build site
         run: mkdocs build --config-file AI_CookBook/mkdocs.yml --site-dir ./_site/AI_CookBook
