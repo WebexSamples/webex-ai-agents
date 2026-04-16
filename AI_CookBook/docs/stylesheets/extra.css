@@ -1,0 +1,37 @@
+:root {
+  --md-primary-fg-color: #0b0b0b;
+  --md-accent-fg-color: #00c8ff;
+  --md-default-bg-color: #111111;
+}
+
+.md-header {
+  background-color: #0b0b0b;
+  border-bottom: 1px solid #222;
+}
+
+.md-sidebar {
+  background-color: #0d0d0d;
+}
+
+.md-content {
+  background-color: #1a1a1a;
+}
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3 {
+  font-weight: 600;
+}
+
+.md-typeset table:not([class]) {
+  border: 1px solid #444;
+}
+
+.md-typeset code,
+.md-typeset pre {
+  border-radius: 10px;
+}
+
+.md-main__inner {
+  max-width: 1600px;
+}
