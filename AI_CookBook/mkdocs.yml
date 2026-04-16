@@ -8,9 +8,14 @@ copyright: Copyright &copy; 2026 Cisco Systems Inc. All Rights Reserved.
 
 theme:
   name: material
+  custom_dir: docs/overrides
+  logo: assets/cisco-logo.png
+  favicon: assets/cisco-logo.png
   features:
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
     - navigation.indexes
     - navigation.instant
     - navigation.top
@@ -20,23 +25,27 @@ theme:
     - toc.integrate
     - content.tooltips
     - content.footnote.tooltips
-    - codehilite
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: custom
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: custom
+      primary: black
+      accent: cyan
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: black
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
 
 extra:
   generator: false
+
+extra_css:
+  - stylesheets/extra.css
 
 plugins:
   - search
