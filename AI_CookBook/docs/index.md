@@ -1,13 +1,30 @@
-
 # AI Agent Cookbook for WxCC
 
-Welcome to the AI Agent Cookbook for WxCC.
-
-This guide helps new builders understand how to design, secure, govern, and deploy AI agents in WxCC.
+Build secure, governed, and production-ready AI agents for WxCC.
 
 ## Start Here
 
-- Review the Getting Started section
-- Understand Security and Governance expectations
-- Use the Agent Template before building
-- Follow testing and deployment recommendations
+- Review the architecture patterns
+- Understand security and governance requirements
+- Use the standard agent template
+- Validate with testing and evaluation guidance
+
+## Recommended Path
+
+| Step | What to Read | Why It Matters |
+| --- | --- | --- |
+| 1 | Getting Started | Understand the basics |
+| 2 | Security | Protect data and access |
+| 3 | Governance | Define ownership and controls |
+| 4 | Agent Template | Standardize design |
+| 5 | Deployment and Operations | Launch safely |
+
+## Key Topics
+
+- Getting Started
+- Architecture
+- Security
+- Governance
+- Prompt Design
+- Knowledge and RAG
+- Testing and Evaluation
