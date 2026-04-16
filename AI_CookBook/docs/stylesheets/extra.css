@@ -39,11 +39,12 @@ body {
 }
 
 .md-nav {
-  font-size: 0.78rem;
+  font-size: 0.9rem;
 }
 
 .md-nav__title {
   color: #f3f4f6;
+  font-size: 0.78rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -51,6 +52,8 @@ body {
 
 .md-nav__item .md-nav__link {
   color: #d1d5db;
+  font-size: 0.95rem;
+  line-height: 1.45;
 }
 
 .md-nav__item .md-nav__link:hover,
@@ -66,7 +69,7 @@ body {
 }
 
 .md-main__inner {
-  max-width: 1680px;
+  max-width: 1600px;
 }
 
 .md-content {
@@ -74,32 +77,41 @@ body {
   border: 1px solid #2a2d33;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  margin-top: 1.5rem;
-  padding: 2rem 2.5rem;
+  margin-top: 1.25rem;
+  padding: 1.5rem 2rem;
 }
 
 .md-content__inner {
   margin: 0 auto;
 }
 
+.md-typeset {
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+
 .md-typeset h1 {
   color: #f8fafc;
-  font-size: 2.8rem;
+  font-size: 2.2rem;
   font-weight: 500;
-  letter-spacing: -0.02em;
-  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
 }
 
 .md-typeset h2 {
   color: #f8fafc;
-  font-size: 2rem;
+  font-size: 1.55rem;
   font-weight: 500;
-  margin-top: 2.5rem;
+  margin-top: 2.2rem;
+  margin-bottom: 0.9rem;
 }
 
 .md-typeset h3 {
   color: #e2e8f0;
+  font-size: 1.15rem;
   font-weight: 600;
+  margin-top: 1.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .md-typeset p,
@@ -108,8 +120,13 @@ body {
 .md-typeset th,
 .md-typeset blockquote {
   color: #d1d5db;
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.7;
+}
+
+.md-typeset ul li,
+.md-typeset ol li {
+  margin-bottom: 0.4rem;
 }
 
 .md-typeset strong {
@@ -192,6 +209,6 @@ body {
   }
 
   .md-sidebar--secondary {
-    width: 13rem;
+    width: 12rem;
   }
 }
