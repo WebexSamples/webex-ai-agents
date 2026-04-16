@@ -11,7 +11,6 @@ theme:
   features:
     - navigation.tabs
     - navigation.tabs.sticky
-    - navigation.indexes
     - navigation.instant
     - navigation.top
     - navigation.footer
@@ -85,18 +84,15 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Getting Started:
-      - Welcome: getting-started.md
-      - Architecture: architecture.md
-  - Foundations:
-      - Security: security.md
-      - Governance: governance.md
-      - Prompt Design: prompt-design.md
-      - Agent Template: agent-template.md
-  - Build and Scale:
-      - Knowledge and RAG: knowledge-and-rag.md
-      - Testing and Evaluation: testing-and-evaluation.md
-      - Deployment and Operations: deployment-and-operations.md
-      - Human Handoff: human-handoff.md
+  - Getting Started: getting-started.md
+  - Architecture: architecture.md
+  - Security: security.md
+  - Governance: governance.md
+  - Prompt Design: prompt-design.md
+  - Agent Template: agent-template.md
+  - Knowledge and RAG: knowledge-and-rag.md
+  - Testing and Evaluation: testing-and-evaluation.md
+  - Deployment and Operations: deployment-and-operations.md
+  - Human Handoff: human-handoff.md
   - Common Pitfalls: common-pitfalls.md
   - Glossary: glossary.md
