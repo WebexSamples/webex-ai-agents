@@ -91,6 +91,7 @@ nav:
   - Getting Started: getting-started.md
   - Architecture: architecture.md
   - Security: security.md
+  - Security FAQ: webex-ai-agent-security-faq.md
   - Governance: governance.md
   - Prompt Design: prompt-design.md
   - Agent Template: agent-template.md
