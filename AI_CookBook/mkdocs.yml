@@ -8,18 +8,14 @@ copyright: Copyright &copy; 2026 Cisco Systems Inc. All Rights Reserved.
 
 theme:
   name: material
-  custom_dir: docs/overrides
   logo: assets/cisco-logo.png
   favicon: assets/cisco-logo.png
   features:
-    - navigation.tabs
-    - navigation.tabs.sticky
     - navigation.sections
     - navigation.expand
     - navigation.indexes
     - navigation.instant
     - navigation.top
-    - navigation.footer
     - search.suggest
     - content.code.copy
     - toc.integrate
@@ -70,40 +66,4 @@ markdown_extensions:
   - footnotes
   - meta
   - tables
-  - pymdownx.details
-  - pymdownx.highlight:
-      anchor_linenums: true
-      line_spans: __span
-      pygments_lang_class: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
-  - pymdownx.tabbed:
-      alternate_style: true
-  - pymdownx.critic
-  - pymdownx.caret
-  - pymdownx.keys
-  - pymdownx.mark
-  - pymdownx.tilde
-
-nav:
-  - Home: index.md
-  - Getting Started:
-      - Welcome: getting-started.md
-      - Architecture: architecture.md
-  - Foundations:
-      - Security: security.md
-      - Governance: governance.md
-      - Prompt Design: prompt-design.md
-      - Agent Template: agent-template.md
-  - Build and Scale:
-      - Knowledge and RAG: knowledge-and-rag.md
-      - Testing and Evaluation: testing-and-evaluation.md
-      - Deployment and Operations: deployment-and-operations.md
-      - Human Handoff: human-handoff.md
-  - Common Pitfalls: common-pitfalls.md
-  - Glossary: glossary.md
+ 
