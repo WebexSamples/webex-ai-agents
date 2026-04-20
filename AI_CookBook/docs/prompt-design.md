@@ -46,8 +46,7 @@ Human language is not strictly tied to exact wording. Word order may vary, synon
 
 Programming languages, on the other hand, depend heavily on exact syntax. Specific keywords are required, punctuation matters, and a missing comma or bracket may break the entire program. Programming languages require strict syntax and tightly constrained semantics.
 
-For this reason, when human-language procedures are transformed into structured representations—such as rules, state machines, or JSON workflow variables—the LLM tends to treat them with greater precision than plain free-form instructions.
-
+For this reason, when procedures are encoded as structured JSON workflow variables, the LLM tends to follow them more precisely than equivalent free-form natural language instructions.
 
 Externalizing workflow logic into a JSON structure helps address both limitations: structured formats strengthen syntactic focus, while state, branching, and execution rules are shifted out of the LLM into an explicit machine-readable layer.
 
