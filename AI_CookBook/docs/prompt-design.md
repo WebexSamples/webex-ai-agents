@@ -78,7 +78,7 @@ Two implementation models can be considered:
 2. Fully Externalized Control Model  
    Workflow logic is moved almost entirely into an external JSON/database layer, while the LLM focuses on language understanding, reasoning, and interaction.
 
-#### Hybrid Control Model
+#### 1.Hybrid Control Model
 For example, imagine an AI Agent used to triage IT issues. After identifying which resource is affected, the agent must ask additional questions depending on the issue type.
 
 Possible follow-up questions are:
