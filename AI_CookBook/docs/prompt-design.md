@@ -53,19 +53,15 @@ Externalizing workflow logic into a JSON structure helps address both limitation
 
 ### Recommended Action
 
-Use prompts for conversation, tone, classification, and general reasoning.
+Use prompts for conversation, tone, intent recognition, summarization, and general reasoning.
 
-Do not rely on prompts alone to enforce structured troubleshooting or conditional workflows.
+Do not rely on prompts alone to guarantee consistent execution of multi-step procedures, troubleshooting paths, or conditional workflows.
 
-For guided diagnostic flows, use a structured decision model such as a JSON decision tree or a database-driven question graph.
+When interactions require mandatory steps, branching logic, state tracking, or repeatable outcomes, place that control logic in an external structured layer, such as a JSON workflow or database-driven flow definition.
 
-This pattern works well:
+In this model, the AI Agent focuses on language understanding and user interaction, while the external workflow layer controls sequence, decisions, and next-step execution.
 
-1. Use the AI agent to understand the user request and identify the issue category.
-2. Retrieve the appropriate structured flow for that category.
-3. Ask only the question defined by the current step.
-4. Use the user response to select the next branch.
-5. Continue until the flow reaches a conclusion, recommendation, or escalation point.
+This separation typically improves reliability, consistency, maintainability, and operational control.
 
 ### Best Practice
 
