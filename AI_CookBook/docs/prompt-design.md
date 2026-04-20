@@ -70,7 +70,61 @@ A good rule of thumb is:
 - use the model for interpretation
 - use structured data for control
 
-This keeps the conversational experience natural while making the workflow predictable and reviewable.
+Two implementation models can be considered:
+
+1. Hybrid Control Model  
+   Workflow logic is split between prompt instructions and an external JSON/database layer.
+
+2. Fully Externalized Control Model  
+   Workflow logic is moved almost entirely into an external JSON/database layer, while the LLM focuses on language understanding, reasoning, and interaction.
+
+#### Hybrid Control Model
+For example, imagine an AI Agent used to triage IT issues. After identifying which resource is affected, the agent must ask additional questions depending on the issue type.
+
+Possible follow-up questions are:
+- Site location
+- Whether other users are experiencing the same issue
+- Which application is involved
+
+These questions do not apply equally to every category. Knowing the location of a printer may be important, while it may be irrelevant for access issues on a web application.
+
+If we describe this behavior only in human language, the AI Agent may behave inconsistently. However, if we convert the logic into variables stored in a database and retrieved as JSON, the structured format increases the syntactic focus of the interaction, making the LLM more attentive to exact fields, conditions, and transitions than it would typically be with plain natural language instructions.
+Example database records:
+
+```
+{
+  "id": "obj1",
+  "category": "Web Application",
+  "ask_site": false,
+  "check_application": true,
+  "check_other_users": false
+}
+
+{
+  "id": "obj2",
+  "category": "Printer",
+  "ask_site": true,
+  "check_application": false,
+  "check_other_users": true
+}
+```
+After identifying the category, the agent retrieves the corresponding configuration.
+
+Instructions:
+
+1. Identify the user issue and use the [category_list] action to map it to a single category.
+2. Use the mapped category to call the [selected_category] action and retrieve its configuration.
+3. If `check_application` is `true` and no application has been specified, ask which application is involved.
+4. If `ask_site` is `true` and no site is confirmed, ask for the site and validate it.
+5. If `check_other_users` is `true` and unknown, determine whether other users are affected.
+
+In this model, logic is partly encoded in the prompt and partly externalized in the JSON/database layer.
+Natural language instructions leave broad room for interpretation.
+Structured formats such as JSON reduce that ambiguity by constraining the decision space.
+Externalizing workflow logic into machine-readable structures does not make the LLM a true executor, but it significantly improves reliability, consistency, and controllability.
+It is also possible to externalize the logic almost entirely, while the LLM still provides language understanding, reasoning, and interaction skills.
+
+
 
 ### When To Use This Pattern
 
