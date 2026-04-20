@@ -28,18 +28,29 @@ The challenge is that large language models do not execute business logic in the
 This is especially risky when the workflow depends on deterministic behavior.
 
 ### Why This Happens
+Language models are strong at understanding intent and generating natural responses, but they are less reliable when asked to follow multi-step procedural logic purely from free-form text.
 
-Language models are strong at interpreting meaning and generating natural language, but they are not inherently reliable at procedural control flow.
+A prompt may describe rules such as:
 
-A prompt can describe logic such as:
-
-- if the issue is printer-related, ask printer questions
-- if the user is on a shared resource, ask whether other users are affected
+- if the user has provided an Employee ID, ask what issue they are experiencing
+- if the issue is printer-related, ask printer-specific questions
+- if the resource is shared, ask whether other users are affected
 - if the issue is software-related, ask which application is involved
 
-However, describing logic is not the same as executing logic.
+You might find that writing the above rules with a programming-language style might work better than using human language. 
+But flows like the one above implicitly require procedural state: for example, whether `employee_id_check` is true or false, whether a previous step has been completed, and which branch should be executed next. The problem is that an LLM does not natively operate as a deterministic workflow engine with guaranteed state tracking, conditional execution, and control flow. It generates the next response token by token.
 
-Prompts and knowledge-base instructions live in natural language, which is flexible and ambiguous. Deterministic workflows need something more structured.
+However, across the millions of documents seen during training, the model statistically captures different patterns associated with natural language and programming language data.
+
+Human language is not strictly tied to exact wording. Word order may vary, synonyms often preserve the core meaning, and the same concept can be expressed in many different ways. Typos or minor errors are often tolerated without changing the intended meaning. Human language relies heavily on semantics, while allowing broader syntactic variation.
+
+Programming languages, on the other hand, depend heavily on exact syntax. Specific keywords are required, punctuation matters, and a missing comma or bracket may break the entire program. Programming languages require strict syntax and tightly constrained semantics.
+
+For this reason, when human-language procedures are transformed into structured representations—such as rules, state machines, or JSON workflow variables—the LLM tends to treat them with greater precision than plain free-form instructions.
+
+
+Externalizing workflow logic into a JSON structure helps address both limitations: structured formats strengthen syntactic focus, while state, branching, and execution rules are shifted out of the LLM into an explicit machine-readable layer.
+
 
 ### Recommended Action
 
