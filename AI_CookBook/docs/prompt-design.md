@@ -124,6 +124,101 @@ Structured formats such as JSON reduce that ambiguity by constraining the decisi
 Externalizing workflow logic into machine-readable structures does not make the LLM a true executor, but it significantly improves reliability, consistency, and controllability.
 It is also possible to externalize the logic almost entirely, while the LLM still provides language understanding, reasoning, and interaction skills.
 
+#### Fully Externalized Control Model
+When applicable, this model is preferred because the workflow logic is entirely moved out of the LLM into an external control layer. The LLM still executes the interaction while preserving its intelligence to communicate naturally with the user, interpret responses, and correctly identify the issue.
+
+For instance, imagine you want to build an AI Agent that greets the user based on the user’s status.
+
+Suppose the required instructions are:
+
+- Ask the user which access type they have.
+- If Gold: “Hello, valued user.”
+- If Silver: “Have you ever considered upgrading to Gold access?”
+- If Standard: “You would gain many more benefits with Silver or Gold access.”
+
+Instead of writing these instructions only in natural language, you can represent them as a structured JSON variable such as:
+
+{
+  "nodes": [
+    {
+      "id": "input_access_type",
+      "kind": "input",
+      "prompt": "Which access type do you have? (Gold, Silver, Standard)",
+      "variable": "access_type",
+      "next": "branch_access_type"
+    },
+    {
+      "id": "branch_access_type",
+      "kind": "branch",
+      "condition": "access_type",
+      "cases": {
+        "Gold": "instruction_gold",
+        "Silver": "instruction_silver",
+        "Standard": "instruction_standard"
+      }
+    },
+    {
+      "id": "instruction_gold",
+      "kind": "instruction",
+      "message": "Hello, valued user.",
+      "next": "terminal_end"
+    },
+    {
+      "id": "instruction_silver",
+      "kind": "instruction",
+      "message": "Have you ever considered upgrading to Gold access?",
+      "next": "terminal_end"
+    },
+    {
+      "id": "instruction_standard",
+      "kind": "instruction",
+      "message": "You would gain many more benefits with Silver or Gold access.",
+      "next": "terminal_end"
+    },
+    {
+      "id": "terminal_end",
+      "kind": "terminal",
+      "outcome": "complete",
+      "message": "Instruction delivered."
+    }
+  ]
+}
+
+Each JSON object represents a node in the execution graph, identified by a unique node ID.
+
+The `next` key points to the following node in the workflow.
+
+The `kind` key defines the type of operation being performed, for example:
+
+- instruction
+- input
+- choice
+- branch
+- routing_tool
+- data_tool
+- terminal
+
+In the example above:
+
+- the `input` node collects user input
+- the `branch` node performs decision-tree selection based on the access type
+- the `instruction` nodes define what the AI Agent should say or do
+- the `terminal` node ends the interaction
+
+Additional node types may also be used:
+
+- `choice`: presents multiple selectable options to the user
+- `routing_tool`: executes an action whose result immediately determines the next route
+- `data_tool`: executes an action that returns variables or data
+
+This JSON variable can be stored externally, for example in a database or in Webex Connect, and retrieved through an action call.
+
+For instance, if the variable is stored in Webex Connect, an action such as [request_instructions] can be created to retrieve it.
+
+The AI Agent instructions can then be simplified to:
+
+Use the action [request_instructions] to retrieve the workflow instructions, then execute the defined steps to greet the user appropriately.
+
 
 
 ### When To Use This Pattern
