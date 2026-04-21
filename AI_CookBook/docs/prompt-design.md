@@ -352,6 +352,9 @@ The second action is called `get_employee_pto_balance` and is used to retrieve t
 The JSON variable uses `first_name` and `last_name` as the values provided by the user, while `db_first_name` and `db_last_name` are the corresponding values retrieved from the database. The match between the two pairs is evaluated by the branch node `verify_identity`, using the condition `first_name == db_first_name && last_name == db_last_name`.
 It is important that the first and last names are returned using the same naming convention defined in the JSON execution graph. To achieve this, we can rename the variables in the Webex Connect flow that retrieves those values from the database:
 
+![Rename Variables in WxC](assets/prompt-design/webex_connect_ai_agent.png)
+
+
 
 
 
