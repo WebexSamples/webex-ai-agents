@@ -1,8 +1,5 @@
 ## When Prompts Are Not Enough
 
-> **Important**  
-> A common design mistake in AI agents is assuming that a **prompt alone** can reliably enforce a **step-by-step business procedure**.
-
 A common design mistake in AI agents is assuming that a prompt alone can reliably enforce a step-by-step business procedure.
 
 This becomes a problem when the agent is expected to behave intelligently in conversation while also following a **strict troubleshooting path**, **validation sequence**, or **policy-driven decision flow**.
