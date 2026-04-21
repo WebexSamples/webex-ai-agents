@@ -110,7 +110,7 @@ This is an example of the JSON variable that can be stored on Webex Connect or a
 ```
 After identifying the category, the agent retrieves the corresponding configuration.
 
-AI Agent Instruction Example:
+And the following are the instructions for the AI Agent:
 
 1. Identify the user issue and use the [category_list] action to map it to a single category.
 2. Use the mapped category to call the [selected_category] action and retrieve its configuration.
