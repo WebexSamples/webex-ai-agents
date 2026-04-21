@@ -345,7 +345,9 @@ The AI Agent Instructions will be:
 If an user asks about the PTO balance, use the action [request_the_instructions] to obtain instructions and follow the steps.
 ```
 Then, we need to create two actions:
-- the first action is called `request_the_instructions` and it is used to retrieve the instructions from the database
+- the first action is called `request_the_instructions` and it is used to retrieve the instructions from the database:
+![Instructions request by action](assets/prompt-design/action_1_instructions.png)
+
 - the first action is called `get_employee_pto_balance` and it is used to retrieve the database information for that user
 
 ### When To Use This Pattern
