@@ -67,7 +67,6 @@ For this reason, when procedures are encoded as structured JSON workflow variabl
 
 Externalizing workflow logic into a JSON structure helps address both limitations: structured formats strengthen syntactic focus, while state, branching, and execution rules are shifted out of the LLM into an explicit machine-readable layer.
 
----
 
 ### Recommended Action
 
