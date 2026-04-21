@@ -265,7 +265,7 @@ For instance, if the variable is stored in Webex Connect, an action such as [req
 
 The AI Agent instructions can then be simplified to:
 ```
-Use the action [request_instructions] to retrieve the workflow instructions, then execute the defined steps to greet the user appropriately.
+Use the knowledge base for general HR inquiries. For PTO balance requests, invoke [request_the_instructions] and follow the returned workflow before responding.
 ```
 
 
