@@ -17,7 +17,7 @@ Examples include:
 - policy-based routing or escalation
 
 ---
-> [!IMPORTANT]
+> [!NOTE]
 > **Risk**  
 > Large language models do **not execute business logic** in the same way that software does.
 ---
