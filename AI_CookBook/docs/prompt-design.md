@@ -354,6 +354,9 @@ The second action is called `get_employee_pto_balance` and is used to retrieve t
 
 ![Retrieve Employee PTO information](assets/prompt-design/action_2_db_query.png)
 
+
+The JSON variable uses `first_name` and `last_name` as the variable names returned by the user, while `db_first_name` and `db_last_name` are the corresponding values on the database. The match between the two couples is analyzed by the branch node `verify_identity`, with the `condition` specified as `first_name == db_first_name && last_name == db_last_name`
+
 ### When To Use This Pattern
 
 This pattern is a good fit when the agent must:
