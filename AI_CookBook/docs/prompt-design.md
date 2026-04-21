@@ -133,6 +133,8 @@ When applicable, this model is preferred because the workflow logic is entirely 
 We will provide two examples: one based on a decision tree, and the other based on an execution graph that also includes actions. 
 The decision tree example is particularly useful because it introduces the concept of nodes and explains the different node types.
 
+
+
 ##### Decision Tree Example
 A decision tree focuses primarily on branching logic and selecting the correct path based on conditions.
 For instance, imagine you want to build an AI Agent that greets the user based on the user’s status.
@@ -227,6 +229,8 @@ The AI Agent instructions can then be simplified to:
 ```
 Use the action [request_instructions] to retrieve the workflow instructions, then execute the defined steps to greet the user appropriately.
 ```
+
+
 ##### Execution Graph Example
 An execution graph extends decision-tree logic by adding actions, variable evaluation, state transitions, and workflow orchestration.
 For example, imagine an AI Agent that supports internal users with HR-related requests. The agent should handle free-form questions naturally, while ensuring that specific processes—such as PTO balance checks, absence requests, or compensation inquiries—follow mandatory procedures.
