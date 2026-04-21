@@ -111,13 +111,13 @@ Below is an example of a JSON variable that can be stored in Webex Connect or in
 After identifying the category, the agent retrieves the corresponding configuration.
 
 The following are the instructions for the AI Agent:
-
+```
 1. Identify the user issue and use the [category_list] action to map it to a single category.
 2. Use the mapped category to call the [selected_category] action and retrieve its configuration.
 3. If `check_application` is `true` and no application has been specified, ask which application is involved.
 4. If `ask_site` is `true` and no site is confirmed, ask for the site and validate it.
 5. If `check_other_users` is `true` and unknown, determine whether other users are affected.
-
+```
 In this model, logic is partly encoded in the prompt and partly externalized in the JSON/database layer.
 Natural language instructions leave broad room for interpretation.
 Structured formats such as JSON reduce that ambiguity by constraining the decision space.
