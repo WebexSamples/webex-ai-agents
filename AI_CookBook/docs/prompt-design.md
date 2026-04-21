@@ -120,8 +120,10 @@ These questions do not apply equally to every category.
 
 Knowing the location of a printer may be important, while it may be irrelevant for access issues on a web application.
 
+---
 > **Benefit of Structured Variables**  
 > JSON increases syntactic focus and makes the LLM more attentive to exact fields, conditions, and transitions.
+---
 
 If we describe this behavior only in human language, the AI Agent may behave inconsistently. However, if we convert the logic into variables stored in a database and retrieved as JSON, the structured format increases the syntactic focus of the interaction, making the LLM more attentive to exact fields, conditions, and transitions than it would typically be with plain natural language instructions.
 
