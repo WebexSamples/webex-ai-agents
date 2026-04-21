@@ -229,6 +229,123 @@ Use the action [request_instructions] to retrieve the workflow instructions, the
 ```
 ##### Execution Graph Example
 An execution graph extends decision-tree logic by adding actions, variable evaluation, state transitions, and workflow orchestration.
+For instance, say that your HR AI Agent is used to help internal users with HR related questions.
+You need an autonomous AI Agent to make sure the free-form questions are properly addressed, but at the same time HR wants that for specific tasks, such as PTO balance, absence requests, salary queries, specific steps are performed.
+
+For instance, say that for Employee PTO balance the system needs to strictly follow this procedure:
+
+	1	Gather Employee Information: Request the following details from the employee, one at a time:
+	   •	First Name
+	   •	Last Name
+	   •	Employee ID
+	2	Database Retrieval: Use the provided Employee ID to access the database and retrieve the employee's first name, last name, and Paid Time Off (PTO) balance.
+	3	Identity Verification:
+	   •	Match Found: If the first name and last name provided by the employee match the information retrieved from the database, inform the employee that their identity has been verified. Proceed to           step 4.
+	   •	No Match: If the provided first name and last name do not match the database records, inform the employee that the information provided does not match our records. Terminate the procedure.
+	4	Provide PTO Balance: If the identity verification in step 3 was successful, provide the employee with their current PTO balance.
+
+If this procedure needs to be followed strictly, it can't be residing in the Knowledge Base. We can externalize it in a JSON variable, configured in Webex Connect or an external database. The JSON structure modeling the execution graph can be written as follows:
+
+```
+{
+  "_id": {
+    "$oid": "69e3883c27296a6fafbd7c80"
+  },
+  "meta": {
+    "title": "Verify Employee PTO Balance",
+    "context": "Procedure to verify an employee's identity and provide their PTO balance.",
+    "name": "verify_pto_7bqkzv"
+  },
+  "graph": {
+    "start": "input_first_name",
+    "nodes": [
+      {
+        "id": "input_first_name",
+        "kind": "input",
+        "prompt": "Please provide your first name.",
+        "variable": "first_name",
+        "next": "input_last_name"
+      },
+      {
+        "id": "input_last_name",
+        "kind": "input",
+        "prompt": "Please provide your last name.",
+        "variable": "last_name",
+        "next": "input_employee_id"
+      },
+      {
+        "id": "input_employee_id",
+        "kind": "input",
+        "prompt": "Please provide your Employee ID.",
+        "variable": "employee_id",
+        "next": "retrieve_employee_data"
+      },
+      {
+        "id": "retrieve_employee_data",
+        "kind": "data_tool",
+        "action": "get_employee_pto_balance",
+        "parameters": [
+          "employee_id"
+        ],
+        "output_variables": [
+          "db_first_name",
+          "db_last_name",
+          "pto_balance"
+        ],
+        "next": "verify_identity"
+      },
+      {
+        "id": "verify_identity",
+        "kind": "branch",
+        "condition": "first_name == db_first_name && last_name == db_last_name",
+        "cases": {
+          "true": "identity_verified",
+          "false": "identity_not_verified"
+        }
+      },
+      {
+        "id": "identity_verified",
+        "kind": "instruction",
+        "message": "Your identity has been verified.",
+        "next": "provide_pto_balance"
+      },
+      {
+        "id": "provide_pto_balance",
+        "kind": "terminal",
+        "outcome": "success",
+        "message": "Your current PTO balance is: {pto_balance}."
+      },
+      {
+        "id": "identity_not_verified",
+        "kind": "terminal",
+        "outcome": "failure",
+        "message": "The information provided does not match our records. Procedure terminated."
+      }
+    ]
+  },
+  "admin_instructions": [
+    {
+      "action": "verify_pto_7bqkzv",
+      "parameters": [],
+      "instruction": "Create an action named verify_pto_7bqkzv to retrieve instructions from the database"
+    },
+    {
+      "action": "get_employee_pto_balance",
+      "parameters": [
+        "employee_id"
+      ],
+      "output_variables": [
+        "db_first_name",
+        "db_last_name",
+        "pto_balance"
+      ],
+      "instruction": "Retrieve the employee's first name, last name, and PTO balance from the database using Employee ID."
+    }
+  ]
+}
+```
+
+
 
 
 ### When To Use This Pattern
