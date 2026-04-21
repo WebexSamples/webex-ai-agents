@@ -114,9 +114,12 @@ The following are the instructions for the AI Agent:
 ```
 1. Identify the user issue and use the [category_list] action to map it to a single category.
 2. Use the mapped category to call the [selected_category] action and retrieve its configuration.
-3. If `check_application` is `true` and no application has been specified, ask which application is involved.
-4. If `ask_site` is `true` and no site is confirmed, ask for the site and validate it.
-5. If `check_other_users` is `true` and unknown, determine whether other users are affected.
+
+Then evaluate the following conditions:
+
+- If `check_application` is `true` and no application has been specified, ask which application is involved.
+- If `ask_site` is `true` and no site is confirmed, ask for the site and validate it.
+- If `check_other_users` is `true` and unknown, determine whether other users are affected.
 ```
 In this model, logic is partly encoded in the prompt and partly externalized in the JSON/database layer.
 Natural language instructions leave broad room for interpretation.
