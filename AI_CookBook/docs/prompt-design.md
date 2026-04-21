@@ -85,10 +85,6 @@ This separation typically improves:
 
 ### Best Practice
 
-> **Rule of Thumb**  
-> - use the model for interpretation  
-> - use structured data for control
-
 A good rule of thumb is:
 
 - use the model for interpretation
