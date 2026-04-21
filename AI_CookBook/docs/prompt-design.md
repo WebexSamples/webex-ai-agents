@@ -219,9 +219,9 @@ This JSON variable can be stored externally, for example in a database or in Web
 For instance, if the variable is stored in Webex Connect, an action such as [request_instructions] can be created to retrieve it.
 
 The AI Agent instructions can then be simplified to:
-
+```
 Use the action [request_instructions] to retrieve the workflow instructions, then execute the defined steps to greet the user appropriately.
-
+```
 
 
 ### When To Use This Pattern
