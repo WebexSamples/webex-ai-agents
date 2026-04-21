@@ -124,7 +124,7 @@ Structured formats such as JSON reduce that ambiguity by constraining the decisi
 Externalizing workflow logic into machine-readable structures does not make the LLM a true executor, but it significantly improves reliability, consistency, and controllability.
 It is also possible to externalize the logic almost entirely, while the LLM still provides language understanding, reasoning, and interaction skills.
 
-#### Fully Externalized Control Model
+#### 2. Fully Externalized Control Model
 When applicable, this model is preferred because the workflow logic is entirely moved out of the LLM into an external control layer. The LLM still executes the interaction while preserving its intelligence to communicate naturally with the user, interpret responses, and correctly identify the issue.
 
 For instance, imagine you want to build an AI Agent that greets the user based on the user’s status.
