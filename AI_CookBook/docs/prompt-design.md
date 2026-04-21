@@ -227,6 +227,8 @@ The AI Agent instructions can then be simplified to:
 ```
 Use the action [request_instructions] to retrieve the workflow instructions, then execute the defined steps to greet the user appropriately.
 ```
+##### Execution Graph Example
+An execution graph extends decision-tree logic by adding actions, variable evaluation, state transitions, and workflow orchestration.
 
 
 ### When To Use This Pattern
