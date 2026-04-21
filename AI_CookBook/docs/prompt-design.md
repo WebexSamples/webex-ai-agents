@@ -229,10 +229,9 @@ Use the action [request_instructions] to retrieve the workflow instructions, the
 ```
 ##### Execution Graph Example
 An execution graph extends decision-tree logic by adding actions, variable evaluation, state transitions, and workflow orchestration.
-For instance, say that your HR AI Agent is used to help internal users with HR related questions.
-You need an autonomous AI Agent to make sure the free-form questions are properly addressed, but at the same time HR wants that for specific tasks, such as PTO balance, absence requests, salary queries, specific steps are performed.
+For example, imagine an AI Agent that supports internal users with HR-related requests. The agent should handle free-form questions naturally, while ensuring that specific processes—such as PTO balance checks, absence requests, or compensation inquiries—follow mandatory procedures.
 
-For instance, say that for Employee PTO balance the system needs to strictly follow this procedure:
+Suppose the PTO balance process must strictly follow an approved workflow:
 
 	1	Gather Employee Information: Request the following details from the employee, one at a time:
 	   •	First Name
@@ -240,11 +239,15 @@ For instance, say that for Employee PTO balance the system needs to strictly fol
 	   •	Employee ID
 	2	Database Retrieval: Use the provided Employee ID to access the database and retrieve the employee's first name, last name, and Paid Time Off (PTO) balance.
 	3	Identity Verification:
-	   •	Match Found: If the first name and last name provided by the employee match the information retrieved from the database, inform the employee that their identity has been verified. Proceed to           step 4.
+	   •	Match Found: If the first name and last name provided by the employee match the information retrieved from the database, inform the employee that their identity has been verified. Proceed 			to step 4.
 	   •	No Match: If the provided first name and last name do not match the database records, inform the employee that the information provided does not match our records. Terminate the procedure.
 	4	Provide PTO Balance: If the identity verification in step 3 was successful, provide the employee with their current PTO balance.
 
-If this procedure needs to be followed strictly, it can't be residing in the Knowledge Base. We can externalize it in a JSON variable, configured in Webex Connect or an external database. The JSON structure modeling the execution graph can be written as follows:
+If this procedure must be followed consistently and without deviation, relying only on knowledge-base instructions may not be sufficient.
+
+> **Note:** For the sake of simplicity, this example uses identity verification based on Employee ID, first name, and last name. This is only intended to make the workflow easier to understand. In a production environment, this step would typically be replaced by a more advanced authentication and authorization mechanism.
+
+The workflow logic can instead be externalized into a JSON execution graph stored in Webex Connect or an external database:
 
 ```
 {
@@ -254,7 +257,7 @@ If this procedure needs to be followed strictly, it can't be residing in the Kno
   "meta": {
     "title": "Verify Employee PTO Balance",
     "context": "Procedure to verify an employee's identity and provide their PTO balance.",
-    "name": "verify_pto_7bqkzv"
+    "name": "verify_pto"
   },
   "graph": {
     "start": "input_first_name",
@@ -322,30 +325,13 @@ If this procedure needs to be followed strictly, it can't be residing in the Kno
         "message": "The information provided does not match our records. Procedure terminated."
       }
     ]
-  },
-  "admin_instructions": [
-    {
-      "action": "verify_pto_7bqkzv",
-      "parameters": [],
-      "instruction": "Create an action named verify_pto_7bqkzv to retrieve instructions from the database"
-    },
-    {
-      "action": "get_employee_pto_balance",
-      "parameters": [
-        "employee_id"
-      ],
-      "output_variables": [
-        "db_first_name",
-        "db_last_name",
-        "pto_balance"
-      ],
-      "instruction": "Retrieve the employee's first name, last name, and PTO balance from the database using Employee ID."
-    }
-  ]
-}
+  }
 ```
 
-
+The first three nodes under the `"graph"` section are `input` nodes, used to collect the user’s information.
+The fourth node is a `data_tool` node, used to query the database using the parameter `employee_id`, and to return the output variables `db_first_name`, `db_last_name`, and `pto_balance`.
+These returned variables are then compared with the user-provided information in the `verify_identity` node.
+The final two `terminal` nodes represent the two possible outcomes: successful identity verification with PTO balance disclosure, or failed verification with procedure termination.
 
 
 ### When To Use This Pattern
