@@ -47,8 +47,9 @@ A prompt may describe rules such as:
 You might find that writing the above rules with a programming-language style might work better than using human language.
 
 ---
-> **Key Point**  
-> Flows like the one above implicitly require **procedural state**, **branching**, and **step tracking**.
+**Key Point**  
+Flows like the one above implicitly require **procedural state**, **branching**, and **step tracking**.
+
 ---
 
 But flows like the one above implicitly require procedural state: for example, whether `employee_id_check` is true or false, whether a previous step has been completed, and which branch should be executed next. The problem is that an LLM does not natively operate as a deterministic workflow engine with guaranteed state tracking, conditional execution, and control flow. It generates the next response token by token.
@@ -60,8 +61,9 @@ Human language is not strictly tied to exact wording. Word order may vary, synon
 Programming languages, on the other hand, depend heavily on exact syntax. Specific keywords are required, punctuation matters, and a missing comma or bracket may break the entire program. Programming languages require strict syntax and tightly constrained semantics.
 
 ---
-> **Practical Consequence**  
-> When procedures are encoded as **structured JSON workflow variables**, the LLM tends to follow them more precisely than equivalent free-form natural language instructions.
+**Practical Consequence**  
+When procedures are encoded as **structured JSON workflow variables**, the LLM tends to follow them more precisely than equivalent free-form natural language instructions.
+
 ---
 
 For this reason, when procedures are encoded as structured JSON workflow variables, the LLM tends to follow them more precisely than equivalent free-form natural language instructions.
@@ -74,8 +76,9 @@ Externalizing workflow logic into a JSON structure helps address both limitation
 Use prompts for conversation, tone, intent recognition, summarization, and general reasoning.
 
 ---
-> **Do Not Rely on Prompts Alone**  
-> Do not rely on prompts alone to guarantee consistent execution of multi-step procedures, troubleshooting paths, or conditional workflows.
+**Do Not Rely on Prompts Alone**  
+Do not rely on prompts alone to guarantee consistent execution of multi-step procedures, troubleshooting paths, or conditional workflows.
+
 ---
 
 Do not rely on prompts alone to guarantee consistent execution of multi-step procedures, troubleshooting paths, or conditional workflows.
@@ -121,8 +124,9 @@ These questions do not apply equally to every category.
 Knowing the location of a printer may be important, while it may be irrelevant for access issues on a web application.
 
 ---
-> **Benefit of Structured Variables**  
-> JSON increases syntactic focus and makes the LLM more attentive to exact fields, conditions, and transitions.
+**Benefit of Structured Variables**  
+JSON increases syntactic focus and makes the LLM more attentive to exact fields, conditions, and transitions.
+
 ---
 
 If we describe this behavior only in human language, the AI Agent may behave inconsistently. However, if we convert the logic into variables stored in a database and retrieved as JSON, the structured format increases the syntactic focus of the interaction, making the LLM more attentive to exact fields, conditions, and transitions than it would typically be with plain natural language instructions.
@@ -287,7 +291,10 @@ Suppose the PTO balance process must strictly follow an approved workflow:
 
 If this procedure must be followed consistently and without deviation, relying only on knowledge-base instructions may not be sufficient.
 
-> **Note:** For the sake of simplicity, this example uses identity verification based on Employee ID, first name, and last name. This is only intended to make the workflow easier to understand. In a production environment, this step would typically be replaced by a more advanced authentication and authorization mechanism.
+---
+**Note:** For the sake of simplicity, this example uses identity verification based on Employee ID, first name, and last name. This is only intended to make the workflow easier to understand. In a production environment, this step would typically be replaced by a more advanced authentication and authorization mechanism.
+
+---
 
 The workflow logic can instead be externalized into a JSON execution graph stored in Webex Connect or an external database:
 
