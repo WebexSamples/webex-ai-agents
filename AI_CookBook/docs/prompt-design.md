@@ -246,7 +246,7 @@ Suppose the PTO balance process must strictly follow an approved workflow:
 	   •	Employee ID
 	2	Database Retrieval: Use the provided Employee ID to access the database and retrieve the employee's first name, last name, and Paid Time Off (PTO) balance.
 	3	Identity Verification:
-	   •	Match Found: If the first name and last name provided by the employee match the information retrieved from the database, inform the employee that their identity has been verified. Proceed 			to step 4.
+	   •	Match Found: If the first name and last name provided by the employee match the information retrieved from the database, inform the employee that their identity has been verified. Proceed to step 4.
 	   •	No Match: If the provided first name and last name do not match the database records, inform the employee that the information provided does not match our records. Terminate the procedure.
 	4	Provide PTO Balance: If the identity verification in step 3 was successful, provide the employee with their current PTO balance.
 
