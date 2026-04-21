@@ -130,6 +130,11 @@ It is also possible to externalize the logic almost entirely, while the LLM stil
 #### 2. Fully Externalized Control Model
 When applicable, this model is preferred because the workflow logic is entirely moved out of the LLM into an external control layer. The LLM still executes the interaction while preserving its intelligence to communicate naturally with the user, interpret responses, and correctly identify the issue.
 
+We will provide two examples: one based on a decision tree, and the other based on an execution graph that also includes actions. 
+The decision tree example is particularly useful because it introduces the concept of nodes and explains the different node types.
+
+##### Decision Tree Example
+A decision tree focuses primarily on branching logic and selecting the correct path based on conditions.
 For instance, imagine you want to build an AI Agent that greets the user based on the user’s status.
 
 Suppose the required instructions are:
