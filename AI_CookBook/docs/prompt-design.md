@@ -89,7 +89,7 @@ Possible follow-up questions are:
 These questions do not apply equally to every category. Knowing the location of a printer may be important, while it may be irrelevant for access issues on a web application.
 
 If we describe this behavior only in human language, the AI Agent may behave inconsistently. However, if we convert the logic into variables stored in a database and retrieved as JSON, the structured format increases the syntactic focus of the interaction, making the LLM more attentive to exact fields, conditions, and transitions than it would typically be with plain natural language instructions.
-This is an example of the JSON variable that can be stored on Webex Connect or an external database:
+Below is an example of a JSON variable that can be stored in Webex Connect or in an external database:
 
 ```
 {
@@ -110,7 +110,7 @@ This is an example of the JSON variable that can be stored on Webex Connect or a
 ```
 After identifying the category, the agent retrieves the corresponding configuration.
 
-And the following are the instructions for the AI Agent:
+The following are the instructions for the AI Agent:
 
 1. Identify the user issue and use the [category_list] action to map it to a single category.
 2. Use the mapped category to call the [selected_category] action and retrieve its configuration.
