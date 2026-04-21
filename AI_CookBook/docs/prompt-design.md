@@ -345,11 +345,15 @@ The AI Agent Instructions will be:
 If an user asks about the PTO balance, use the action [request_the_instructions] to obtain instructions and follow the steps.
 ```
 Then, we need to create two actions:
-- The first action is called request_the_instructions and is used to retrieve the workflow instructions from the database:
+
+The first action is called request_the_instructions and is used to retrieve the workflow instructions from the database:
 
 ![Retrieve Workflow Instructions](assets/prompt-design/action_1_instructions.png)
 
-- The second action is called `get_employee_pto_balance` and is used to retrieve the employee PTO information from the database.
+The second action is called `get_employee_pto_balance` and is used to retrieve the employee PTO information from the database:
+
+![Retrieve Employee PTO information](assets/prompt-design/action_2_db_query.png)
+
 ### When To Use This Pattern
 
 This pattern is a good fit when the agent must:
