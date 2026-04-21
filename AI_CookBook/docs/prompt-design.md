@@ -185,7 +185,7 @@ Suppose the required instructions are:
 - If Standard: “You would gain many more benefits with Silver or Gold access.”
 
 Instead of writing these instructions only in natural language, you can represent them as a structured JSON variable such as:
-```
+```json
 {
   "nodes": [
     {
@@ -264,7 +264,7 @@ This JSON variable can be stored externally, for example in a database or in Web
 For instance, if the variable is stored in Webex Connect, an action such as [request_instructions] can be created to retrieve it.
 
 The AI Agent instructions can then be simplified to:
-```
+```text
 Use the knowledge base for general HR inquiries. For PTO balance requests, invoke [request_the_instructions] and follow the returned workflow before responding.
 ```
 
@@ -291,7 +291,7 @@ If this procedure must be followed consistently and without deviation, relying o
 
 The workflow logic can instead be externalized into a JSON execution graph stored in Webex Connect or an external database:
 
-```
+```json
 {
   "_id": {
     "$oid": "69e3883c27296a6fafbd7c80"
@@ -376,7 +376,7 @@ These returned variables are then compared with the user-provided information in
 The final two `terminal` nodes represent the two possible outcomes: successful identity verification with PTO balance disclosure, or failed verification with procedure termination.
 
 The AI Agent Instructions will be:
-```
+```text
 If an user asks about the PTO balance, use the action [request_the_instructions] to obtain instructions and follow the steps.
 ```
 Then, we need to create two actions.
