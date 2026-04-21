@@ -17,9 +17,9 @@ Examples include:
 - policy-based routing or escalation
 
 ---
-> [!NOTE]
-> **Risk**  
-> Large language models do **not execute business logic** in the same way that software does.
+**Risk**  
+Large language models do **not execute business logic** in the same way that software does.
+
 ---
 
 The challenge is that large language models do not execute business logic in the same way that software does. Even when instructions are written clearly in a prompt or a knowledge base, the model may:
