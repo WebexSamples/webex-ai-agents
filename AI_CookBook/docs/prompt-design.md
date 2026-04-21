@@ -212,7 +212,7 @@ Additional node types may also be used:
 
 - `choice`: presents multiple selectable options to the user
 - `routing_tool`: executes an action whose result immediately determines the next route
-- `data_tool`: executes an action that returns variables or data
+- `data_tool`: executes an action that returns variables or data, and may be followed by a `branch` node that evaluates the returned results.
 
 This JSON variable can be stored externally, for example in a database or in Webex Connect, and retrieved through an action call.
 
