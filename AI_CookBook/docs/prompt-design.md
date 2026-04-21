@@ -340,6 +340,13 @@ The fourth node is a `data_tool` node, used to query the database using the para
 These returned variables are then compared with the user-provided information in the `verify_identity` node.
 The final two `terminal` nodes represent the two possible outcomes: successful identity verification with PTO balance disclosure, or failed verification with procedure termination.
 
+The AI Agent Instructions will be:
+```
+If an user asks about the PTO balance, use the action [request_the_instructions] to obtain instructions and follow the steps.
+```
+Then, we need to create two actions:
+- the first action is called `request_the_instructions` and it is used to retrieve the instructions from the database
+- the first action is called `get_employee_pto_balance` and it is used to retrieve the database information for that user
 
 ### When To Use This Pattern
 
