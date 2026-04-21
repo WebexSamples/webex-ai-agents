@@ -20,6 +20,7 @@ Examples include:
 > **Risk**  
 > Large language models do **not execute business logic** in the same way that software does.
 ---
+
 The challenge is that large language models do not execute business logic in the same way that software does. Even when instructions are written clearly in a prompt or a knowledge base, the model may:
 
 - skip steps
@@ -44,8 +45,10 @@ A prompt may describe rules such as:
 
 You might find that writing the above rules with a programming-language style might work better than using human language.
 
+---
 > **Key Point**  
 > Flows like the one above implicitly require **procedural state**, **branching**, and **step tracking**.
+---
 
 But flows like the one above implicitly require procedural state: for example, whether `employee_id_check` is true or false, whether a previous step has been completed, and which branch should be executed next. The problem is that an LLM does not natively operate as a deterministic workflow engine with guaranteed state tracking, conditional execution, and control flow. It generates the next response token by token.
 
@@ -55,8 +58,10 @@ Human language is not strictly tied to exact wording. Word order may vary, synon
 
 Programming languages, on the other hand, depend heavily on exact syntax. Specific keywords are required, punctuation matters, and a missing comma or bracket may break the entire program. Programming languages require strict syntax and tightly constrained semantics.
 
+---
 > **Practical Consequence**  
 > When procedures are encoded as **structured JSON workflow variables**, the LLM tends to follow them more precisely than equivalent free-form natural language instructions.
+---
 
 For this reason, when procedures are encoded as structured JSON workflow variables, the LLM tends to follow them more precisely than equivalent free-form natural language instructions.
 
@@ -68,8 +73,10 @@ Externalizing workflow logic into a JSON structure helps address both limitation
 
 Use prompts for conversation, tone, intent recognition, summarization, and general reasoning.
 
+---
 > **Do Not Rely on Prompts Alone**  
 > Do not rely on prompts alone to guarantee consistent execution of multi-step procedures, troubleshooting paths, or conditional workflows.
+---
 
 Do not rely on prompts alone to guarantee consistent execution of multi-step procedures, troubleshooting paths, or conditional workflows.
 
