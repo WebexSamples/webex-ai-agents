@@ -1,8 +1,11 @@
 ## When Prompts Are Not Enough
 
+> **Important**  
+> A common design mistake in AI agents is assuming that a **prompt alone** can reliably enforce a **step-by-step business procedure**.
+
 A common design mistake in AI agents is assuming that a prompt alone can reliably enforce a step-by-step business procedure.
 
-This becomes a problem when the agent is expected to behave intelligently in conversation while also following a strict troubleshooting path, validation sequence, or policy-driven decision flow.
+This becomes a problem when the agent is expected to behave intelligently in conversation while also following a **strict troubleshooting path**, **validation sequence**, or **policy-driven decision flow**.
 
 ### Problem Statement
 
@@ -16,6 +19,9 @@ Examples include:
 - access request handling
 - policy-based routing or escalation
 
+> **Risk**  
+> Large language models do **not execute business logic** in the same way that software does.
+
 The challenge is that large language models do not execute business logic in the same way that software does. Even when instructions are written clearly in a prompt or a knowledge base, the model may:
 
 - skip steps
@@ -25,10 +31,11 @@ The challenge is that large language models do not execute business logic in the
 - fail to branch consistently
 - hallucinate values when exact matching is required
 
-This is especially risky when the workflow depends on deterministic behavior.
+This is especially risky when the workflow depends on **deterministic behavior**.
 
 ### Why This Happens
-Language models are strong at understanding intent and generating natural responses, but they are less reliable when asked to follow multi-step procedural logic purely from free-form text.
+
+Language models are strong at understanding intent and generating natural responses, but they are less reliable when asked to follow **multi-step procedural logic** purely from free-form text.
 
 A prompt may describe rules such as:
 
@@ -37,7 +44,11 @@ A prompt may describe rules such as:
 - if the resource is shared, ask whether other users are affected
 - if the issue is software-related, ask which application is involved
 
-You might find that writing the above rules with a programming-language style might work better than using human language. 
+You might find that writing the above rules with a programming-language style might work better than using human language.
+
+> **Key Point**  
+> Flows like the one above implicitly require **procedural state**, **branching**, and **step tracking**.
+
 But flows like the one above implicitly require procedural state: for example, whether `employee_id_check` is true or false, whether a previous step has been completed, and which branch should be executed next. The problem is that an LLM does not natively operate as a deterministic workflow engine with guaranteed state tracking, conditional execution, and control flow. It generates the next response token by token.
 
 However, across the millions of documents seen during training, the model statistically captures different patterns associated with natural language and programming language data.
@@ -46,14 +57,21 @@ Human language is not strictly tied to exact wording. Word order may vary, synon
 
 Programming languages, on the other hand, depend heavily on exact syntax. Specific keywords are required, punctuation matters, and a missing comma or bracket may break the entire program. Programming languages require strict syntax and tightly constrained semantics.
 
+> **Practical Consequence**  
+> When procedures are encoded as **structured JSON workflow variables**, the LLM tends to follow them more precisely than equivalent free-form natural language instructions.
+
 For this reason, when procedures are encoded as structured JSON workflow variables, the LLM tends to follow them more precisely than equivalent free-form natural language instructions.
 
 Externalizing workflow logic into a JSON structure helps address both limitations: structured formats strengthen syntactic focus, while state, branching, and execution rules are shifted out of the LLM into an explicit machine-readable layer.
 
+---
 
 ### Recommended Action
 
 Use prompts for conversation, tone, intent recognition, summarization, and general reasoning.
+
+> **Do Not Rely on Prompts Alone**  
+> Do not rely on prompts alone to guarantee consistent execution of multi-step procedures, troubleshooting paths, or conditional workflows.
 
 Do not rely on prompts alone to guarantee consistent execution of multi-step procedures, troubleshooting paths, or conditional workflows.
 
@@ -61,9 +79,18 @@ When interactions require mandatory steps, branching logic, state tracking, or r
 
 In this model, the AI Agent focuses on language understanding and user interaction, while the external workflow layer controls sequence, decisions, and next-step execution.
 
-This separation typically improves reliability, consistency, maintainability, and operational control.
+This separation typically improves:
+
+- reliability
+- consistency
+- maintainability
+- operational control
 
 ### Best Practice
+
+> **Rule of Thumb**  
+> - use the model for interpretation  
+> - use structured data for control
 
 A good rule of thumb is:
 
@@ -72,26 +99,34 @@ A good rule of thumb is:
 
 Two implementation models can be considered:
 
-1. Hybrid Control Model  
+1. **Hybrid Control Model**  
    Workflow logic is split between prompt instructions and an external JSON/database layer.
 
-2. Fully Externalized Control Model  
+2. **Fully Externalized Control Model**  
    Workflow logic is moved almost entirely into an external JSON/database layer, while the LLM focuses on language understanding, reasoning, and interaction.
 
 #### 1. Hybrid Control Model
+
 Imagine an AI Agent used to triage IT issues. After identifying which resource is affected, the agent must ask additional questions depending on the issue type.
 
 Possible follow-up questions are:
+
 - Site location
 - Whether other users are experiencing the same issue
 - Which application is involved
 
-These questions do not apply equally to every category. Knowing the location of a printer may be important, while it may be irrelevant for access issues on a web application.
+These questions do not apply equally to every category.
+
+Knowing the location of a printer may be important, while it may be irrelevant for access issues on a web application.
+
+> **Benefit of Structured Variables**  
+> JSON increases syntactic focus and makes the LLM more attentive to exact fields, conditions, and transitions.
 
 If we describe this behavior only in human language, the AI Agent may behave inconsistently. However, if we convert the logic into variables stored in a database and retrieved as JSON, the structured format increases the syntactic focus of the interaction, making the LLM more attentive to exact fields, conditions, and transitions than it would typically be with plain natural language instructions.
+
 Below is an example of a JSON variable that can be stored in Webex Connect or in an external database:
 
-```
+```json
 {
   "id": "obj1",
   "category": "Web Application",
@@ -108,10 +143,12 @@ Below is an example of a JSON variable that can be stored in Webex Connect or in
   "check_other_users": true
 }
 ```
+
 After identifying the category, the agent retrieves the corresponding configuration.
 
 The following are the instructions for the AI Agent:
-```
+
+```text
 1. Identify the user issue and use the [category_list] action to map it to a single category.
 2. Use the mapped category to call the [selected_category] action and retrieve its configuration.
 
