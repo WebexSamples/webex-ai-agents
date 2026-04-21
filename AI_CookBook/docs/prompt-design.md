@@ -344,7 +344,7 @@ The AI Agent Instructions will be:
 ```
 If an user asks about the PTO balance, use the action [request_the_instructions] to obtain instructions and follow the steps.
 ```
-Then, we need to create two actions:
+Then, we need to create two actions.
 
 The first action is called request_the_instructions and is used to retrieve the workflow instructions from the database:
 
