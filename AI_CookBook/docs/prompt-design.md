@@ -267,9 +267,9 @@ This JSON variable can be stored externally, for example in a database or in Web
 
 For instance, if the variable is stored in Webex Connect, an action such as [request_instructions] can be created to retrieve it.
 
-The AI Agent instructions can then be simplified to:
+The AI Agent instructions will be:
 ```text
-Use the knowledge base for general HR inquiries. For PTO balance requests, invoke [request_the_instructions] and follow the returned workflow before responding.
+Before greeting the user, call [request_instructions]. Then greet the user by following the returned instructions exactly.
 ```
 
 
@@ -382,9 +382,9 @@ The fourth node is a `data_tool` node, used to query the database using the para
 These returned variables are then compared with the user-provided information in the `verify_identity` node.
 The final two `terminal` nodes represent the two possible outcomes: successful identity verification with PTO balance disclosure, or failed verification with procedure termination.
 
-The AI Agent Instructions will be:
+The instructions for the AI Agent can be simplified to:
 ```text
-If an user asks about the PTO balance, use the action [request_the_instructions] to obtain instructions and follow the steps.
+Use the knowledge base to respond to HR-related questions. However, if a user asks about their PTO balance, use the action [request_the_instructions] to retrieve the workflow instructions, and execute the returned workflow exactly as provided. Ask one question at a time, and wait for an answer before asking the next question.
 ```
 Then, we need to create two actions.
 
