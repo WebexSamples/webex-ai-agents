@@ -390,7 +390,7 @@ Use the knowledge base to respond to HR-related questions. However, if a user as
 
 Then, we need to create two actions.
 
-The first action is called request_the_instructions and is used to retrieve the workflow instructions from the database:
+The first action is called `request_the_instructions` and is used to retrieve the workflow instructions from the database:
 
 ![Retrieve Workflow Instructions](assets/prompt-design/action_1_instructions.png)
 
