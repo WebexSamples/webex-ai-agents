@@ -413,8 +413,7 @@ The result is shown below. As you can see, the AI Agent uses the Knowledge Base 
 
 
 
-
-
+## PLACEHOLDER: Content below requires review and updates
 
 
 ### When To Use This Pattern
