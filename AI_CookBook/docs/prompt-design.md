@@ -386,6 +386,8 @@ The instructions for the AI Agent can be simplified to:
 ```text
 Use the knowledge base to respond to HR-related questions. However, if a user asks about their PTO balance, use the action [request_the_instructions] to retrieve the workflow instructions, and execute the returned workflow exactly as provided. Ask one question at a time, and wait for an answer before asking the next question.
 ```
+![AI Agent Instructions](assets/prompt-design/execution_graph_instructions.png)
+
 Then, we need to create two actions.
 
 The first action is called request_the_instructions and is used to retrieve the workflow instructions from the database:
