@@ -236,7 +236,7 @@ Instead of writing these instructions only in natural language, you can represen
   ]
 }
 ```
-Each JSON object represents a node in the execution graph, identified by a unique node ID.
+Each JSON object represents a node in the decision-tree, identified by a unique node ID.
 
 The `next` key points to the following node in the workflow.
 
