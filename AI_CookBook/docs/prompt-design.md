@@ -403,6 +403,10 @@ It is important that the first and last names are returned using the same naming
 
 ![Rename Variables in WxC](assets/prompt-design/webex_connect_ai_agent.png)
 
+The result is as follows. As you can see, for the first 2 answers the AI Agent has used the Knowledge Base, but starting from the PTO balance request, it has started using the execution graph, as expected.
+
+![User interaction](assets/prompt-design/chat_experience_001.jpeg)
+
 
 
 
