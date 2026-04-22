@@ -407,6 +407,8 @@ The result is as follows. As you can see, for the first 2 answers the AI Agent h
 
 ![User interaction](assets/prompt-design/chat_experience.001.jpeg)
 
+<img src="assets/prompt-design/chat_experience.001.jpeg" width="350">
+
 
 
 
