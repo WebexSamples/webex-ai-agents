@@ -1,3 +1,11 @@
+# Prompt Engineering for AI Agents
+Prompt engineering is the practice of designing clear and effective instructions, written in human language, that guide how an AI Agent should behave.
+This represents a major shift in how systems can be controlled: instead of relying only on traditional programming languages, behavior can now be influenced through natural language instructions.
+It is a powerful way to shape agent behavior. Well-designed prompts can improve tone, consistency, reasoning quality, and how the agent interacts with users.
+For many scenarios, this is all that is needed.
+However, some workflows require more than guidance. When the agent must follow mandatory steps, prompts alone may not provide enough control.
+
+
 ## When Prompts Are Not Enough
 
 A common design mistake in AI agents is assuming that a prompt alone can reliably enforce a step-by-step business procedure.
