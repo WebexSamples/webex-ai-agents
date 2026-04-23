@@ -1,18 +1,64 @@
-# Prompt Engineering for AI Agents
+# Prompt Design for AI Agents
+
 Prompt engineering is the practice of designing clear and effective instructions, written in human language, that guide how an AI Agent should behave.
-This represents a major shift in how systems can be controlled: instead of relying only on traditional programming languages, behavior can now be influenced through natural language instructions.
-It is a powerful way to shape agent behavior. Well-designed prompts can improve tone, consistency, reasoning quality, and how the agent interacts with users.
-For many scenarios, this is all that is needed.
-However, some workflows require more than guidance. When the agent must follow mandatory steps, prompts alone may not provide enough control.
+
+This represents an important shift in system design: instead of relying only on traditional programming languages, behavior can now be influenced through natural language instructions.
+
+Well-designed prompts can strongly improve tone, consistency, reasoning quality, and the overall user experience.
+
+## Good Practices for Natural-Language Prompts
+
+When prompts are written in human language, clarity becomes essential. Ambiguous or overly generic instructions often lead to inconsistent behavior.
+
+Effective prompts usually include:
+
+- **Clear objective**  
+  Explain what the agent is expected to achieve.
+
+- **Expected behavior**  
+  Define tone, style, priorities, or boundaries.
+
+- **Context**  
+  Provide relevant background information.
+
+- **Constraints**  
+  Specify what the agent must always do, should avoid, or must never do.
+
+- **Output expectations**  
+  Describe the desired format or level of detail.
+
+## Example: Weak Prompt
+
+Help users with IT issues.
+
+## Example: Improved Prompt
+
+Assist users with IT issues in a professional and concise manner.  
+First identify the type of issue.  
+If information is missing, ask one question at a time.  
+Do not invent technical facts.  
+Provide clear next steps.
+
+## Example: HR Agent Prompt
+
+Answer HR-related questions clearly and professionally.  
+If a user asks about vacation policy, use the knowledge base.  
+If a user asks about PTO balance, use the action [get_pto_balance].
+
+## Important Limitation
+
+Natural-language prompts are excellent for guidance, tone, reasoning, and intent recognition.
+
+However, when a workflow requires mandatory steps, strict validation, conditional branching, or repeatable execution, prompts alone may not provide enough control.
 
 
-## When Prompts Are Not Enough
+# When Prompts Are Not Enough
 
 A common design mistake in AI agents is assuming that a prompt alone can reliably enforce a step-by-step business procedure.
 
 This becomes a problem when the agent is expected to behave intelligently in conversation while also following a **strict troubleshooting path**, **validation sequence**, or **policy-driven decision flow**.
 
-### Problem Statement
+## Problem Statement
 
 In many customer support and contact center scenarios, the agent must do more than answer questions naturally. It must also follow a sequence of required checks, ask specific questions when certain conditions are met, and avoid skipping important steps.
 
@@ -41,7 +87,7 @@ The challenge is that large language models do not execute business logic in the
 
 This is especially risky when the workflow depends on **deterministic behavior**.
 
-### Why This Happens
+## Why This Happens
 
 Language models are strong at understanding intent and generating natural responses, but they are less reliable when asked to follow **multi-step procedural logic** purely from free-form text.
 
@@ -79,7 +125,7 @@ For this reason, when procedures are encoded as structured JSON workflow variabl
 Externalizing workflow logic into a JSON structure helps address both limitations: structured formats strengthen syntactic focus, while state, branching, and execution rules are shifted out of the LLM into an explicit machine-readable layer.
 
 
-### Recommended Action
+## Recommended Action
 
 Use prompts for conversation, tone, intent recognition, summarization, and general reasoning.
 
@@ -102,7 +148,7 @@ This separation typically improves:
 - maintainability
 - operational control
 
-### Best Practice
+## Best Practice
 
 A good rule of thumb is:
 
@@ -117,7 +163,7 @@ Two implementation models can be considered:
 2. **Fully Externalized Control Model**  
    Workflow logic is moved almost entirely into an external JSON/database layer, while the LLM focuses on language understanding, reasoning, and interaction.
 
-#### 1. Hybrid Control Model
+### 1. Hybrid Control Model
 
 Imagine an AI Agent used to triage IT issues. After identifying which resource is affected, the agent must ask additional questions depending on the issue type.
 
@@ -179,13 +225,13 @@ Structured formats such as JSON reduce that ambiguity by constraining the decisi
 Externalizing workflow logic into machine-readable structures does not make the LLM a true executor, but it significantly improves reliability, consistency, and controllability.
 It is also possible to externalize the logic almost entirely, while the LLM still provides language understanding, reasoning, and interaction skills.
 
-#### 2. Fully Externalized Control Model
+### 2. Fully Externalized Control Model
 When applicable, this model is preferred because the workflow logic is entirely moved out of the LLM into an external control layer. The LLM still executes the interaction while preserving its intelligence to communicate naturally with the user, interpret responses, and correctly identify the issue.
 
 We will provide two examples: one based on a decision tree, and the other based on an execution graph that also includes actions. 
 The decision tree example is particularly useful because it introduces the concept of nodes and explains the different node types.
 
-##### Decision Tree Example
+#### Decision Tree Example
 A decision tree focuses primarily on branching logic and selecting the correct path based on conditions.
 For instance, imagine you want to build an AI Agent that greets the user based on the user’s status.
 
@@ -281,7 +327,7 @@ Before greeting the user, call [request_instructions]. Then greet the user by fo
 ```
 
 
-##### Execution Graph Example
+#### Execution Graph Example
 An execution graph extends decision-tree logic by adding actions, variable evaluation, state transitions, and workflow orchestration.
 For example, imagine an AI Agent that supports internal users with HR-related requests. The agent should handle free-form questions naturally, while ensuring that specific processes—such as PTO balance checks, absence requests, or compensation inquiries—follow mandatory procedures.
 
