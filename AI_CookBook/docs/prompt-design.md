@@ -1,4 +1,4 @@
-# Prompt Design for AI Agents
+# Prompt Engineering for AI Agents
 
 Prompt engineering is the practice of designing clear and effective instructions, written in human language, that guide how an AI Agent should behave.
 
