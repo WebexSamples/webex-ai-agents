@@ -58,7 +58,8 @@ First ask for the Employee ID. Then check the PTO balance.
 
 Stronger example:
 
-Ask for the Employee ID, because it is required to retrieve the PTO balance. Only check the PTO balance after the Employee ID has been provided.
+Ask for the Employee ID, then use it to retrieve the PTO balance.
+In this example, causality is strengthened by explicitly stating that the Employee ID is used to retrieve the PTO balance.
 
 ## Important Limitation
 
