@@ -27,6 +27,7 @@ Effective prompts usually include:
 - **Output expectations**  
   Describe the desired format or level of detail.
 
+
 ## Example: Weak Prompt
 
 Help users with IT issues.
@@ -44,6 +45,20 @@ Provide clear next steps.
 Answer HR-related questions clearly and professionally.  
 If a user asks about vacation policy, use the knowledge base.  
 If a user asks about PTO balance, use the action [get_pto_balance].
+
+### Prefer Causal Logic Over Pure Sequence
+
+Prompts should express logical dependencies, not only temporal order.
+Large language models read instructions as language sequences. A list such as “first do A, then do B” may be interpreted as ordered guidance, but not necessarily as a strict dependency.
+Whenever possible, explain why a step is required and what condition enables the next step.
+
+Weak example:
+
+First ask for the Employee ID. Then check the PTO balance.
+
+Stronger example:
+
+Ask for the Employee ID, because it is required to retrieve the PTO balance. Only check the PTO balance after the Employee ID has been provided.
 
 ## Important Limitation
 
