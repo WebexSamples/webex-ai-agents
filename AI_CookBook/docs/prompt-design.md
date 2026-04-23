@@ -77,7 +77,6 @@ Examples include:
 - troubleshooting flows
 - procedural workflows
 - technical diagnostics
-- access request handling
 - policy-based routing or escalation
 
 ---
