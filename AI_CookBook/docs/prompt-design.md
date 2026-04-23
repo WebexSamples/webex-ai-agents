@@ -75,8 +75,8 @@ In many customer support and contact center scenarios, the agent must do more th
 Examples include:
 
 - troubleshooting flows
-- issue triage
-- printer or network diagnostics
+- procedural workflows
+- technical diagnostics
 - access request handling
 - policy-based routing or escalation
 
