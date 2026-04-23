@@ -28,23 +28,19 @@ Effective prompts usually include:
   Describe the desired format or level of detail.
 
 
-## Example: Weak Prompt
+### Example: Small Wording Changes Matter
 
-Help users with IT issues.
+Weak Prompt:
 
-## Example: Improved Prompt
+Ask for the Employee ID. Then check PTO balance.
 
-Assist users with IT issues in a professional and concise manner.  
-First identify the type of issue.  
-If information is missing, ask one question at a time.  
-Do not invent technical facts.  
-Provide clear next steps.
+This prompt is weak because it does not establish a clear causal link between the Employee ID and the PTO balance lookup. The system might ask for the Employee ID and then generate or assume a PTO balance instead of retrieving it from the proper source.
 
-## Example: HR Agent Prompt
+Improved Prompt:
 
-Answer HR-related questions clearly and professionally.  
-If a user asks about vacation policy, use the knowledge base.  
-If a user asks about PTO balance, use the action [get_pto_balance].
+Ask for the Employee ID. Use the Employee ID to retrieve the PTO balance from the HR system.
+
+The second version introduces causal dependency and an authoritative data source, reducing ambiguity.
 
 ### Prefer Causal Logic Over Pure Sequence
 
