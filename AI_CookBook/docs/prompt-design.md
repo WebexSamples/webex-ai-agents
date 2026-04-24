@@ -132,6 +132,7 @@ Programming languages, on the other hand, depend heavily on exact syntax. Specif
 
 ---
 **Practical Consequence** 
+
 Code-like formats make LLMs focus on syntax and follow instructions **more reliably**.
 
 ---
@@ -148,6 +149,7 @@ Use prompts for conversation, tone, intent recognition, summarization, and gener
 
 ---
 **Do Not Rely on Prompts Alone**  
+
 Prompts alone are **not enough** for reliable execution of multi-step or conditional workflows.
 
 ---
