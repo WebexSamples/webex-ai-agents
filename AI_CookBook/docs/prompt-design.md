@@ -42,7 +42,7 @@ In this case, the AI Agent might ask all together with a single question, becaus
 
 ---
 
-### Prefer Causal Logic Over Pure Sequence
+### Example: Prefer Causal Logic Over Pure Sequence
 
 Prompts should express logical dependencies, not only temporal order.
 Large language models read instructions as language sequences. A list such as “first do A, then do B” may be interpreted as ordered guidance, but not necessarily as a strict dependency.
