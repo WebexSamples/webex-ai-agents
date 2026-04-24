@@ -122,7 +122,7 @@ Flows like the one above implicitly require **procedural state**, **branching**,
 
 ---
 
-But flows like the one above implicitly require procedural state: for example, whether `employee_id_check` is true or false, whether a previous step has been completed, and which branch should be executed next. The problem is that an LLM does not natively operate as a deterministic workflow engine with guaranteed state tracking, conditional execution, and control flow. It generates the next response token by token.
+But flows like the first one above implicitly require procedural state: for example, whether `employee_id_check` is true or false, whether a previous step has been completed, and which branch should be executed next. The problem is that an LLM does not natively operate as a deterministic workflow engine with guaranteed state tracking, conditional execution, and control flow. It generates the next response token by token.
 
 However, across the millions of documents seen during training, the model statistically captures different patterns associated with natural language and programming language data.
 
