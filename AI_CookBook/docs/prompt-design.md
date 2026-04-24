@@ -38,7 +38,7 @@ In this case, the AI Agent might ask all together with a single question, becaus
 
 #### Improved Prompt:
 
-Ask for first name, last name, and Employee ID one question at a time, waiting for each answer before asking the next one.
+`Ask for first name, last name, and Employee ID one question at a time, waiting for each answer before asking the next one.`
 
 ---
 
@@ -48,13 +48,14 @@ Prompts should express logical dependencies, not only temporal order.
 Large language models read instructions as language sequences. A list such as “first do A, then do B” may be interpreted as ordered guidance, but not necessarily as a strict dependency.
 Whenever possible, explain why a step is required and what condition enables the next step.
 
-Weak example:
+#### Weak example:
 
-First ask for the Employee ID. Then check the PTO balance.
+`Collect the Employee ID, check the HR system, and inform the user of the PTO balance.`
+In this example, the prompt describes a sequence of tasks but does not explicitly state the required dependencies between them. This flow might work well in most cases but fail in some cases, as the AI Agent may attempt to check the HR system before obtaining the Employee ID, or invent or assume the response without using the actual system result.
 
-Stronger example:
+#### Stronger example:
 
-Ask for the Employee ID, then use it to retrieve the PTO balance.
+`Ask for the Employee ID, then use it to query the HR system to retrieve the PTO balance.`
 In this example, causality is strengthened by explicitly stating that the Employee ID is used to retrieve the PTO balance.
 
 ## Important Limitation
