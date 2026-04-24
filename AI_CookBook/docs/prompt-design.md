@@ -30,15 +30,20 @@ Effective prompts usually include:
 
 ### Example: Precise Instructions Change Behavior
 
+---
 Weak Prompt:
 
 Ask the user for first name. Then ask for last name, and finally the Employee ID.
 
-In this case, the AI Agent will might ask all together, with a single question, because it is not assumed that it has to wait for an answer before asking the next question.
+In this case, the AI Agent might ask all together, with a single question, because it is not assumed that it has to wait for an answer before asking the next question.
+
+---
 
 Improved Prompt:
 
 Ask for first name, last name, and Employee ID one question at a time, waiting for each answer before asking the next one.
+
+---
 
 ### Prefer Causal Logic Over Pure Sequence
 
