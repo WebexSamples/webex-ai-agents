@@ -51,6 +51,7 @@ Whenever possible, explain why a step is required and what condition enables the
 #### Weak example:
 
 `Collect the Employee ID, check the HR system, and inform the user of the PTO balance.`
+
 In this example, the prompt describes a sequence of tasks but does not explicitly state the required dependencies between them. This flow might work well in most cases but fail in some cases, as the AI Agent may attempt to check the HR system before obtaining the Employee ID, or invent or assume the response without using the actual system result.
 
 #### Stronger example:
