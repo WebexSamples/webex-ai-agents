@@ -57,6 +57,7 @@ In this example, the prompt describes a sequence of tasks but does not explicitl
 #### Stronger example:
 
 `Ask for the Employee ID, then use it to query the HR system to retrieve the PTO balance.`
+
 In this example, causality is strengthened by explicitly stating that the Employee ID is used to retrieve the PTO balance.
 
 ## Important Limitation
