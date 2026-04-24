@@ -118,7 +118,7 @@ You might find that writing the above rules with a programming-language style mi
 
 ---
 **Key Point**  
-Flows like the one above implicitly require **procedural state**, **branching**, and **step tracking**.
+Flows like the one above implicitly require a **runtime environment**, **state variables**, and **causal branching**.
 
 ---
 
@@ -131,10 +131,11 @@ Human language is not strictly tied to exact wording. Word order may vary, synon
 Programming languages, on the other hand, depend heavily on exact syntax. Specific keywords are required, punctuation matters, and a missing comma or bracket may break the entire program. Programming languages require strict syntax and tightly constrained semantics.
 
 ---
-**Practical Consequence**  
-When procedures are encoded as **structured JSON workflow variables**, the LLM tends to follow them more precisely than equivalent free-form natural language instructions.
+**Practical Consequence** 
+Code-like formats make LLMs focus on syntax and follow instructions **more reliably**.
 
 ---
+
 
 For this reason, when procedures are encoded as structured JSON workflow variables, the LLM tends to follow them more precisely than equivalent free-form natural language instructions.
 
@@ -147,7 +148,7 @@ Use prompts for conversation, tone, intent recognition, summarization, and gener
 
 ---
 **Do Not Rely on Prompts Alone**  
-Do not rely on prompts alone to guarantee consistent execution of multi-step procedures, troubleshooting paths, or conditional workflows.
+Prompts alone are **not enough** for reliable execution of multi-step or conditional workflows.
 
 ---
 
