@@ -84,9 +84,13 @@ Examples include:
 - technical diagnostics
 - policy-based routing or escalation
 
+In these examples, the logic is very similar to programming code. When we say, "Validate the user. If the user is not allowed, reject the connection. Otherwise, continue," we are implicitly assuming a state variable such as `user_allowed`, set to true or false, and using it to determine which branch of the flow should be executed.
+
+However, conditional branching and state variables require a runtime environment that an LLM does not inherently have.
+
 ---
 **Risk**  
-Large language models do **not execute business logic** in the same way that software does.
+Large language models can generate code, but **cannot execute it reliably**.
 
 ---
 
