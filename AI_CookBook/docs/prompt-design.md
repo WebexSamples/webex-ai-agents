@@ -75,7 +75,7 @@ This becomes a problem when the agent is expected to behave intelligently in con
 
 ## Problem Statement
 
-In many customer support and contact center scenarios, the agent must do more than answer questions naturally. It must also follow a sequence of required checks, ask specific questions when certain conditions are met, and avoid skipping important steps.
+In many customer contact center scenarios, the agent must do more than answer questions naturally. It must also follow a sequence of required checks, ask specific questions when certain conditions are met, and avoid skipping important steps.
 
 Examples include:
 
