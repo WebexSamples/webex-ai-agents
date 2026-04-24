@@ -44,9 +44,7 @@ In this case, the AI Agent might ask all together with a single question, becaus
 
 ### Example: Prefer Causal Logic Over Pure Sequence
 
-Prompts should express logical dependencies, not only temporal order.
-Large language models read instructions as language sequences. A list such as “first do A, then do B” may be interpreted as ordered guidance, but not necessarily as a strict dependency.
-Whenever possible, explain why a step is required and what condition enables the next step.
+Prompts should express logical dependencies, not just sequence. “First do A, then do B” may be interpreted as guidance rather than a required condition. State why each step is needed and what must happen before the next one.
 
 #### Weak example:
 
@@ -56,7 +54,7 @@ In this example, the prompt describes a sequence of tasks but does not explicitl
 
 #### Stronger example:
 
-`Ask for the Employee ID, then use it to query the HR system to retrieve the PTO balance.`
+`Ask for the Employee ID, then use it to query the HR system to retrieve the PTO balance and provide the result to the user.`
 
 In this example, causality is strengthened by explicitly stating that the Employee ID is used to retrieve the PTO balance.
 
