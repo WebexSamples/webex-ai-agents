@@ -331,7 +331,7 @@ In the example above:
 ---
 **Important Clarification**:
 JSON keys and values are not executable code in the traditional sense, yet they remain semantically understandable to the AI Agent.
-Because the model understands concepts such as input, branch, or instruction, it can interpret the JSON structure and perform the corresponding behavior even when those operations were not hard-coded in advance.
+Because the model understands concepts such as `input`, `branch`, or `instruction`, it can interpret the JSON structure and perform the corresponding behavior even when those operations were not hard-coded in advance.
 
 ---
 
