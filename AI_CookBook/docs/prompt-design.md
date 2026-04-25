@@ -489,6 +489,7 @@ The result is shown below. As you can see, the AI Agent uses the Knowledge Base 
 
 </p>
 
+![JSON Nodes](assets/prompt-design/nodes.png)
 
 
 ## PLACEHOLDER: Content below requires review and updates
