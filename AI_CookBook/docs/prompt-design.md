@@ -370,7 +370,7 @@ Suppose the PTO balance process must strictly follow an approved workflow:
 If this procedure must be followed consistently and without deviation, relying only on knowledge-base instructions may not be sufficient.
 
 ---
-**Note:** For the sake of simplicity, this example uses identity verification based on Employee ID, first name, and last name. This is only intended to make the workflow easier to understand. In a production environment, this step would typically be replaced by a more advanced authentication and authorization mechanism.
+**Note:** For the sake of simplicity, this example uses identity verification based on Employee ID, first name, and last name. This is only intended to make the workflow easier to understand. In a production environment, this step would typically be replaced by a more advanced authentication and authorization mechanisms.
 
 ---
 
