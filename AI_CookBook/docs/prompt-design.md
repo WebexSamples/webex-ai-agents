@@ -453,8 +453,11 @@ The workflow logic can instead be externalized into a JSON execution graph store
 ```
 
 The first three nodes under the `graph` section are `input` nodes, used to collect the user’s information.
+
 The fourth node is a `data_tool` node, used to query the database using the parameter `employee_id`, and to return the output variables `db_first_name`, `db_last_name`, and `pto_balance`.
+
 These returned variables are then compared with the user-provided information in the `verify_identity` node.
+
 The final two `terminal` nodes represent the two possible outcomes: successful identity verification with PTO balance disclosure, or failed verification with procedure termination.
 
 The instructions for the AI Agent can be simplified to:
