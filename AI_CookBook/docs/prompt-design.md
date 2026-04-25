@@ -378,9 +378,6 @@ The workflow logic can instead be externalized into a JSON execution graph store
 
 ```json
 {
-  "_id": {
-    "$oid": "69e3883c27296a6fafbd7c80"
-  },
   "meta": {
     "title": "Verify Employee PTO Balance",
     "context": "Procedure to verify an employee's identity and provide their PTO balance.",
