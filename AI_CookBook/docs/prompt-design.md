@@ -328,6 +328,13 @@ In the example above:
 - the `instruction` nodes define what the AI Agent should say or do
 - the `terminal` node ends the interaction
 
+---
+**Important Clarification**:
+JSON Keys and values are not executable code in the traditional sense, yet they remain semantically understandable to the AI Agent.
+Because the model understands concepts such as input, branch, or instruction, it can interpret the JSON structure and perform the corresponding behavior even when those operations were not hard-coded in advance.
+
+---
+
 Additional node types may also be used:
 
 - `choice`: presents multiple selectable options to the user
