@@ -14,9 +14,9 @@
     - [1. Hybrid Control Model](#1-hybrid-control-model)
     - [2. Fully Externalized Control Model](#2-fully-externalized-control-model)
 	  - [Decision Trees](#decision-trees)
-      - [Decision Tree + Knowledge Base Example](#decision-tree-+-knowledge-base-example)
-      - [Execution Graphs](#execution-graph)
-      - [Execution Graph Example](#execution-graph-example)
+      - [Decision Tree Example](#decision-tree-example)
+      - [Execution Graphs](#execution-graphs)
+      - [Execution Graph + Knowledge Base Example](##decision-tree-+-knowledge-base-example)
       - [Creating Execution Graphs](#creating-execution-graphs)
       - [Automated Execution Graph Creation](#automated-execution-graph-creation)
 
