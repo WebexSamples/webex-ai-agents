@@ -505,7 +505,7 @@ For example, suppose the procedure requires the following steps:
 
 The diagram below shows how those nodes can be connected.
 
-
+![JSON Node Diagram](assets/prompt-design/node_diagram.png)
 
 ## PLACEHOLDER: Content below requires review and updates
 
