@@ -510,7 +510,7 @@ The diagram below shows how those nodes can be logically connected.
 The resulting JSON variable is as follows:
 
 ```json
-nodes: [
+"nodes": [
   {
     "id": "input_user_id",
     "kind": "input",
@@ -569,7 +569,7 @@ nodes: [
     "message": "Authentication failed. Please check your user ID and try again."
   },
   {
-    "id": "success_close
+    "id": "success_close"
     "kind": "terminal",
     "outcome": "email_sent",
     "message": "A recap email has been sent to your address."
