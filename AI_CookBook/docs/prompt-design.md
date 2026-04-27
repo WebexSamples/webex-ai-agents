@@ -16,7 +16,7 @@
 	  - [Decision Trees](#decision-trees)
       - [Decision Tree Example](#decision-tree-example)
       - [Execution Graphs](#execution-graphs)
-      - [Execution Graph + Knowledge Base Example](##decision-tree-+-knowledge-base-example)
+      - [Execution Graph + Knowledge Base Example](##execution-graph-+-knowledge-base-example)
       - [Creating Execution Graphs](#creating-execution-graphs)
       - [Automated Execution Graph Creation](#automated-execution-graph-creation)
 
