@@ -13,7 +13,9 @@
   - [Best Practices](#best-practices)
     - [1. Hybrid Control Model](#1-hybrid-control-model)
     - [2. Fully Externalized Control Model](#2-fully-externalized-control-model)
+	  - [Decision Tree](#decision-tree)
       - [Decision Tree Example](#decision-tree-example)
+      - [Execution Graph](#execution-graph)
       - [Execution Graph Example](#execution-graph-example)
       - [Creating Execution Graphs](#creating-execution-graphs)
       - [Automated Execution Graph Creation](#automated-execution-graph-creation)
@@ -268,8 +270,10 @@ When applicable, this model is preferred because the workflow logic is entirely 
 We will provide two examples: one based on a decision tree, and the other based on an execution graph that also includes actions. 
 The decision tree example is particularly useful because it introduces the concept of nodes and explains the different node types.
 
-#### Decision Tree Example
+#### Decision Trees
 A decision tree focuses primarily on branching logic and selecting the correct path based on conditions.
+
+#### Decision Tree Example
 For instance, imagine you want to build an AI Agent that greets the user based on the user’s status.
 
 Suppose the required instructions are:
@@ -361,8 +365,13 @@ Before greeting the user, call [request_instructions]. Then greet the user by fo
 ```
 
 
-#### Execution Graph Example
+#### Execution Graphs
+
 An execution graph extends decision-tree logic by adding actions, variable evaluation, state transitions, and workflow orchestration.
+This allows an AI Agent to preserve natural conversation capabilities while following deterministic operational procedures when required.
+
+#### Execution Graph + Knowledge Base Example
+
 For example, imagine an AI Agent that supports internal users with HR-related requests. The agent should handle free-form questions naturally, while ensuring that specific processes—such as PTO balance checks, absence requests, or compensation inquiries—follow mandatory procedures.
 
 Suppose the PTO balance process must strictly follow an approved workflow:
