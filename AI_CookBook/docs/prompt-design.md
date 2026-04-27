@@ -16,7 +16,7 @@
 	  - [Decision Trees](#decision-trees)
       - [Decision Tree Example](#decision-tree-example)
       - [Execution Graphs](#execution-graphs)
-      - [Execution Graph And Knowledge Base Example](#execution-graph-and-knowledge-base-example)
+      - [Execution Graph And Knowledge Base Combined Example](#execution-graph-and-knowledge-base-combined-example)
       - [Creating Execution Graphs](#creating-execution-graphs)
       - [Automated Execution Graph Creation](#automated-execution-graph-creation)
 
@@ -368,9 +368,12 @@ Before greeting the user, call [request_instructions]. Then greet the user by fo
 #### Execution Graphs
 
 An execution graph extends decision-tree logic by adding actions, variable evaluation, state transitions, and workflow orchestration.
+
 This allows an AI Agent to preserve natural conversation capabilities while following deterministic operational procedures when required.
 
-#### Execution Graph And Knowledge Base Example
+An execution graph can also be used together with a Knowledge Base, combining structured workflow control with broader informational responses.
+
+#### Execution Graph and Knowledge Base Combined Example
 
 For example, imagine an AI Agent that supports internal users with HR-related requests. The agent should handle free-form questions naturally, while ensuring that specific processes—such as PTO balance checks, absence requests, or compensation inquiries—follow mandatory procedures.
 
