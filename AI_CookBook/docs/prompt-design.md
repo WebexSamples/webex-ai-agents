@@ -486,6 +486,8 @@ There is no single way to create an execution graph. A JSON schema can be design
 ---
 ![JSON Nodes](assets/prompt-design/nodes.png)
 
+---
+
 The `kind` key defines the type of operation being performed, for example:
 
 - `instruction`: Instruction for the AI Agent, e.g. greet the user
@@ -496,7 +498,6 @@ The `kind` key defines the type of operation being performed, for example:
 - `data_tool`: Action that returns variables or data (may be followed by a `branch` node)
 - `terminal`: End of the interaction
 
----
 
 For example, suppose the procedure requires the following steps:
 
@@ -508,7 +509,11 @@ For example, suppose the procedure requires the following steps:
 
 The diagram below shows how those nodes can be logically connected.
 
+---
+
 ![JSON Node Diagram](assets/prompt-design/node_diagram.png)
+
+---
 
 The resulting JSON variable is as follows:
 
