@@ -480,28 +480,32 @@ The result is shown below. As you can see, the AI Agent uses the Knowledge Base 
 </p>
 
 #### Creating Execution Graphs
-There is not a single way to create execution graph. The JSON schema can be created in many different ways. However, a way that has been useful is the one that uses the following JSON nodes:
+
+There is no single way to create an execution graph. A JSON schema can be designed in many different ways. However, the following node model has proven useful:
 
 ![JSON Nodes](assets/prompt-design/nodes.png)
 
-
-
 The `kind` key defines the type of operation being performed, for example:
 
-- instruction
-- input
-- choice
-- branch
-- routing_tool
-- data_tool
-- terminal
+- `instruction`: Instruction for the AI Agent, e.g. greet the user
+- `input`: Free-form user input
+- `choice`: User selection between multiple options
+- `branch`: Route selection based on conditions
+- `routing_tool`: Action whose result immediately determines the next route
+- `data_tool`: Action that returns variables or data (may be followed by a `branch` node)
+- `terminal`: End of the interaction
 
-If the instructions require that you ask the user to provide some details, and then:
-- you use the provided information to check an external system and validate the user
-- you ask what is the user issue between the cjhoices included on a list
-- you populate a db with the issue details,
+For example, suppose the procedure requires the following steps:
 
-you might need an input node followed by a routing_tool node, then a instruction node, and finally a . If your instruction
+- Ask the user to provide the user ID
+- Validate the user through an authentication / authorization database check
+- Ask the user what issue they are experiencing
+- Use an action to retrieve the user’s email address
+- Use an action to send a recap email
+
+The diagram below shows how those nodes can be connected.
+
+
 
 ## PLACEHOLDER: Content below requires review and updates
 
