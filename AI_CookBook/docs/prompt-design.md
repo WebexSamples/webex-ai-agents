@@ -493,7 +493,7 @@ The result is shown below. As you can see, the AI Agent uses the Knowledge Base 
 
 <p align="center">
 
-  <img src="assets/prompt-design/nodes.jpeg" width="350">
+  <img src="assets/prompt-design/nodes.png" width="350">
 
 </p>
 
