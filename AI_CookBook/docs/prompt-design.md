@@ -483,6 +483,7 @@ The result is shown below. As you can see, the AI Agent uses the Knowledge Base 
 
 There is no single way to create an execution graph. A JSON schema can be designed in many different ways. However, the following node model has proven useful:
 
+---
 ![JSON Nodes](assets/prompt-design/nodes.png)
 
 The `kind` key defines the type of operation being performed, for example:
@@ -494,6 +495,8 @@ The `kind` key defines the type of operation being performed, for example:
 - `routing_tool`: Action whose result immediately determines the next route
 - `data_tool`: Action that returns variables or data (may be followed by a `branch` node)
 - `terminal`: End of the interaction
+
+---
 
 For example, suppose the procedure requires the following steps:
 
