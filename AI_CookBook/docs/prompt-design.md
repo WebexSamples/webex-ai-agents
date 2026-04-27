@@ -1,5 +1,5 @@
 # Table of Contents
-[Prompt Engineering for AI Agents](#Prompt Engineering for AI Agents)
+[Prompt Engineering for AI Agents](#prompt-engineering-for-ai-agents)
 
 # Prompt Engineering for AI Agents
 
