@@ -1,0 +1,1606 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A practical guide for building secure, governed, and production-ready AI agents in WxCC">
+      
+      
+        <meta name="author" content="Chandramouli Vaithiyanathan">
+      
+      
+        <link rel="canonical" href="https://webexsamples.github.io/webex-ai-agents/prompt-design/">
+      
+      
+        <link rel="prev" href="../governance/">
+      
+      
+        <link rel="next" href="../agent-template/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/cisco-logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Prompt Design - AI Agent Cookbook for WxCC</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#table-of-contents" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AI Agent Cookbook for WxCC" class="md-header__button md-logo" aria-label="AI Agent Cookbook for WxCC" data-md-component="logo">
+      
+  <img src="../assets/cisco-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI Agent Cookbook for WxCC
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Prompt Design
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../security/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../webex-ai-agent-security-faq/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../governance/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Governance
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Prompt Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../agent-template/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Agent Template
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../knowledge-and-rag/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Knowledge and RAG
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../testing-and-evaluation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Testing and Evaluation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../deployment-and-operations/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Deployment and Operations
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../human-handoff/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Human Handoff
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../common-pitfalls/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Common Pitfalls
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../glossary/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Glossary
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AI Agent Cookbook for WxCC" class="md-nav__button md-logo" aria-label="AI Agent Cookbook for WxCC" data-md-component="logo">
+      
+  <img src="../assets/cisco-logo.png" alt="logo">
+
+    </a>
+    AI Agent Cookbook for WxCC
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webex-ai-agent-security-faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../governance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Governance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent Template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge-and-rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knowledge and RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-and-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing and Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment-and-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment and Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../human-handoff/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Human Handoff
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-pitfalls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Common Pitfalls
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="table-of-contents">Table of Contents</h1>
+<ul>
+<li><a href="#prompt-engineering-for-ai-agents">Prompt Engineering for AI Agents</a></li>
+<li><a href="#good-practices-for-natural-language-prompts">Good Practices for Natural-Language Prompts</a><ul>
+<li><a href="#example-precise-instructions-change-behavior">Example: Precise Instructions Change Behavior</a></li>
+<li><a href="#example-prefer-causal-logic-over-pure-sequence">Example: Prefer Causal Logic Over Pure Sequence</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#important-limitation">Important Limitation</a></p>
+</li>
+<li>
+<p><a href="#when-prompts-are-not-enough">When Prompts Are Not Enough</a></p>
+</li>
+<li><a href="#problem-statement">Problem Statement</a></li>
+<li><a href="#why-this-happens">Why This Happens</a></li>
+<li><a href="#recommended-action">Recommended Action</a></li>
+<li><a href="#best-practices">Best Practices</a><ul>
+<li><a href="#1-hybrid-control-model">1. Hybrid Control Model</a></li>
+<li><a href="#2-fully-externalized-control-model">2. Fully Externalized Control Model</a></li>
+<li><a href="#decision-trees">Decision Trees</a></li>
+<li><a href="#decision-tree-example">Decision Tree Example</a></li>
+<li><a href="#execution-graphs">Execution Graphs</a></li>
+<li><a href="#execution-graph-and-knowledge-base-combined-example">Execution Graph And Knowledge Base Combined Example</a></li>
+<li><a href="#creating-execution-graphs">Creating Execution Graphs</a></li>
+<li><a href="#automated-execution-graph-creation">Automated Execution Graph Creation</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="prompt-engineering-for-ai-agents">Prompt Engineering for AI Agents</h1>
+<p>Prompt engineering is the practice of designing clear and effective instructions, written in human language, that guide how an AI Agent should behave.</p>
+<p>This represents an important shift in system design: instead of relying only on traditional programming languages, behavior can now be influenced through natural language instructions.</p>
+<p>Well-designed prompts can strongly improve tone, consistency, reasoning quality, and the overall user experience.</p>
+<h2 id="good-practices-for-natural-language-prompts">Good Practices for Natural-Language Prompts</h2>
+<p>When prompts are written in human language, clarity becomes essential. Ambiguous or overly generic instructions often lead to inconsistent behavior.</p>
+<p>Effective prompts usually include:</p>
+<ul>
+<li>
+<p><strong>Clear objective</strong><br>
+  Explain what the agent is expected to achieve.</p>
+</li>
+<li>
+<p><strong>Expected behavior</strong><br>
+  Define tone, style, priorities, or boundaries.</p>
+</li>
+<li>
+<p><strong>Context</strong><br>
+  Provide relevant background information.</p>
+</li>
+<li>
+<p><strong>Constraints</strong><br>
+  Specify what the agent must always do, should avoid, or must never do.</p>
+</li>
+<li>
+<p><strong>Output expectations</strong><br>
+  Describe the desired format or level of detail.</p>
+</li>
+</ul>
+<hr>
+<h3 id="example-precise-instructions-change-behavior">Example: Precise Instructions Change Behavior</h3>
+<h4 id="weak-prompt">Weak Prompt:</h4>
+<p><code>Ask the user for first name. Then ask for last name, and finally the Employee ID.</code></p>
+<p>In this case, the AI Agent might ask all together with a single question, because it is not assumed that it has to wait for an answer before asking the next question.</p>
+<h4 id="improved-prompt">Improved Prompt:</h4>
+<p><code>Ask for first name, last name, and Employee ID one question at a time, waiting for each answer before asking the next one.</code></p>
+<hr>
+<h3 id="example-prefer-causal-logic-over-pure-sequence">Example: Prefer Causal Logic Over Pure Sequence</h3>
+<p>Prompts should express logical dependencies, not just sequence. “First do A, then do B” may be interpreted as guidance rather than a required condition. State why each step is needed and what must happen before the next one.</p>
+<h4 id="weak-example">Weak example:</h4>
+<p><code>Collect the Employee ID, check the HR system, and inform the user of the PTO balance.</code></p>
+<p>In this example, the prompt describes a sequence of tasks but does not explicitly state the required dependencies between them. This flow might work well in most cases but fail in some, as the AI Agent may attempt to check the HR system before obtaining the Employee ID, or invent or assume the response without using the actual system result.</p>
+<h4 id="stronger-example">Stronger example:</h4>
+<p><code>Ask for the Employee ID, then use it to query the HR system to retrieve the PTO balance and provide the result to the user.</code></p>
+<p>In this example, causality is strengthened by explicitly stating that the Employee ID is used to retrieve the PTO balance.</p>
+<h2 id="important-limitation">Important Limitation</h2>
+<p>Natural-language prompts are excellent for guidance, tone, reasoning, and intent recognition.</p>
+<p>However, when a workflow requires mandatory steps, strict validation, conditional branching, or repeatable execution, prompts alone may not provide enough control.</p>
+<h1 id="when-prompts-are-not-enough">When Prompts Are Not Enough</h1>
+<p>A common design mistake in AI agents is assuming that a prompt alone can reliably enforce a step-by-step business procedure.</p>
+<p>This becomes a problem when the agent is expected to behave intelligently in conversation while also following a <strong>strict troubleshooting path</strong>, <strong>validation sequence</strong>, or <strong>policy-driven decision flow</strong>.</p>
+<h2 id="problem-statement">Problem Statement</h2>
+<p>In many customer contact center scenarios, the agent must do more than answer questions naturally. It must also follow a sequence of required checks, ask specific questions when certain conditions are met, and avoid skipping important steps.</p>
+<p>Examples include:</p>
+<ul>
+<li>troubleshooting flows</li>
+<li>procedural workflows</li>
+<li>technical diagnostics</li>
+<li>policy-based routing or escalation</li>
+</ul>
+<p>In these examples, the logic is very similar to programming code. </p>
+<hr>
+<p><strong>Risk</strong><br>
+Large language models can generate code, but <strong>cannot execute it reliably</strong>.</p>
+<hr>
+<p>The challenge is that large language models do not execute business logic in the same way that software does. Even when instructions are written clearly in a prompt or a knowledge base, the model may:</p>
+<ul>
+<li>skip steps</li>
+<li>ask too many questions</li>
+<li>ask questions out of order</li>
+<li>interpret instructions loosely</li>
+<li>fail to branch consistently</li>
+<li>hallucinate values when exact matching is required</li>
+</ul>
+<p>This is especially risky when the workflow depends on <strong>deterministic behavior</strong>.</p>
+<h2 id="why-this-happens">Why This Happens</h2>
+<p>Language models are strong at understanding intent and generating natural responses, but they are less reliable when asked to follow <strong>multi-step procedural logic</strong> purely from free-form text.</p>
+<p>A prompt may describe rules such as:</p>
+<ul>
+<li>if the user has provided an Employee ID, ask what issue they are experiencing</li>
+<li>if the issue is printer-related, ask printer-specific questions</li>
+<li>if the resource is shared, ask whether other users are affected</li>
+<li>if the issue is software-related, ask which application is involved</li>
+</ul>
+<p>You might find that writing the above rules with a programming-language style might work better than using human language.</p>
+<hr>
+<p><strong>Key Point</strong><br>
+Flows like the one above implicitly require a <strong>runtime environment</strong>, <strong>state variables</strong>, and <strong>causal branching</strong>.</p>
+<hr>
+<p>But flows like the first one above implicitly require procedural state: for example, whether <code>employee_id_check</code> is true or false, whether a previous step has been completed, and which branch should be executed next. The problem is that an LLM does not natively operate as a deterministic workflow engine with guaranteed state tracking, conditional execution, and control flow. It generates the next response token by token.</p>
+<p>However, across the millions of documents seen during training, the model statistically captures different patterns associated with natural language and programming language data.</p>
+<p>Human language is not strictly tied to exact wording. Word order may vary, synonyms often preserve the core meaning, and the same concept can be expressed in many different ways. Typos or minor errors are often tolerated without changing the intended meaning. Human language relies heavily on semantics, while allowing broader syntactic variation.</p>
+<p>Programming languages, on the other hand, depend heavily on exact syntax. Specific keywords are required, punctuation matters, and a missing comma or bracket may break the entire program. Programming languages require strict syntax and tightly constrained semantics.</p>
+<hr>
+<p><strong>Practical Consequence</strong> </p>
+<p>Code-like formats make LLMs focus on syntax and follow instructions <strong>more reliably</strong>.</p>
+<hr>
+<p>For this reason, when procedures are encoded as structured JSON workflow variables, the LLM tends to follow them more precisely than equivalent free-form natural language instructions.</p>
+<p>Externalizing workflow logic into a JSON structure helps address both limitations: structured formats strengthen syntactic focus, while state, branching, and execution rules are shifted out of the LLM into an explicit machine-readable layer.</p>
+<h2 id="recommended-action">Recommended Action</h2>
+<p>Use prompts for conversation, tone, intent recognition, summarization, and general reasoning.</p>
+<hr>
+<p><strong>Do Not Rely on Prompts Alone</strong>  </p>
+<p>Prompts alone are <strong>not enough</strong> for reliable execution of multi-step or conditional workflows.</p>
+<hr>
+<p>Do not rely on prompts alone to guarantee consistent execution of multi-step procedures, troubleshooting paths, or conditional workflows.</p>
+<p>When interactions require mandatory steps, branching logic, state tracking, or repeatable outcomes, place that control logic in an external structured layer, such as a JSON workflow or database-driven flow definition.</p>
+<p>In this model, the AI Agent focuses on language understanding and user interaction, while the external workflow layer controls sequence, decisions, and next-step execution.</p>
+<p>This separation typically improves:</p>
+<ul>
+<li>reliability</li>
+<li>consistency</li>
+<li>maintainability</li>
+<li>operational control</li>
+</ul>
+<h2 id="best-practices">Best Practices</h2>
+<p>A good rule of thumb is:</p>
+<ul>
+<li>use the model for interpretation</li>
+<li>use structured data for control</li>
+</ul>
+<p>Two implementation models can be considered:</p>
+<ol>
+<li>
+<p><strong>Hybrid Control Model</strong><br>
+   Workflow logic is split between prompt instructions and an external JSON/database layer.</p>
+</li>
+<li>
+<p><strong>Fully Externalized Control Model</strong><br>
+   Workflow logic is moved almost entirely into an external JSON/database layer, while the LLM focuses on language understanding, reasoning, and interaction.</p>
+</li>
+</ol>
+<h3 id="1-hybrid-control-model">1. Hybrid Control Model</h3>
+<p>Imagine an AI Agent used to triage IT issues. After identifying which resource is affected, the agent must ask additional questions depending on the issue type.</p>
+<p>Possible follow-up questions are:</p>
+<ul>
+<li>Site location</li>
+<li>Whether other users are experiencing the same issue</li>
+<li>Which application is involved</li>
+</ul>
+<p>These questions do not apply equally to every category.</p>
+<p>Knowing the location of a printer may be important, while it may be irrelevant for access issues on a web application.</p>
+<hr>
+<p><strong>Benefit of Structured Variables</strong><br>
+JSON increases syntactic focus and makes the LLM more attentive to exact fields, conditions, and transitions.</p>
+<hr>
+<p>If we describe this behavior only in human language, the AI Agent may behave inconsistently. However, if we convert the logic into variables stored in a database and retrieved as JSON, the structured format increases the syntactic focus of the interaction, making the LLM more attentive to exact fields, conditions, and transitions than it would typically be with plain natural language instructions.</p>
+<p>Below is an example of a JSON variable that can be stored in Webex Connect or in an external database:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"obj1"</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Web Application"</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">"ask_site"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">"check_application"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">"check_other_users"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">{</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"obj2"</span><span class="p">,</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Printer"</span><span class="p">,</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="nt">"ask_site"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="nt">"check_application"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="nt">"check_other_users"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>After identifying the category, the agent retrieves the corresponding configuration.</p>
+<p>The following are the instructions for the AI Agent:</p>
+<p></p><div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>1. Identify the user issue and use the [category_list] action to map it to a single category.
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>2. Use the mapped category to call the [selected_category] action and retrieve its configuration.
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Then evaluate the following conditions:
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>- If `check_application` is `true` and no application has been specified, ask which application is involved.
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>- If `ask_site` is `true` and no site is confirmed, ask for the site and validate it.
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>- If `check_other_users` is `true` and you do not yet know whether other users are affected, ask the user whether anyone else is experiencing the same issue.
+</span></code></pre></div>
+In this model, logic is partly encoded in the prompt and partly externalized in the JSON/database layer.
+Natural language instructions leave broad room for interpretation.
+Structured formats such as JSON reduce that ambiguity by constraining the decision space.
+Externalizing workflow logic into machine-readable structures does not make the LLM a true executor, but it significantly improves reliability, consistency, and controllability.
+It is also possible to externalize the logic almost entirely, while the LLM still provides language understanding, reasoning, and interaction skills.<p></p>
+<h3 id="2-fully-externalized-control-model">2. Fully Externalized Control Model</h3>
+<p>When applicable, this model is preferred because the workflow logic is entirely moved out of the LLM into an external control layer. The LLM still executes the interaction while preserving its intelligence to communicate naturally with the user, interpret responses, and correctly identify the issue.</p>
+<p>We will provide two examples: one based on a decision tree, and the other based on an execution graph that also includes actions. 
+The decision tree example is particularly useful because it introduces the concept of nodes and explains the different node types.</p>
+<h4 id="decision-trees">Decision Trees</h4>
+<p>A decision tree focuses primarily on branching logic and selecting the correct path based on conditions.</p>
+<h4 id="decision-tree-example">Decision Tree Example</h4>
+<p>For instance, imagine you want to build an AI Agent that greets the user based on the user’s status.</p>
+<p>Suppose the required instructions are:</p>
+<ul>
+<li>Ask the user which access type they have.</li>
+<li>If Gold: “Hello, valued user.”</li>
+<li>If Silver: “Have you ever considered upgrading to Gold access?”</li>
+<li>If Standard: “You would gain many more benefits with Silver or Gold access.”</li>
+</ul>
+<p>Instead of writing these instructions only in natural language, you can represent them as a structured JSON variable such as:
+</p><div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">"nodes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"input_access_type"</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"input"</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="nt">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Which access type do you have? (Gold, Silver, Standard)"</span><span class="p">,</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">      </span><span class="nt">"variable"</span><span class="p">:</span><span class="w"> </span><span class="s2">"access_type"</span><span class="p">,</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">      </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="s2">"branch_access_type"</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"branch_access_type"</span><span class="p">,</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">      </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"branch"</span><span class="p">,</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">      </span><span class="nt">"condition"</span><span class="p">:</span><span class="w"> </span><span class="s2">"access_type"</span><span class="p">,</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">      </span><span class="nt">"cases"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">        </span><span class="nt">"Gold"</span><span class="p">:</span><span class="w"> </span><span class="s2">"instruction_gold"</span><span class="p">,</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">        </span><span class="nt">"Silver"</span><span class="p">:</span><span class="w"> </span><span class="s2">"instruction_silver"</span><span class="p">,</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">        </span><span class="nt">"Standard"</span><span class="p">:</span><span class="w"> </span><span class="s2">"instruction_standard"</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"instruction_gold"</span><span class="p">,</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">      </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"instruction"</span><span class="p">,</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">      </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Hello, valued user."</span><span class="p">,</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">      </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="s2">"terminal_end"</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"instruction_silver"</span><span class="p">,</span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">      </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"instruction"</span><span class="p">,</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">      </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Have you ever considered upgrading to Gold access?"</span><span class="p">,</span>
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">      </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="s2">"terminal_end"</span>
+</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"instruction_standard"</span><span class="p">,</span>
+</span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">      </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"instruction"</span><span class="p">,</span>
+</span><span id="__span-2-35"><a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="w">      </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"You would gain many more benefits with Silver or Gold access."</span><span class="p">,</span>
+</span><span id="__span-2-36"><a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="w">      </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="s2">"terminal_end"</span>
+</span><span id="__span-2-37"><a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-2-38"><a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-39"><a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a><span class="w">      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"terminal_end"</span><span class="p">,</span>
+</span><span id="__span-2-40"><a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="w">      </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"terminal"</span><span class="p">,</span>
+</span><span id="__span-2-41"><a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="w">      </span><span class="nt">"outcome"</span><span class="p">:</span><span class="w"> </span><span class="s2">"complete"</span><span class="p">,</span>
+</span><span id="__span-2-42"><a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="w">      </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Instruction delivered."</span>
+</span><span id="__span-2-43"><a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-44"><a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a><span class="w">  </span><span class="p">]</span>
+</span><span id="__span-2-45"><a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a><span class="p">}</span>
+</span></code></pre></div>
+Each JSON object represents a node in the decision-tree, identified by a unique node ID.<p></p>
+<p>The <code>next</code> key points to the following node in the workflow.</p>
+<p>In the example above:</p>
+<ul>
+<li>the <code>input</code> node collects user input</li>
+<li>the <code>branch</code> node performs decision-tree selection based on the access type</li>
+<li>the <code>instruction</code> nodes define what the AI Agent should say or do</li>
+<li>the <code>terminal</code> node ends the interaction</li>
+</ul>
+<hr>
+<p><strong>Important Clarification</strong>:
+JSON keys and values are not executable code in the traditional sense, yet they remain semantically understandable to the AI Agent.
+Because the model understands concepts such as <code>input</code>, <code>branch</code>, or <code>instruction</code>, it can interpret the JSON structure and perform the corresponding behavior even when those operations were not hard-coded in advance.</p>
+<hr>
+<p>Additional node types may also be used. These JSON nodes will be described in another chapter.</p>
+<ul>
+<li><code>choice</code>: presents multiple selectable options to the user</li>
+<li><code>routing_tool</code>: executes an action whose result immediately determines the next route</li>
+<li><code>data_tool</code>: executes an action that returns variables or data, and may be followed by a <code>branch</code> node that evaluates the returned results.</li>
+</ul>
+<p>This JSON variable representing the execution graph can be stored externally, for example in a database or in Webex Connect, and retrieved through an action.</p>
+<p>For instance, if the variable is stored in Webex Connect, an action such as [request_instructions] can be created to retrieve it.</p>
+<p>The AI Agent instructions will be:
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Before greeting the user, call [request_instructions]. Then greet the user by following the returned instructions exactly.
+</span></code></pre></div><p></p>
+<h4 id="execution-graphs">Execution Graphs</h4>
+<p>An execution graph extends decision-tree logic by adding actions, variable evaluation, state transitions, and workflow orchestration.</p>
+<p>This allows an AI Agent to preserve natural conversation capabilities while following deterministic operational procedures when required.</p>
+<p>An execution graph can also be used together with a Knowledge Base, combining structured workflow control with broader informational responses.</p>
+<h4 id="execution-graph-and-knowledge-base-combined-example">Execution Graph and Knowledge Base Combined Example</h4>
+<p>For example, imagine an AI Agent that supports internal users with HR-related requests. The agent should handle free-form questions naturally, while ensuring that specific processes—such as PTO balance checks, absence requests, or compensation inquiries—follow mandatory procedures.</p>
+<p>Suppose the PTO balance process must strictly follow an approved workflow:</p>
+<div class="language-text highlight"><pre><span></span><code>1   Gather Employee Information: Request the following details from the employee, one at a time:
+   •    First Name
+   •    Last Name
+   •    Employee ID
+2   Database Retrieval: Use the provided Employee ID to access the database and retrieve the employee's first name, last name, and Paid Time Off (PTO) balance.
+3   Identity Verification:
+   •    Match Found: If the first name and last name provided by the employee match the information retrieved from the database, inform the employee that their identity has been verified. Proceed to step 4.
+   •    No Match: If the provided first name and last name do not match the database records, inform the employee that the information provided does not match our records. Terminate the procedure.
+4   Provide PTO Balance: If the identity verification in step 3 was successful, provide the employee with their current PTO balance.
+</code></pre></div>
+<p>If this procedure must be followed consistently and without deviation, relying only on knowledge-base instructions may not be sufficient.</p>
+<hr>
+<p><strong>Note:</strong> For the sake of simplicity, this example uses identity verification based on Employee ID, first name, and last name. This is only intended to make the workflow easier to understand. In a production environment, this step would typically be replaced by a more advanced authentication and authorization mechanisms.</p>
+<hr>
+<p>The workflow logic can instead be externalized into a JSON execution graph stored in Webex Connect or an external database:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Verify Employee PTO Balance"</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">"context"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Procedure to verify an employee's identity and provide their PTO balance."</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"verify_pto"</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">"graph"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="nt">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"input_first_name"</span><span class="p">,</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="nt">"nodes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"input_first_name"</span><span class="p">,</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">        </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"input"</span><span class="p">,</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">        </span><span class="nt">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Please provide your first name."</span><span class="p">,</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">        </span><span class="nt">"variable"</span><span class="p">:</span><span class="w"> </span><span class="s2">"first_name"</span><span class="p">,</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">        </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="s2">"input_last_name"</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">      </span><span class="p">},</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"input_last_name"</span><span class="p">,</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">        </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"input"</span><span class="p">,</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="w">        </span><span class="nt">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Please provide your last name."</span><span class="p">,</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">        </span><span class="nt">"variable"</span><span class="p">:</span><span class="w"> </span><span class="s2">"last_name"</span><span class="p">,</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">        </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="s2">"input_employee_id"</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">      </span><span class="p">},</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="w">        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"input_employee_id"</span><span class="p">,</span>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="w">        </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"input"</span><span class="p">,</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="w">        </span><span class="nt">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Please provide your Employee ID."</span><span class="p">,</span>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="w">        </span><span class="nt">"variable"</span><span class="p">:</span><span class="w"> </span><span class="s2">"employee_id"</span><span class="p">,</span>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="w">        </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="s2">"retrieve_employee_data"</span>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="w">      </span><span class="p">},</span>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="w">        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"retrieve_employee_data"</span><span class="p">,</span>
+</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a><span class="w">        </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data_tool"</span><span class="p">,</span>
+</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a><span class="w">        </span><span class="nt">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"get_employee_pto_balance"</span><span class="p">,</span>
+</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a><span class="w">        </span><span class="nt">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-4-36"><a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a><span class="w">          </span><span class="s2">"employee_id"</span>
+</span><span id="__span-4-37"><a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a><span class="w">        </span><span class="p">],</span>
+</span><span id="__span-4-38"><a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a><span class="w">        </span><span class="nt">"output_variables"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-4-39"><a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a><span class="w">          </span><span class="s2">"db_first_name"</span><span class="p">,</span>
+</span><span id="__span-4-40"><a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a><span class="w">          </span><span class="s2">"db_last_name"</span><span class="p">,</span>
+</span><span id="__span-4-41"><a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a><span class="w">          </span><span class="s2">"pto_balance"</span>
+</span><span id="__span-4-42"><a id="__codelineno-4-42" name="__codelineno-4-42" href="#__codelineno-4-42"></a><span class="w">        </span><span class="p">],</span>
+</span><span id="__span-4-43"><a id="__codelineno-4-43" name="__codelineno-4-43" href="#__codelineno-4-43"></a><span class="w">        </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="s2">"verify_identity"</span>
+</span><span id="__span-4-44"><a id="__codelineno-4-44" name="__codelineno-4-44" href="#__codelineno-4-44"></a><span class="w">      </span><span class="p">},</span>
+</span><span id="__span-4-45"><a id="__codelineno-4-45" name="__codelineno-4-45" href="#__codelineno-4-45"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-4-46"><a id="__codelineno-4-46" name="__codelineno-4-46" href="#__codelineno-4-46"></a><span class="w">        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"verify_identity"</span><span class="p">,</span>
+</span><span id="__span-4-47"><a id="__codelineno-4-47" name="__codelineno-4-47" href="#__codelineno-4-47"></a><span class="w">        </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"branch"</span><span class="p">,</span>
+</span><span id="__span-4-48"><a id="__codelineno-4-48" name="__codelineno-4-48" href="#__codelineno-4-48"></a><span class="w">        </span><span class="nt">"condition"</span><span class="p">:</span><span class="w"> </span><span class="s2">"first_name == db_first_name &amp;&amp; last_name == db_last_name"</span><span class="p">,</span>
+</span><span id="__span-4-49"><a id="__codelineno-4-49" name="__codelineno-4-49" href="#__codelineno-4-49"></a><span class="w">        </span><span class="nt">"cases"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-50"><a id="__codelineno-4-50" name="__codelineno-4-50" href="#__codelineno-4-50"></a><span class="w">          </span><span class="nt">"true"</span><span class="p">:</span><span class="w"> </span><span class="s2">"identity_verified"</span><span class="p">,</span>
+</span><span id="__span-4-51"><a id="__codelineno-4-51" name="__codelineno-4-51" href="#__codelineno-4-51"></a><span class="w">          </span><span class="nt">"false"</span><span class="p">:</span><span class="w"> </span><span class="s2">"identity_not_verified"</span>
+</span><span id="__span-4-52"><a id="__codelineno-4-52" name="__codelineno-4-52" href="#__codelineno-4-52"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-4-53"><a id="__codelineno-4-53" name="__codelineno-4-53" href="#__codelineno-4-53"></a><span class="w">      </span><span class="p">},</span>
+</span><span id="__span-4-54"><a id="__codelineno-4-54" name="__codelineno-4-54" href="#__codelineno-4-54"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-4-55"><a id="__codelineno-4-55" name="__codelineno-4-55" href="#__codelineno-4-55"></a><span class="w">        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"identity_verified"</span><span class="p">,</span>
+</span><span id="__span-4-56"><a id="__codelineno-4-56" name="__codelineno-4-56" href="#__codelineno-4-56"></a><span class="w">        </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"instruction"</span><span class="p">,</span>
+</span><span id="__span-4-57"><a id="__codelineno-4-57" name="__codelineno-4-57" href="#__codelineno-4-57"></a><span class="w">        </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Your identity has been verified."</span><span class="p">,</span>
+</span><span id="__span-4-58"><a id="__codelineno-4-58" name="__codelineno-4-58" href="#__codelineno-4-58"></a><span class="w">        </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="s2">"provide_pto_balance"</span>
+</span><span id="__span-4-59"><a id="__codelineno-4-59" name="__codelineno-4-59" href="#__codelineno-4-59"></a><span class="w">      </span><span class="p">},</span>
+</span><span id="__span-4-60"><a id="__codelineno-4-60" name="__codelineno-4-60" href="#__codelineno-4-60"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-4-61"><a id="__codelineno-4-61" name="__codelineno-4-61" href="#__codelineno-4-61"></a><span class="w">        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"provide_pto_balance"</span><span class="p">,</span>
+</span><span id="__span-4-62"><a id="__codelineno-4-62" name="__codelineno-4-62" href="#__codelineno-4-62"></a><span class="w">        </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"terminal"</span><span class="p">,</span>
+</span><span id="__span-4-63"><a id="__codelineno-4-63" name="__codelineno-4-63" href="#__codelineno-4-63"></a><span class="w">        </span><span class="nt">"outcome"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span>
+</span><span id="__span-4-64"><a id="__codelineno-4-64" name="__codelineno-4-64" href="#__codelineno-4-64"></a><span class="w">        </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Your current PTO balance is: {pto_balance}."</span>
+</span><span id="__span-4-65"><a id="__codelineno-4-65" name="__codelineno-4-65" href="#__codelineno-4-65"></a><span class="w">      </span><span class="p">},</span>
+</span><span id="__span-4-66"><a id="__codelineno-4-66" name="__codelineno-4-66" href="#__codelineno-4-66"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-4-67"><a id="__codelineno-4-67" name="__codelineno-4-67" href="#__codelineno-4-67"></a><span class="w">        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"identity_not_verified"</span><span class="p">,</span>
+</span><span id="__span-4-68"><a id="__codelineno-4-68" name="__codelineno-4-68" href="#__codelineno-4-68"></a><span class="w">        </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"terminal"</span><span class="p">,</span>
+</span><span id="__span-4-69"><a id="__codelineno-4-69" name="__codelineno-4-69" href="#__codelineno-4-69"></a><span class="w">        </span><span class="nt">"outcome"</span><span class="p">:</span><span class="w"> </span><span class="s2">"failure"</span><span class="p">,</span>
+</span><span id="__span-4-70"><a id="__codelineno-4-70" name="__codelineno-4-70" href="#__codelineno-4-70"></a><span class="w">        </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The information provided does not match our records. Procedure terminated."</span>
+</span><span id="__span-4-71"><a id="__codelineno-4-71" name="__codelineno-4-71" href="#__codelineno-4-71"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-4-72"><a id="__codelineno-4-72" name="__codelineno-4-72" href="#__codelineno-4-72"></a><span class="w">    </span><span class="p">]</span>
+</span><span id="__span-4-73"><a id="__codelineno-4-73" name="__codelineno-4-73" href="#__codelineno-4-73"></a><span class="w">  </span><span class="p">}</span>
+</span></code></pre></div>
+<p>The first three nodes under the <code>graph</code> section are <code>input</code> nodes, used to collect the user’s information.</p>
+<p>The fourth node is a <code>data_tool</code> node, used to query the database using the parameter <code>employee_id</code>, and to return the output variables <code>db_first_name</code>, <code>db_last_name</code>, and <code>pto_balance</code>.</p>
+<p>These returned variables are then compared with the user-provided information in the <code>verify_identity</code> node.</p>
+<p>The final two <code>terminal</code> nodes represent the two possible outcomes: successful identity verification with PTO balance disclosure, or failed verification with procedure termination.</p>
+<p>The instructions for the AI Agent can be simplified to:
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Use the knowledge base to respond to HR-related questions. However, if a user asks about their PTO balance, use the action [request_the_instructions] to retrieve the workflow instructions, and execute the returned workflow exactly as provided. Ask one question at a time, and wait for an answer before asking the next question.
+</span></code></pre></div>
+<a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/prompt-design/execution_graph_instructions.png" data-title="AI Agent Instructions" data-desc-position="top"><img alt="AI Agent Instructions" src="../assets/prompt-design/execution_graph_instructions.png"></a><p></p>
+<p>Then, we need to create two actions.</p>
+<p>The first action is called <code>request_the_instructions</code> and is used to retrieve the workflow instructions from the database:</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/prompt-design/action_1_instructions.png" data-title="Retrieve Workflow Instructions" data-desc-position="top"><img alt="Retrieve Workflow Instructions" src="../assets/prompt-design/action_1_instructions.png"></a></p>
+<hr>
+<p><strong>Note</strong>:</p>
+<p>If a database is not available, the JSON variable representing the execution graph can be stored as a custom variable in Webex Connect and retrieved through an action by the AI Agent.</p>
+<hr>
+<p>The second action is called <code>get_employee_pto_balance</code> and is used to retrieve the employee PTO information from the database. Its name must match the value of the <code>action</code> field defined in the <code>data_tool</code> node.</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/prompt-design/action_2_db_query.png" data-title="Retrieve Employee PTO information" data-desc-position="top"><img alt="Retrieve Employee PTO information" src="../assets/prompt-design/action_2_db_query.png"></a></p>
+<p>The JSON variable uses <code>first_name</code> and <code>last_name</code> as the values provided by the user, while <code>db_first_name</code> and <code>db_last_name</code> are the corresponding values retrieved from the database, and defined in the <code>output_variables</code> section of the <code>data_tool</code> node . The match between the two pairs is evaluated by the branch node <code>verify_identity</code>, using the condition <code>first_name == db_first_name &amp;&amp; last_name == db_last_name</code>.
+It is important that the first and last names are returned using the same naming convention defined in the JSON execution graph. To achieve this, we can rename the variables in the Webex Connect flow that retrieves those values from the database:</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/prompt-design/webex_connect_ai_agent.png" data-title="Rename Variables in WxC" data-desc-position="top"><img alt="Rename Variables in WxC" src="../assets/prompt-design/webex_connect_ai_agent.png"></a></p>
+<p>The result is shown below. As you can see, the AI Agent uses the Knowledge Base for the first two requests, while starting from the PTO balance inquiry it switches to the execution graph, as expected.</p>
+<p align="center">
+
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="assets/prompt-design/chat_experience.001.jpeg" data-desc-position="top"><img src="assets/prompt-design/chat_experience.001.jpeg" width="350"></a>
+
+</p>
+
+<h4 id="creating-execution-graphs">Creating Execution Graphs</h4>
+<p>There is no single way to create an execution graph. A JSON schema can be designed in many different ways. However, the following node model has proven useful:</p>
+<hr>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/prompt-design/nodes.png" data-title="JSON Nodes" data-desc-position="top"><img alt="JSON Nodes" src="../assets/prompt-design/nodes.png"></a></p>
+<hr>
+<p>The <code>kind</code> key defines the type of operation being performed, for example:</p>
+<ul>
+<li><code>instruction</code>: Instruction for the AI Agent, e.g. greet the user</li>
+<li><code>input</code>: Free-form user input</li>
+<li><code>choice</code>: User selection between multiple options</li>
+<li><code>branch</code>: Route selection based on conditions</li>
+<li><code>routing_tool</code>: Action whose result immediately determines the next route</li>
+<li><code>data_tool</code>: Action that returns variables or data (may be followed by a <code>branch</code> node)</li>
+<li><code>terminal</code>: End of the interaction</li>
+</ul>
+<p>For example, suppose the procedure requires the following steps:</p>
+<ul>
+<li>Ask the user to provide the user ID</li>
+<li>Validate the user through an authentication / authorization database check</li>
+<li>Ask the user what issue they are experiencing</li>
+<li>Use an action to retrieve the user’s email address</li>
+<li>Use an action to send a recap email</li>
+</ul>
+<p>The diagram below shows how those nodes can be logically connected.</p>
+<hr>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/prompt-design/node_diagram.png" data-title="JSON Node Diagram" data-desc-position="top"><img alt="JSON Node Diagram" src="../assets/prompt-design/node_diagram.png"></a></p>
+<hr>
+<p>The resulting JSON variable is as follows:</p>
+<p><code>json
+"nodes": [
+  {
+    "id": "input_user_id",
+    "kind": "input",
+    "prompt": "Please provide your user ID.",
+    "variable": "user_id",
+    "next": "auth_check"
+  },
+  {
+    "id": "auth_check",
+    "kind": "routing_tool",
+    "action": "auth_check",
+    "parameters": [
+      "user_id"
+    ],
+    "results": {
+      "success": "input_issue",
+      "failure": "auth_failed"
+    }
+  },
+  {
+    "id": "input_issue",
+    "kind": "input",
+    "prompt": "What's the issue?",
+    "variable": "user_issue",
+    "next": "get_email"
+  },
+  {
+    "id": "get_email",
+    "kind": "data_tool",
+    "action": "get_user_email",
+    "parameters": [
+      "user_id"
+    ],
+    "output_variables": [
+      "email_address"
+    ],
+    "next": "send_recap"
+  },
+  {
+    "id": "send_recap",
+    "kind": "routing_tool",
+    "action": "send_email",
+    "parameters": [
+      "email_address",
+      "user_issue"
+    ],
+    "results": {
+      "success": "success_close",
+      "failure": "failure_close"
+    }
+  },
+  {
+    "id": "auth_failed",
+    "kind": "terminal",
+    "outcome": "auth_failed",
+    "message": "Authentication failed. Please check your user ID and try again."
+  },
+  {
+    "id": "success_close"
+    "kind": "terminal",
+    "outcome": "email_sent",
+    "message": "A recap email has been sent to your address."
+  },
+  {
+    "id": "failure_close",
+    "kind": "terminal",
+    "outcome": "email_failed",
+    "message": "Failed to send recap email. Please try again later."
+  }</code></p>
+<h4 id="automated-execution-graph-creation">Automated Execution Graph Creation</h4>
+<p>LLMs are capable of generating code from human-language descriptions. In a similar way, when properly instructed, they can also generate execution graphs automatically.</p>
+<p>This can be done through a <strong>Configuration AI Agent</strong>, intended for administrators rather than end users. Its role is to generate the JSON execution graph, upload it to a database, and return the administrative instructions required to deploy the workflow.</p>
+<p>Its value is not only automation, but also normalization: converting human-written procedures into explicit and reusable machine-readable workflows.</p>
+<p>To do this effectively, the Configuration AI Agent must identify the operational inputs to collect, the decision points to evaluate, the actions to invoke, the dependencies between steps, and the outputs that must be preserved throughout the workflow.</p>
+<p>These admin instructions typically include:</p>
+<ul>
+<li>the action name used to retrieve the execution graph</li>
+<li>any additional actions required by the workflow, such as database access</li>
+<li>the parameters expected by each action</li>
+<li>any output variables returned by those actions</li>
+</ul>
+<p>To generate reliable execution graphs, the Configuration AI Agent should be instructed with:</p>
+<ul>
+<li>the JSON schema structure</li>
+<li>the available node types and their purpose</li>
+<li>how nodes should be connected</li>
+<li>the admin instructions that must be returned to the administrator</li>
+</ul>
+<p>It should also specify that nodes reference other nodes by their unique IDs, except for terminal nodes, which end the flow.</p>
+<p>An example is shown below.</p>
+<h2 id="placeholder-content-below-requires-review-and-updates">PLACEHOLDER: Content below requires review and updates</h2>
+<h3 id="when-to-use-this-pattern">When To Use This Pattern</h3>
+<p>This pattern is a good fit when the agent must:</p>
+<ul>
+<li>follow a troubleshooting sequence</li>
+<li>apply policy-driven branching</li>
+<li>validate exact values from a known list</li>
+<li>avoid skipping mandatory checks</li>
+<li>support repeatable service workflows</li>
+<li>provide consistent outcomes across users</li>
+</ul>
+<h3 id="additional-recommendation">Additional Recommendation</h3>
+<p>If the workflow depends on exact values such as site names, issue categories, or approved options, validate them through tool calls or a database lookup instead of relying on the model to infer them from text alone.</p>
+<p>This reduces hallucination risk and improves reliability.</p>
+<h3 id="what-this-means-for-prompt-design">What This Means For Prompt Design</h3>
+<p>Prompt engineering still matters, but prompts should not carry responsibilities that belong to workflow logic.</p>
+<p>A strong prompt should tell the agent:</p>
+<ul>
+<li>what its role is</li>
+<li>when to use a structured flow</li>
+<li>when to call a tool</li>
+<li>when to stop and escalate</li>
+<li>what it must not do</li>
+</ul>
+<p>But the decision logic itself should live outside the prompt whenever reliability matters.</p>
+<h3 id="practical-takeaway">Practical Takeaway</h3>
+<p>If a process must be followed consistently, do not store that process only as prose in a prompt or knowledge base.</p>
+<p>Move the workflow into a structure the system can follow explicitly, such as:</p>
+<ul>
+<li>a decision tree</li>
+<li>a JSON workflow</li>
+<li>a rule-based state graph</li>
+<li>a validated tool-driven sequence</li>
+</ul>
+<p>Use the prompt to guide behavior around that structure, not to replace it.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../governance/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Governance">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Governance
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../agent-template/" class="md-footer__link md-footer__link--next" aria-label="Next: Agent Template">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Agent Template
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 Cisco Systems Inc. All Rights Reserved.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.top", "navigation.footer", "search.suggest", "content.code.copy", "toc.integrate", "content.tooltips", "content.footnote.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": false, "openEffect": "fade", "closeEffect": "fade", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

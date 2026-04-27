@@ -1,0 +1,1609 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A practical guide for building secure, governed, and production-ready AI agents in WxCC">
+      
+      
+        <meta name="author" content="Chandramouli Vaithiyanathan">
+      
+      
+        <link rel="canonical" href="https://webexsamples.github.io/webex-ai-agents/security/">
+      
+      
+        <link rel="prev" href="../architecture/">
+      
+      
+        <link rel="next" href="../webex-ai-agent-security-faq/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/cisco-logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Security - AI Agent Cookbook for WxCC</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#security" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AI Agent Cookbook for WxCC" class="md-header__button md-logo" aria-label="AI Agent Cookbook for WxCC" data-md-component="logo">
+      
+  <img src="../assets/cisco-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI Agent Cookbook for WxCC
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Security
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../webex-ai-agent-security-faq/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../governance/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Governance
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../prompt-design/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Prompt Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../agent-template/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Agent Template
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../knowledge-and-rag/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Knowledge and RAG
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../testing-and-evaluation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Testing and Evaluation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../deployment-and-operations/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Deployment and Operations
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../human-handoff/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Human Handoff
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../common-pitfalls/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Common Pitfalls
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../glossary/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Glossary
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AI Agent Cookbook for WxCC" class="md-nav__button md-logo" aria-label="AI Agent Cookbook for WxCC" data-md-component="logo">
+      
+  <img src="../assets/cisco-logo.png" alt="logo">
+
+    </a>
+    AI Agent Cookbook for WxCC
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#why-security-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Security Matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-security-foundations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Security Foundations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Current Security Foundations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#responsible-ai-governance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Responsible AI Governance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tenant-isolation-and-ephemeral-llm-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tenant Isolation and Ephemeral LLM Calls
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-guardrails-available-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Guardrails Available Today
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-visibility-and-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Visibility and Analytics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-time-security-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design-Time Security Testing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-problems-still-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Problems Still Exist
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Problems Still Exist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-turn-guardrails-are-limited" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single-Turn Guardrails Are Limited
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-is-still-maturing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monitoring Is Still Maturing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compliance-controls-need-stronger-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compliance Controls Need Stronger Enforcement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-tuning-is-still-limited" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Tuning Is Still Limited
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-planned-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Is Planned Next
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Is Planned Next">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security-guardrail-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Guardrail Filter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-turn-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Turn Guardrails
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#guardrail-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Guardrail Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eu-ai-act-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EU AI Act Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-defense-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI Defense Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additional-roadmap-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Additional Roadmap Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Best Practices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-minimize-exposure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Minimize Exposure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-separate-conversation-from-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Separate Conversation From Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-validate-exact-values-outside-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Validate Exact Values Outside the Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-assume-adversarial-inputs-will-happen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Assume Adversarial Inputs Will Happen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-test-before-deploying" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Test Before Deploying
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-monitor-after-deploying" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Monitor After Deploying
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-keep-human-escalation-available" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Keep Human Escalation Available
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-operating-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended Operating Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-takeaway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical Takeaway
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webex-ai-agent-security-faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../governance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Governance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompt-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent Template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge-and-rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knowledge and RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-and-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing and Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment-and-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment and Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../human-handoff/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Human Handoff
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-pitfalls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Common Pitfalls
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="security">Security</h1>
+<p>Security for AI agents in Webex Contact Center is not just about blocking unsafe prompts. It is about protecting the full interaction lifecycle: inputs, prompts, knowledge, actions, outputs, logs, and operational controls.</p>
+<p>A secure AI agent should not only respond safely. It should also be designed, tested, monitored, and governed in a way that reduces risk before, during, and after deployment.</p>
+<h2 id="why-security-matters">Why Security Matters</h2>
+<p>AI agents introduce a broader attack surface than traditional scripted bots or fixed workflows. In a contact center environment, that risk can include:</p>
+<ul>
+<li>prompt injection</li>
+<li>jailbreak attempts</li>
+<li>harmful or toxic outputs</li>
+<li>data leakage</li>
+<li>unsafe tool usage</li>
+<li>weak tenant isolation</li>
+<li>poor observability</li>
+<li>compliance failures</li>
+<li>multi-turn manipulation across a conversation</li>
+</ul>
+<p>This means AI agent security must be treated as an end-to-end discipline rather than a single moderation step.</p>
+<h2 id="current-security-foundations">Current Security Foundations</h2>
+<p>The current Webex AI Agent security posture is built around several core layers.</p>
+<h3 id="responsible-ai-governance">Responsible AI Governance</h3>
+<p>AI-powered features are reviewed through Cisco's Responsible AI framework and AI Impact Assessment process. This is intended to ensure that trust, safety, and risk evaluation are part of the product lifecycle.</p>
+<h3 id="tenant-isolation-and-ephemeral-llm-calls">Tenant Isolation and Ephemeral LLM Calls</h3>
+<p>The current architecture emphasizes tenant isolation and short-lived LLM interactions.</p>
+<p>Key design ideas include:</p>
+<ul>
+<li>customer data is isolated in Cisco cloud environments</li>
+<li>LLM requests are scoped using tenant identifiers</li>
+<li>LLM calls are ephemeral rather than long-lived sessions</li>
+<li>conversation artifacts are retained on the Cisco side, not persisted at the LLM provider layer</li>
+</ul>
+<p>This reduces the chance of cross-tenant bleedover and limits data persistence outside Cisco-managed systems.</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/ai-agent-security/current-state-slides/slide-01.png" data-title="Current-state overview" data-desc-position="top"><img alt="Current-state overview" src="../assets/ai-agent-security/current-state-slides/slide-01.png"></a></p>
+<h3 id="runtime-guardrails-available-today">Runtime Guardrails Available Today</h3>
+<p>Current runtime protections include standard guardrails that screen inputs and outputs for common classes of unsafe behavior.</p>
+<p>Examples shown in the current security material include:</p>
+<ul>
+<li><code>Toxicity - Default</code></li>
+<li><code>Toxicity - Expanded</code></li>
+<li><code>Harm</code></li>
+<li><code>Jailbreak</code></li>
+</ul>
+<p>These are intended to catch clearly unsafe content and attempts to manipulate or override the model.</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/ai-agent-security/current-state-slides/slide-11.png" data-title="Current runtime rails" data-desc-position="top"><img alt="Current runtime rails" src="../assets/ai-agent-security/current-state-slides/slide-11.png"></a></p>
+<h3 id="runtime-visibility-and-analytics">Runtime Visibility and Analytics</h3>
+<p>A major part of security is visibility. The current product direction includes richer analytics so admins can review:</p>
+<ul>
+<li>flagged interactions</li>
+<li>agent health</li>
+<li>top security issues</li>
+<li>compliance-related indicators</li>
+<li>session-level details</li>
+</ul>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/ai-agent-security/current-state-slides/slide-18.png" data-title="Fleet analytics view" data-desc-position="top"><img alt="Fleet analytics view" src="../assets/ai-agent-security/current-state-slides/slide-18.png"></a></p>
+<h3 id="design-time-security-testing">Design-Time Security Testing</h3>
+<p>One of the strongest security directions is shifting validation earlier in the lifecycle.</p>
+<p>Instead of discovering problems only after launch, design-time testing is intended to help catch issues such as:</p>
+<ul>
+<li>prompt injection</li>
+<li>prompt manipulation</li>
+<li>harmful content generation</li>
+<li>privacy and data security issues</li>
+<li>integration and action risks</li>
+</ul>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/ai-agent-security/current-state-slides/slide-24.png" data-title="Design-time testing" data-desc-position="top"><img alt="Design-time testing" src="../assets/ai-agent-security/current-state-slides/slide-24.png"></a></p>
+<h2 id="what-problems-still-exist">What Problems Still Exist</h2>
+<p>The roadmap discussion makes it clear that some important gaps still exist today.</p>
+<h3 id="single-turn-guardrails-are-limited">Single-Turn Guardrails Are Limited</h3>
+<p>A major weakness of single-turn protection is that many attacks unfold gradually across a conversation. Each individual turn may appear harmless, while the overall conversation drifts into unsafe territory.</p>
+<h3 id="monitoring-is-still-maturing">Monitoring Is Still Maturing</h3>
+<p>Customers want easier ways to identify, filter, and investigate sessions that triggered security rails. Current views help, but broader fleet-level observability is still evolving.</p>
+<h3 id="compliance-controls-need-stronger-enforcement">Compliance Controls Need Stronger Enforcement</h3>
+<p>Customers need stronger support for mandatory AI disclosure and non-interruptible compliance messaging, especially for regulated and voice-based use cases.</p>
+<h3 id="security-tuning-is-still-limited">Security Tuning Is Still Limited</h3>
+<p>Teams want more control over:</p>
+<ul>
+<li>which rails are active</li>
+<li>how sensitive each rail should be</li>
+<li>whether a rail should monitor or block</li>
+<li>whether it should apply to input, output, or both</li>
+</ul>
+<h2 id="what-is-planned-next">What Is Planned Next</h2>
+<p>The upcoming roadmap is focused on closing those gaps.</p>
+<h3 id="security-guardrail-filter">Security Guardrail Filter</h3>
+<p>A planned filter will help teams isolate sessions where a security or safety rail was triggered instead of manually reviewing the full session list.</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/ai-agent-security/roadmap-slides/slide-07.png" data-title="Guardrail filter" data-desc-position="top"><img alt="Guardrail filter" src="../assets/ai-agent-security/roadmap-slides/slide-07.png"></a></p>
+<h3 id="multi-turn-guardrails">Multi-Turn Guardrails</h3>
+<p>This is one of the most important planned improvements.</p>
+<p>The core problem being addressed is simple: attacks often happen over multiple turns, not one prompt. Multi-turn rails are meant to detect gradual steering, role confusion, and attempts to move an agent toward unsafe behavior over time.</p>
+<p>Expected value includes:</p>
+<ul>
+<li>preserving conversation context</li>
+<li>understanding who said what</li>
+<li>detecting gradual unsafe steering</li>
+<li>providing a stronger foundation for future advanced rails</li>
+</ul>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/ai-agent-security/roadmap-slides/slide-08.png" data-title="Multi-turn guardrail" data-desc-position="top"><img alt="Multi-turn guardrail" src="../assets/ai-agent-security/roadmap-slides/slide-08.png"></a></p>
+<h3 id="guardrail-settings">Guardrail Settings</h3>
+<p>A planned security settings experience is intended to give teams more direct control over posture at the agent level.</p>
+<p>Expected controls include:</p>
+<ul>
+<li>enabling or disabling a specific rail</li>
+<li>applying a rail to input, output, or both</li>
+<li>selecting confidence or severity levels</li>
+<li>choosing whether to <code>Monitor</code> or <code>Block</code></li>
+</ul>
+<p>This helps reduce false positives while still preserving protection.</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/ai-agent-security/roadmap-slides/slide-09.png" data-title="Guardrail settings" data-desc-position="top"><img alt="Guardrail settings" src="../assets/ai-agent-security/roadmap-slides/slide-09.png"></a></p>
+<h3 id="eu-ai-act-support">EU AI Act Support</h3>
+<p>The roadmap also includes built-in support for AI disclosure and transparency requirements.</p>
+<p>This is intended to help teams implement compliant disclosure behavior without custom logic for every deployment.</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/ai-agent-security/roadmap-slides/slide-10.png" data-title="EU AI Act support" data-desc-position="top"><img alt="EU AI Act support" src="../assets/ai-agent-security/roadmap-slides/slide-10.png"></a></p>
+<h3 id="ai-defense-integration">AI Defense Integration</h3>
+<p>The long-term direction is not to rely only on baseline built-in guardrails. The product strategy points toward pairing standard protections with Cisco AI Defense as an optional advanced layer.</p>
+<p>Current framing suggests:</p>
+<ul>
+<li>Webex AI or Collab AI remains the default</li>
+<li>AI Defense is offered as an advanced security option</li>
+<li>packaging and pricing are still evolving</li>
+<li>deeper platform integration is part of the longer-term plan</li>
+</ul>
+<h3 id="additional-roadmap-items">Additional Roadmap Items</h3>
+<p>Other roadmap themes include:</p>
+<ul>
+<li>custom guardrails</li>
+<li>off-topic guardrails</li>
+<li>DoS-related protections</li>
+<li>maximum call-duration controls</li>
+<li>MCP and A2A scanning</li>
+</ul>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/ai-agent-security/roadmap-slides/slide-06.png" data-title="Roadmap overview" data-desc-position="top"><img alt="Roadmap overview" src="../assets/ai-agent-security/roadmap-slides/slide-06.png"></a></p>
+<h2 id="security-best-practices">Security Best Practices</h2>
+<p>Even with strong platform controls, customers still own important parts of the final security posture.</p>
+<h3 id="1-minimize-exposure">1. Minimize Exposure</h3>
+<p>Only expose the data, tools, and actions the agent truly needs.</p>
+<ul>
+<li>reduce unnecessary context</li>
+<li>avoid broad tool permissions</li>
+<li>keep knowledge sources scoped and curated</li>
+</ul>
+<h3 id="2-separate-conversation-from-control">2. Separate Conversation From Control</h3>
+<p>Prompts should define behavior, but critical workflow control should not rely on natural-language instructions alone.</p>
+<p>Use structured logic, validated tools, or workflow controls when reliability matters.</p>
+<h3 id="3-validate-exact-values-outside-the-model">3. Validate Exact Values Outside the Model</h3>
+<p>For exact matches such as site names, policy values, IDs, or approved actions, use a trusted system of record or tool call instead of asking the model to infer from text.</p>
+<h3 id="4-assume-adversarial-inputs-will-happen">4. Assume Adversarial Inputs Will Happen</h3>
+<p>Design for:</p>
+<ul>
+<li>jailbreak attempts</li>
+<li>role confusion</li>
+<li>indirect prompt injection through retrieved content</li>
+<li>harmful or manipulative user behavior</li>
+<li>gradual multi-turn steering</li>
+</ul>
+<h3 id="5-test-before-deploying">5. Test Before Deploying</h3>
+<p>Do not wait for live traffic to reveal weaknesses.</p>
+<p>Before deployment, test for:</p>
+<ul>
+<li>prompt injection</li>
+<li>unsafe tool invocation</li>
+<li>policy violations</li>
+<li>hallucinated outputs</li>
+<li>escalation failures</li>
+<li>disclosure or compliance gaps</li>
+</ul>
+<h3 id="6-monitor-after-deploying">6. Monitor After Deploying</h3>
+<p>Security is not complete at launch.</p>
+<p>Review:</p>
+<ul>
+<li>flagged sessions</li>
+<li>recurring attack patterns</li>
+<li>false positives</li>
+<li>model drift or output quality issues</li>
+<li>escalation and containment behavior</li>
+</ul>
+<h3 id="7-keep-human-escalation-available">7. Keep Human Escalation Available</h3>
+<p>A secure system should know when not to continue autonomously.</p>
+<p>Use escalation when:</p>
+<ul>
+<li>the request is ambiguous</li>
+<li>the user is frustrated</li>
+<li>policy restrictions apply</li>
+<li>the model is uncertain</li>
+<li>the action is high risk</li>
+</ul>
+<h2 id="recommended-operating-model">Recommended Operating Model</h2>
+<p>A practical way to think about Webex Contact Center AI agent security is:</p>
+<ul>
+<li>use built-in platform guardrails as a baseline</li>
+<li>keep prompts, tools, and knowledge narrow</li>
+<li>test aggressively before deployment</li>
+<li>monitor continuously after deployment</li>
+<li>plan for stronger controls as roadmap features mature</li>
+</ul>
+<h2 id="practical-takeaway">Practical Takeaway</h2>
+<p>The most important lesson is this:</p>
+<p>A secure AI agent is not created by one guardrail, one prompt, or one moderation check. It is created by combining safe architecture, constrained actions, design-time testing, runtime monitoring, and clear governance.</p>
+<p>For Webex Contact Center AI agents, the current platform provides a strong starting point. The next wave of product improvements is focused on making that security posture more observable, more tunable, and better suited for real production risk.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../architecture/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Architecture">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Architecture
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../webex-ai-agent-security-faq/" class="md-footer__link md-footer__link--next" aria-label="Next: Security FAQ">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Security FAQ
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 Cisco Systems Inc. All Rights Reserved.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.top", "navigation.footer", "search.suggest", "content.code.copy", "toc.integrate", "content.tooltips", "content.footnote.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": false, "openEffect": "fade", "closeEffect": "fade", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
