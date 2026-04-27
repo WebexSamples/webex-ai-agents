@@ -503,9 +503,84 @@ For example, suppose the procedure requires the following steps:
 - Use an action to retrieve the user’s email address
 - Use an action to send a recap email
 
-The diagram below shows how those nodes can be connected.
+The diagram below shows how those nodes can be logically connected.
 
 ![JSON Node Diagram](assets/prompt-design/node_diagram.png)
+
+The resulting JSON variable is as follows:
+
+```json
+nodes: [
+  {
+    "id": "input_user_id",
+    "kind": "input",
+    "prompt": "Please provide your user ID.",
+    "variable": "user_id",
+    "next": "auth_check"
+  },
+  {
+    "id": "auth_check",
+    "kind": "routing_tool",
+    "action": "auth_check",
+    "parameters": [
+      "user_id"
+    ],
+    "results": {
+      "success": "input_issue",
+      "failure": "terminal_auth_fail"
+    }
+  },
+  {
+    "id": "input_issue",
+    "kind": "input",
+    "prompt": "What issue are you experiencing?",
+    "variable": "user_issue",
+    "next": "get_email"
+  },
+  {
+    "id": "get_email",
+    "kind": "data_tool",
+    "action": "get_user_email",
+    "parameters": [
+      "user_id"
+    ],
+    "output_variables": [
+      "user_email"
+    ],
+    "next": "send_recap"
+  },
+  {
+    "id": "send_recap",
+    "kind": "routing_tool",
+    "action": "send_recap_email",
+    "parameters": [
+      "user_email",
+      "user_issue"
+    ],
+    "results": {
+      "success": "terminal_success",
+      "failure": "terminal_email_fail"
+    }
+  },
+  {
+    "id": "terminal_auth_fail",
+    "kind": "terminal",
+    "outcome": "auth_failed",
+    "message": "Authentication failed. Please check your user ID and try again."
+  },
+  {
+    "id": "terminal_success",
+    "kind": "terminal",
+    "outcome": "recap_sent",
+    "message": "A recap email has been sent to your address."
+  },
+  {
+    "id": "terminal_email_fail",
+    "kind": "terminal",
+    "outcome": "email_failed",
+    "message": "Failed to send recap email. Please try again later."
+  }
+  ```
 
 ## PLACEHOLDER: Content below requires review and updates
 
