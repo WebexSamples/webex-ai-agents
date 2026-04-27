@@ -1,5 +1,21 @@
 # Table of Contents
-[Prompt Engineering for AI Agents](#prompt-engineering-for-ai-agents)
+
+- [Prompt Engineering for AI Agents](#prompt-engineering-for-ai-agents)
+  - [Good Practices for Natural-Language Prompts](#good-practices-for-natural-language-prompts)
+    - [Example: Precise Instructions Change Behavior](#example-precise-instructions-change-behavior)
+    - [Example: Prefer Causal Logic Over Pure Sequence](#example-prefer-causal-logic-over-pure-sequence)
+  - [Important Limitation](#important-limitation)
+
+- [When Prompts Are Not Enough](#when-prompts-are-not-enough)
+  - [Problem Statement](#problem-statement)
+  - [Why This Happens](#why-this-happens)
+  - [Recommended Action](#recommended-action)
+  - [Best Practice](#best-practice)
+    - [1. Hybrid Control Model](#1-hybrid-control-model)
+    - [2. Fully Externalized Control Model](#2-fully-externalized-control-model)
+      - [Decision Tree Example](#decision-tree-example)
+      - [Execution Graph Example](#execution-graph-example)
+      - [Creating Execution Graphs](#creating-execution-graphs)
 
 # Prompt Engineering for AI Agents
 
