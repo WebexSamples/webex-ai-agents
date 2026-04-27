@@ -10,7 +10,7 @@
   - [Problem Statement](#problem-statement)
   - [Why This Happens](#why-this-happens)
   - [Recommended Action](#recommended-action)
-  - [Best Practice](#best-practice)
+  - [Best Practices](#best-practices)
     - [1. Hybrid Control Model](#1-hybrid-control-model)
     - [2. Fully Externalized Control Model](#2-fully-externalized-control-model)
       - [Decision Tree Example](#decision-tree-example)
@@ -184,7 +184,7 @@ This separation typically improves:
 - maintainability
 - operational control
 
-## Best Practice
+## Best Practices
 
 A good rule of thumb is:
 
