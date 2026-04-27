@@ -462,6 +462,11 @@ The first action is called `request_the_instructions` and is used to retrieve th
 
 ![Retrieve Workflow Instructions](assets/prompt-design/action_1_instructions.png)
 
+---
+**Note**
+If a database is not available, the JSON variable representing the execution graph can be stored as a custom variable in Webex Connect and retrieved through an action when needed.
+
+---
 The second action is called `get_employee_pto_balance` and is used to retrieve the employee PTO information from the database. Its name must match the value of the `action` field defined in the `data_tool` node.
 
 ![Retrieve Employee PTO information](assets/prompt-design/action_2_db_query.png)
