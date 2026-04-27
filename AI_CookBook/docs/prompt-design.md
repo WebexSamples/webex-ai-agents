@@ -527,13 +527,13 @@ nodes: [
     ],
     "results": {
       "success": "input_issue",
-      "failure": "terminal_auth_fail"
+      "failure": "auth_failed"
     }
   },
   {
     "id": "input_issue",
     "kind": "input",
-    "prompt": "What issue are you experiencing?",
+    "prompt": "What's the issue?",
     "variable": "user_issue",
     "next": "get_email"
   },
@@ -545,37 +545,37 @@ nodes: [
       "user_id"
     ],
     "output_variables": [
-      "user_email"
+      "email_address"
     ],
     "next": "send_recap"
   },
   {
     "id": "send_recap",
     "kind": "routing_tool",
-    "action": "send_recap_email",
+    "action": "send_email",
     "parameters": [
-      "user_email",
+      "email_address",
       "user_issue"
     ],
     "results": {
-      "success": "terminal_success",
-      "failure": "terminal_email_fail"
+      "success": "success_close",
+      "failure": "failure_close"
     }
   },
   {
-    "id": "terminal_auth_fail",
+    "id": "auth_failed",
     "kind": "terminal",
     "outcome": "auth_failed",
     "message": "Authentication failed. Please check your user ID and try again."
   },
   {
-    "id": "terminal_success",
+    "id": "success_close
     "kind": "terminal",
-    "outcome": "recap_sent",
+    "outcome": "email_sent",
     "message": "A recap email has been sent to your address."
   },
   {
-    "id": "terminal_email_fail",
+    "id": "failure_close",
     "kind": "terminal",
     "outcome": "email_failed",
     "message": "Failed to send recap email. Please try again later."
