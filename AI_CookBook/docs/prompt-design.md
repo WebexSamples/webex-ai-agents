@@ -16,6 +16,7 @@
       - [Decision Tree Example](#decision-tree-example)
       - [Execution Graph Example](#execution-graph-example)
       - [Creating Execution Graphs](#creating-execution-graphs)
+      - [Automated Execution Graph Creation](#automated-execution-graph-creation)
 
 # Prompt Engineering for AI Agents
 
@@ -614,6 +615,33 @@ The resulting JSON variable is as follows:
     "message": "Failed to send recap email. Please try again later."
   }
   ```
+#### Automated Execution Graph Creation
+
+LLMs are capable of generating code from human-language descriptions. In a similar way, when properly instructed, they can also generate execution graphs automatically.
+
+This can be done through a **Configuration AI Agent**, intended for administrators rather than end users. Its role is to generate the JSON execution graph, upload it to a database, and return the administrative instructions required to deploy the workflow.
+
+Its value is not only automation, but also normalization: converting human-written procedures into explicit and reusable machine-readable workflows.
+
+To do this effectively, the Configuration AI Agent must identify the operational inputs to collect, the decision points to evaluate, the actions to invoke, the dependencies between steps, and the outputs that must be preserved throughout the workflow.
+
+These admin instructions typically include:
+
+- the action name used to retrieve the execution graph
+- any additional actions required by the workflow, such as database access
+- the parameters expected by each action
+- any output variables returned by those actions
+
+To generate reliable execution graphs, the Configuration AI Agent should be instructed with:
+
+- the JSON schema structure
+- the available node types and their purpose
+- how nodes should be connected
+- the admin instructions that must be returned to the administrator
+
+It should also specify that nodes reference other nodes by their unique IDs, except for terminal nodes, which end the flow.
+
+An example is shown below.
 
 ## PLACEHOLDER: Content below requires review and updates
 
