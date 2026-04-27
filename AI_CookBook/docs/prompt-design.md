@@ -311,16 +311,6 @@ Each JSON object represents a node in the decision-tree, identified by a unique 
 
 The `next` key points to the following node in the workflow.
 
-The `kind` key defines the type of operation being performed, for example:
-
-- instruction
-- input
-- choice
-- branch
-- routing_tool
-- data_tool
-- terminal
-
 In the example above:
 
 - the `input` node collects user input
@@ -335,13 +325,13 @@ Because the model understands concepts such as `input`, `branch`, or `instructio
 
 ---
 
-Additional node types may also be used:
+Additional node types may also be used. These JSON nodes will be described in another chapter.
 
 - `choice`: presents multiple selectable options to the user
 - `routing_tool`: executes an action whose result immediately determines the next route
 - `data_tool`: executes an action that returns variables or data, and may be followed by a `branch` node that evaluates the returned results.
 
-This JSON variable can be stored externally, for example in a database or in Webex Connect, and retrieved through an action call.
+This JSON variable representing the execution graph can be stored externally, for example in a database or in Webex Connect, and retrieved through an action.
 
 For instance, if the variable is stored in Webex Connect, an action such as [request_instructions] can be created to retrieve it.
 
@@ -489,8 +479,29 @@ The result is shown below. As you can see, the AI Agent uses the Knowledge Base 
 
 </p>
 
+#### Creating Execution Graphs
+There is not a single way to create execution graph. The JSON schema can be created in many different ways. However, a way that has been useful is the one that uses the following JSON nodes:
+
 ![JSON Nodes](assets/prompt-design/nodes.png)
 
+
+
+The `kind` key defines the type of operation being performed, for example:
+
+- instruction
+- input
+- choice
+- branch
+- routing_tool
+- data_tool
+- terminal
+
+If the instructions require that you ask the user to provide some details, and then:
+- you use the provided information to check an external system and validate the user
+- you ask what is the user issue between the cjhoices included on a list
+- you populate a db with the issue details,
+
+you might need an input node followed by a routing_tool node, then a instruction node, and finally a . If your instruction
 
 ## PLACEHOLDER: Content below requires review and updates
 
