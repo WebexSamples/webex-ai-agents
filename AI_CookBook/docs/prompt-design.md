@@ -575,7 +575,7 @@ The `kind` key defines the type of operation being performed, for example:
 For example, suppose the procedure requires the following steps:
 
 - Ask the user to provide the user ID
-- Validate the user through an authentication / authorization database check
+- Validate the user through an authentication database check
 - Ask the user what issue they are experiencing
 - Use an action to retrieve the user’s email address
 - Use an action to send a recap email
