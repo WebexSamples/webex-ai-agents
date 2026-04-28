@@ -2,10 +2,10 @@
 
 - [Prompt Engineering for AI Agents](#prompt-engineering-for-ai-agents)
   - [Good Practices for Natural-Language Prompts](#good-practices-for-natural-language-prompts)
-    - [Example: Precise Instructions Change Behavior](#example-precise-instructions-change-behavior)
-    - [Example: Prefer Causal Logic Over Pure Sequence](#example-prefer-causal-logic-over-pure-sequence)
+    - [Precise Instructions Change Behavior](#precise-instructions-change-behavior)
+    - [Prefer Causal Logic Over Pure Sequence](#prefer-causal-logic-over-pure-sequence)
+	- [Use Natural-Language Instructions, Not Code-Like Instructions](#use-natural-language-instructions-not-code-like-instructions)
   - [Important Limitation](#important-limitation)
-
 - [When Prompts Are Not Enough](#when-prompts-are-not-enough)
   - [Problem Statement](#problem-statement)
   - [Why This Happens](#why-this-happens)
@@ -50,8 +50,9 @@ Effective prompts usually include:
   Describe the desired format or level of detail.
 
 ---
-### Example: Precise Instructions Change Behavior
-#### Weak Prompt:
+### Precise Instructions Change Behavior
+Do not assume that an AI Agent behaves like a human agent. It may interpret instructions differently and produce unexpected outcomes.
+#### Weak Prompt Example:
 
 `Ask the user for first name. Then ask for last name, and finally the Employee ID.`
 
@@ -64,7 +65,7 @@ In this case, the AI Agent might ask all together with a single question, becaus
 
 ---
 
-### Example: Prefer Causal Logic Over Pure Sequence
+### Prefer Causal Logic Over Pure Sequence
 
 Prompts should express logical dependencies, not just sequence. “First do A, then do B” may be interpreted as guidance rather than a required condition. State why each step is needed and what must happen before the next one.
 
