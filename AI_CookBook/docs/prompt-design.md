@@ -584,7 +584,7 @@ The diagram below shows how those nodes can be logically connected.
 
 ---
 
-![JSON Node Diagram](assets/prompt-design/node_diagram.png)
+![JSON Node Diagram](assets/prompt-design/node_diagram.png?v=2)
 
 ---
 
