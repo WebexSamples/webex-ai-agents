@@ -19,7 +19,7 @@
       - [Execution Graph And Knowledge Base Combined Example](#execution-graph-and-knowledge-base-combined-example)
       - [Creating Execution Graphs](#creating-execution-graphs)
       - [Automated Execution Graph Creation](#automated-execution-graph-creation)
-  - [Key Takeaways](#key-takeaways)
+- [Key Takeaways](#key-takeaways)
 
 
 # Prompt Engineering for AI Agents
