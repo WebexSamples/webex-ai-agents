@@ -636,14 +636,6 @@ This can be done through a **Configuration AI Agent**, intended for administrato
 Its value is not only automation, but also normalization: converting human-written procedures into explicit and reusable machine-readable workflows.
 
 To do this effectively, the Configuration AI Agent must identify the operational inputs to collect, the decision points to evaluate, the actions to invoke, the dependencies between steps, and the outputs that must be preserved throughout the workflow.
-
-These admin instructions typically include:
-
-- the action name used to retrieve the execution graph
-- any additional actions required by the workflow, such as database access
-- the parameters expected by each action
-- any output variables returned by those actions
-
 To generate reliable execution graphs, the Configuration AI Agent should be instructed with:
 
 - the JSON schema structure
@@ -652,6 +644,13 @@ To generate reliable execution graphs, the Configuration AI Agent should be inst
 - the admin instructions that must be returned to the administrator
 
 It should also specify that nodes reference other nodes by their unique IDs, except for terminal nodes, which end the flow.
+
+These admin instructions typically include:
+
+- the action name used to retrieve the execution graph
+- any additional actions required by the workflow, such as database access
+- the parameters expected by each action
+- any output variables returned by those actions
 
 An example is shown below.
 
