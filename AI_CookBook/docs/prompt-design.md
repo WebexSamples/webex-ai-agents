@@ -68,17 +68,46 @@ In this case, the AI Agent might ask all together with a single question, becaus
 
 Prompts should express logical dependencies, not just sequence. “First do A, then do B” may be interpreted as guidance rather than a required condition. State why each step is needed and what must happen before the next one.
 
-#### Weak example:
+#### Weak Example:
 
 `Collect the Employee ID, check the HR system, and inform the user of the PTO balance.`
 
 In this example, the prompt describes a sequence of tasks but does not explicitly state the required dependencies between them. This flow might work well in most cases but fail in some, as the AI Agent may attempt to check the HR system before obtaining the Employee ID, or invent or assume the response without using the actual system result.
 
-#### Stronger example:
+#### Stronger Example:
 
 `Ask for the Employee ID, then use it to query the HR system to retrieve the PTO balance and provide the result to the user.`
 
 In this example, causality is strengthened by explicitly stating that the Employee ID is used to retrieve the PTO balance.
+
+### Use Natural-Language Instructions, Not Code-Like Instructions
+
+You might think that an AI Agent, being fundamentally software, is more comfortable with instructions written in a code-like language. On the contrary, AI Agents process instructions as a whole, rather than executing them step by step, and may struggle with tasks that assume strict procedural logic.
+
+#### Weak Prompt Example:
+
+```
+Step 1: validate the input using the document "sites.txt” in the knowledge base  
+Step 2: if valid, continue to step 3. If it is not valid, go to step 5  
+Step 3: Ask what issue the user is experiencing  
+...
+```
+Here, the prompt assumes a program-like logic, including `if-then-else` and `goto` steps. But AI Agents do not maintain procedural state and do not execute control flow.
+
+#### Stronger Example:
+
+```
+## SITE VALIDATION  
+Before answering, verify that the site is valid using the document “sites.txt”  
+If the site is not valid, do not proceed and ask the user for clarification  
+If the user cannot provide a valid site after multiple attempts, politely end the conversation  
+
+## ISSUE RETRIEVAL  
+Once the site is validated, ask the user to describe the issue they’re experiencing  
+```
+
+This formulation avoids relying on explicit state tracking or procedural control flow. It aligns with how LLMs actually reason: through semantic constraints, not procedural execution. The use of sections such as “Site Validation” and “Issue Retrieval” shows that the logic is organized semantically rather than as explicit control flow, relying on causal relationships instead of if-then-else structures.
+In the next section, we will examine why LLMs exhibit these limitations and how to address them in practice.
 
 ## Important Limitation
 
