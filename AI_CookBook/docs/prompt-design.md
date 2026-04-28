@@ -662,6 +662,13 @@ The resulting JSON variable is as follows:
     "message": "Failed to send recap email. Please try again later."
   }
   ```
+
+This workflow requires the creation of three actions: `auth_check`, `get_user_email`, and `send_email`. 
+
+The first is used to authenticate the user, the second to retrieve the user’s email address, and the third to send the email.
+
+In addition, a fourth action is required to retrieve the JSON execution graph, which is stored in an external database or in Webex Connect. Unlike the other actions, its name can be defined independently, as it is not directly referenced within the execution graph.
+
 #### Automated Execution Graph Creation
 
 LLMs are capable of generating code from human-language descriptions. In a similar way, when properly instructed, they can also generate execution graphs automatically.
