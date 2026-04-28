@@ -364,6 +364,7 @@ Instead of writing these instructions only in natural language, you can represen
 Each JSON object represents a node in the decision tree, identified by a unique node ID.
 
 The `kind` key identifies the type of node used in the flow.
+
 The `next` key points to the next node in the workflow.  
 
 
