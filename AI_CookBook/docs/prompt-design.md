@@ -360,16 +360,17 @@ Instead of writing these instructions only in natural language, you can represen
   ]
 }
 ```
-Each JSON object represents a node in the decision-tree, identified by a unique node ID.
+Each JSON object represents a node in the decision tree, identified by a unique node ID.
 
-The `next` key points to the following node in the workflow.
+The `next` key points to the next node in the workflow.  
+The `kind` key identifies the type of node used in the flow.
 
 In the example above:
 
-- the `input` node collects user input
-- the `branch` node performs decision-tree selection based on the access type
-- the `instruction` nodes define what the AI Agent should say or do
-- the `terminal` node ends the interaction
+- the `input` node collects user input  
+- the `branch` node performs decision-tree selection based on the access type  
+- the `instruction` nodes define what the AI Agent should say or do  
+- the `terminal` node ends the interaction  
 
 ---
 **Important Clarification**:
