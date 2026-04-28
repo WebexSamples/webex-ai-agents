@@ -107,7 +107,7 @@ If the user cannot provide a valid site after multiple attempts, politely end th
 Once the site is validated, ask the user to describe the issue they’re experiencing.  
 ```
 
-This formulation avoids relying on explicit state tracking or procedural control flow. It aligns with how LLMs actually reason: through semantic constraints, not procedural execution. The use of sections such as “Site Validation” and “Issue Retrieval” shows that the logic is organized semantically rather than as explicit control flow, relying on causal relationships instead of if-then-else structures.
+This formulation avoids relying on explicit state tracking or procedural control flow. It aligns with how LLMs actually reason: through semantic constraints, not procedural execution. The use of sections such as “Site Validation” and “Issue Retrieval” shows that the logic is organized semantically rather than as explicit control flow, relying on causal relationships instead of *if-then-else* structures.
 In the next section, we will examine why LLMs exhibit these limitations and how to address them in practice.
 
 ## Important Limitation
