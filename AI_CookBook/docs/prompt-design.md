@@ -652,7 +652,7 @@ The resulting JSON variable is as follows:
     "message": "Authentication failed. Please check your user ID and try again."
   },
   {
-    "id": "success_close"
+    "id": "success_close",
     "kind": "terminal",
     "outcome": "email_sent",
     "message": "A recap email has been sent to your address."
@@ -663,6 +663,7 @@ The resulting JSON variable is as follows:
     "outcome": "email_failed",
     "message": "Failed to send recap email. Please try again later."
   }
+ ]
 }
   ```
 
