@@ -1,0 +1,1300 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A practical guide for building secure, governed, and production-ready AI agents in WxCC">
+      
+      
+        <meta name="author" content="Chandramouli Vaithiyanathan">
+      
+      
+        <link rel="canonical" href="https://webexsamples.github.io/webex-ai-agents/getting-started/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../architecture/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/cisco-logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Getting Started - AI Agent Cookbook for WxCC</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#getting-started-webex-ai-agent-implementation-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AI Agent Cookbook for WxCC" class="md-header__button md-logo" aria-label="AI Agent Cookbook for WxCC" data-md-component="logo">
+      
+  <img src="../assets/cisco-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI Agent Cookbook for WxCC
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Getting Started
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../security/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../webex-ai-agent-security-faq/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../governance/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Governance
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../prompt-design/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Prompt Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../agent-template/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Agent Template
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../knowledge-and-rag/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Knowledge and RAG
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../testing-and-evaluation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Testing and Evaluation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../deployment-and-operations/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Deployment and Operations
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../human-handoff/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Human Handoff
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../common-pitfalls/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Common Pitfalls
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../glossary/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Glossary
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AI Agent Cookbook for WxCC" class="md-nav__button md-logo" aria-label="AI Agent Cookbook for WxCC" data-md-component="logo">
+      
+  <img src="../assets/cisco-logo.png" alt="logo">
+
+    </a>
+    AI Agent Cookbook for WxCC
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#1-identifying-the-business-use-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Identifying the Business Use Case
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-determining-functional-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Determining Functional Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-choosing-the-right-ai-agent-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Choosing the Right AI Agent Type
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Choosing the Right AI Agent Type">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#autonomous-ai-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autonomous AI Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scripted-ai-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scripted AI Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison Matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-planning-your-integrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Planning Your Integrations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-reporting-and-success-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Reporting and Success Criteria
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webex-ai-agent-security-faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../governance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Governance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompt-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent Template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge-and-rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knowledge and RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-and-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing and Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment-and-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment and Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../human-handoff/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Human Handoff
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-pitfalls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Common Pitfalls
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="getting-started-webex-ai-agent-implementation-guide">Getting Started: Webex AI Agent Implementation Guide</h1>
+<p>This guide provides a tactical framework for developing AI Agents within the Webex AI Agent Studio. These best practices serve as a foundation for building efficient, high-performing, and secure AI solutions that enhance customer engagement and operational productivity.</p>
+<h2 id="1-identifying-the-business-use-case">1. Identifying the Business Use Case</h2>
+<p>The success of an AI Agent begins with a clear understanding of the problem you intend to solve. Avoid the temptation to automate without a clear strategy.</p>
+<ul>
+<li><strong>Define the Process:</strong> Start by mapping your current process. Utilize tools like Visio or Miro to graphically lay out the problem. This visual representation helps identify bottlenecks and clarifies where the AI Agent can provide the most value.</li>
+<li><strong>Assess Impact:</strong> Evaluate the potential benefits of automation, such as increased operational efficiency, cost reduction, or enhanced customer experience.</li>
+<li><strong>Set SMART Objectives:</strong> Ensure your goals are Specific, Measurable, Achievable, Relevant, and Time-bound. </li>
+<li><strong>Define KPIs:</strong> Identify the key performance indicators (KPIs) you will use to prove the project's return on investment (ROI) from the outset.</li>
+</ul>
+<h2 id="2-determining-functional-requirements">2. Determining Functional Requirements</h2>
+<p>Before selecting your agent type, you must determine the core functional requirements. Your agent will generally rely on one or both of the following:</p>
+<ul>
+<li><strong>Knowledge:</strong> Does the agent need to provide information or answers based on a static or evolving knowledge base? This is primarily for informational queries and FAQ resolution.</li>
+<li><strong>Actions:</strong> Does the agent need to perform specific tasks? Actions are used to execute processes, such as updating a database, sending emails, or triggering third-party APIs, typically utilizing data provided by the user during the conversation.</li>
+</ul>
+<p><em>Note: Many use cases require a combination of both, where the agent answers user questions using a knowledge base and performs tasks using actions.</em></p>
+<h2 id="3-choosing-the-right-ai-agent-type">3. Choosing the Right AI Agent Type</h2>
+<p>Selecting the correct agent architecture is critical for long-term maintainability and performance.</p>
+<h3 id="autonomous-ai-agents">Autonomous AI Agents</h3>
+<ul>
+<li><strong>Best For:</strong> Complex, dynamic environments where the agent must understand context to make decisions without predefined scripts. They are particularly effective when:<ul>
+<li><strong>Natural Conversation is Required:</strong> They excel at open-ended, natural language interactions, allowing the agent to handle variations in user phrasing and complex, multi-turn dialogue that would be difficult to map in a rigid script.</li>
+<li><strong>Dynamic Response Generation:</strong> They can synthesize information from large knowledge bases to generate unique, contextually relevant responses rather than relying on static, pre-written templates.</li>
+<li><strong>High-Variability Domains:</strong> They are ideal for scenarios where the knowledge base is vast, or the potential variations in user intent and entity values are too numerous to manage via manual scripting.</li>
+</ul>
+</li>
+<li><strong>Use Cases:</strong><ul>
+<li><strong>Dynamic Troubleshooting:</strong> Analyzing specific technical issues, running diagnostics, and performing multi-step resolutions.</li>
+<li><strong>Personalized Recommendations:</strong> Reasoning across variables like user preferences, budget, and inventory to suggest the best product.</li>
+<li><strong>Complex Scheduling &amp; Logistics:</strong> Managing appointments by balancing real-time availability and user constraints.</li>
+<li><strong>Proactive Issue Resolution:</strong> Identifying and addressing problems (like shipment delays) before the user asks.</li>
+</ul>
+</li>
+<li><strong>Benefits:</strong> Highly conversational and capable of adapting to new information, making them ideal for high-variability customer journeys.</li>
+</ul>
+<h3 id="scripted-ai-agents">Scripted AI Agents</h3>
+<ul>
+<li><strong>Best For:</strong> Straightforward, repetitive tasks with well-defined steps. They are the preferred choice when:<ul>
+<li><strong>Strict Compliance &amp; Data Handling:</strong> In industries where specific legal disclaimers or data handling protocols must be followed, scripted agents ensure that the bot operates under predefined rules, preventing the misuse or misconstruction of sensitive data.</li>
+<li><strong>Consistency of Experience:</strong> When every user must receive the exact same information in the exact same way, scripted agents provide a predictable, repeatable experience that does not vary between sessions.</li>
+<li><strong>Operational Efficiency:</strong> Because they do not require the computational overhead of large language model (LLM) reasoning for every turn, they are often faster at runtime and cheaper to operate.</li>
+</ul>
+</li>
+<li><strong>Use Cases:</strong><ul>
+<li><strong>Transactional Workflows:</strong> Handling standard requests like password resets, order status checks, or account balance inquiries where the path is linear.</li>
+<li><strong>Data Collection &amp; Lead Generation:</strong> Guiding users through a structured form-filling process to ensure all required information is captured accurately.</li>
+<li><strong>Technical Q&amp;A:</strong> Providing precise, vetted answers to technical questions where the response must be exact and cannot be subject to "hallucination."</li>
+<li><strong>Standardized Disclaimers:</strong> Ensuring that mandatory regulatory or legal scripts are delivered verbatim every time.</li>
+</ul>
+</li>
+<li><strong>Benefits:</strong> Higher control, lower operational costs, and faster build times. They are the most stable solution for high-volume, low-complexity tasks.</li>
+</ul>
+<h3 id="comparison-matrix">Comparison Matrix</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Autonomous AI Agent</th>
+<th style="text-align: left;">Scripted AI Agent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Benefits</strong></td>
+<td style="text-align: left;">Very natural interaction (IX)</td>
+<td style="text-align: left;">Higher control</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Faster and easier to build</td>
+<td style="text-align: left;">Cheaper to run</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Scope changes are easier</td>
+<td style="text-align: left;">Faster at runtime</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Drawbacks</strong></td>
+<td style="text-align: left;">Can be more expensive</td>
+<td style="text-align: left;">Effort-intensive to build</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Risk of hallucinations</td>
+<td style="text-align: left;">Rigid/Brittle interaction</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-planning-your-integrations">4. Planning Your Integrations</h2>
+<p>An AI Agent does not exist in isolation. It will need to exist alongside your existing IVR and digital entry points. When using actions, integration with existing business systems is likely required.</p>
+<ul>
+<li><strong>Map Integration Points:</strong> Take the time to identify every system the agent will need to communicate with (e.g., CRM, ticketing systems, or internal databases).</li>
+<li><strong>Testing and Launch:</strong> Ensure that your testing plan covers not just the agent’s logic, but the end-to-end integration with your existing infrastructure. A well-defined launch plan is essential for a smooth transition from development to production.</li>
+</ul>
+<h2 id="5-reporting-and-success-criteria">5. Reporting and Success Criteria</h2>
+<p>You cannot improve what you do not measure. Success criteria must be clearly defined before the agent goes live.</p>
+<ul>
+<li>
+<p><strong>Core Metrics:</strong></p>
+<ul>
+<li><strong>Accuracy:</strong> Measures the correctness of the AI's predictions or outputs. High accuracy indicates that the AI is making correct decisions or providing correct information.</li>
+<li><strong>Response Time:</strong> Assesses how quickly the AI provides results or answers. Shorter response times are generally preferable for service applications.</li>
+<li><strong>User Satisfaction:</strong> Gauges how users perceive the AI's assistance, often collected through surveys or feedback forms.</li>
+<li><strong>Error Rate:</strong> The frequency of incorrect or erroneous outputs produced by the AI. Lower error rates indicate more reliable performance.</li>
+<li><strong>Coverage:</strong> Evaluates the extent to which the AI can handle different types of queries or scenarios within its domain.</li>
+<li><strong>Cost Efficiency:</strong> Measures the operational cost of using the AI relative to the benefits it provides, including resource consumption.</li>
+<li><strong>Scalability:</strong> Assesses the AI's ability to maintain performance and effectiveness as the demand or user base increases.</li>
+</ul>
+</li>
+<li>
+<p><strong>Additional Operational Metrics:</strong></p>
+<ul>
+<li><strong>CSAT:</strong> Customer Satisfaction scores.</li>
+<li><strong>Average Handle Time:</strong> Duration of the interaction.</li>
+<li><strong>Average Queue Time:</strong> Time spent waiting for the agent.</li>
+<li><strong># of Call Transfers:</strong> Frequency of handovers to human agents.</li>
+<li><strong>IVR Abandon Rate:</strong> Percentage of users leaving the IVR.</li>
+<li><strong>Queue Abandon Rate:</strong> Percentage of users leaving the queue.</li>
+<li><strong>Calls per agent:</strong> Volume handled by the agent.</li>
+<li><strong>Agent Occupancy:</strong> Percentage of time the agent is actively processing.</li>
+<li><strong>ACW:</strong> After Call Work time.</li>
+<li><strong>First Call Resolution:</strong> Ability to resolve issues in a single interaction.</li>
+</ul>
+</li>
+<li>
+<p><strong>Feedback Loops:</strong> Ensure there is enough reporting within the entire end-to-end solution, including fulfilment workflows, to facilitate continuous improvement. This includes:</p>
+<ul>
+<li><strong>Automated Status Capture:</strong> Automated recording of "Unknown" or "Abnormal" statuses, processed to file or email.</li>
+<li><strong>User Interaction Feedback:</strong> Surveys and/or comments provided directly by the user.</li>
+<li><strong>Error Reporting:</strong> Mechanisms for users to explicitly report errors encountered during the interaction.</li>
+<li><strong>Detailed Analytics:</strong> Comprehensive reports and dashboards to visualize performance.</li>
+<li><strong>Transcript Review:</strong> Where possible, leverage JDS to record transcripts, handover rates, and other critical interaction metrics.</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Home
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../architecture/" class="md-footer__link md-footer__link--next" aria-label="Next: Architecture">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Architecture
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 Cisco Systems Inc. All Rights Reserved.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.top", "navigation.footer", "search.suggest", "content.code.copy", "toc.integrate", "content.tooltips", "content.footnote.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": false, "openEffect": "fade", "closeEffect": "fade", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
