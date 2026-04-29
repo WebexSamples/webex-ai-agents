@@ -559,6 +559,10 @@ There is no single way to create an execution graph. A JSON schema can be design
 ---
 ![JSON Nodes](assets/prompt-design/nodes.png)
 
+<div style="background: white; padding: 10px; display: inline-block;">
+  <img src="[diagram.png](https://webexsamples.github.io/webex-ai-agents/assets/prompt-design/nodes.png)" width="500">
+</div>
+
 ---
 
 The `kind` key defines the type of operation being performed, for example:
