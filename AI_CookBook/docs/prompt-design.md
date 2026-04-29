@@ -316,6 +316,7 @@ Suppose the required instructions are:
 - If Standard: “You would gain many more benefits with Silver or Gold access.”
 
 Instead of writing these instructions only in natural language, you can represent them as a structured JSON variable such as:
+
 ```json
 {
   "nodes": [
