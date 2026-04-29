@@ -591,6 +591,7 @@ The diagram below shows how those nodes can be logically connected.
 The resulting JSON variable is as follows:
 
 ```json
+{
 "nodes": [
   {
     "id": "input_user_id",
@@ -661,6 +662,7 @@ The resulting JSON variable is as follows:
     "outcome": "email_failed",
     "message": "Failed to send recap email. Please try again later."
   }
+}
   ```
 
 This workflow requires the creation of three actions: `auth_check`, `get_user_email`, and `send_email`. 
