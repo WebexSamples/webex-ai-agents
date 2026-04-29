@@ -548,7 +548,7 @@ The result is shown below. As you can see, the AI Agent uses the Knowledge Base 
 
 <p align="center">
 
-  <img src="https://webexsamples.github.io/webex-ai-agents/assets/prompt-design/chat_experience_1.jpeg" width="350">
+  <img src="https://webexsamples.github.io/webex-ai-agents/assets/prompt-design/chat_experience.jpeg" width="350">
 
 </p>
 
