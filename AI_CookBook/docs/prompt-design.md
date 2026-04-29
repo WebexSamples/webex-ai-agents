@@ -557,7 +557,8 @@ The result is shown below. As you can see, the AI Agent uses the Knowledge Base 
 There is no single way to create an execution graph. A JSON schema can be designed in many different ways. However, the following node model has proven useful:
 
 ---
-![JSON Nodes](assets/prompt-design/nodes.png)
+
+
 
 <div style="background: white; padding: 10px; display: inline-block;">
   <img src="https://webexsamples.github.io/webex-ai-agents/assets/prompt-design/nodes.png" width="500">
