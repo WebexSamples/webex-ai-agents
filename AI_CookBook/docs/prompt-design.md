@@ -334,8 +334,7 @@ Instead of writing these instructions only in natural language, you can represen
       "cases": {
         "Gold": "instruction_gold",
         "Silver": "instruction_silver",
-        "Standard": "instruction_standard"
-      }
+        "Standard": "instruction_standard
     },
     {
       "id": "instruction_gold",
