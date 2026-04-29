@@ -664,7 +664,7 @@ The resulting JSON variable is as follows:
   }
  ]
 }
-  ```
+```
 
 This workflow requires the creation of three actions: `auth_check`, `get_user_email`, and `send_email`. 
 
