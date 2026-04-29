@@ -592,7 +592,15 @@ The diagram below shows how those nodes can be logically connected.
 
 ---
 
-![JSON Node Diagram](assets/prompt-design/json_node_diagram.png)
+
+<div style="text-align: center;">
+  <div style="background: white; padding: 10px; display: inline-block;">
+    <img
+      src="https://webexsamples.github.io/webex-ai-agents/assets/prompt-design/json_node_diagram.png"
+      style="max-width: 100%; height: auto;"
+    >
+  </div>
+</div>
 
 ---
 
