@@ -53,15 +53,15 @@ Effective prompts usually include:
 
 - **Prompt Engineering tips when writing instructions:**
 
-	•	Keep It Simple: Use clear, concise language. Avoid technical jargon or overly complex sentences.
-	•	Use Markdown: Use headings and ordered/unordered list markdown for best results.
-	•	State Your AI Agent's Identity: Begin by clearly defining the agent's persona (e.g., “You are a helpful customer support agent…”).
-	•	Break It Down: Outline tasks step by step. For instance, “First, confirm your account number. Then, describe your issue.”
-	•	Plan for Errors: Include fallback phrases such as, “I'm sorry, could you please repeat that?” if the input isn't clear.
-	•	Preserve Context: Remind the agent to remember previous responses to ensure continuity in long conversations.
-	•	Reference Actions: Clearly instruct how to use external actions at different steps. Make sure the referenced actions are enabled in the Actions tab to avoid any unexpected behavior.
-	•	Add Guardrails: Instruct the AI Agent to respond only in the context of the goal.
-	•	Add Examples: To improve accuracy, add examples wherever needed.
+	•	Keep It Simple: Use clear, concise language. Avoid technical jargon or overly complex sentences.  
+	•	Use Markdown: Use headings and ordered/unordered list markdown for best results.  
+	•	State Your AI Agent's Identity: Begin by clearly defining the agent's persona (e.g., “You are a helpful customer support agent…”).  
+	•	Break It Down: Outline tasks step by step. For instance, “First, confirm your account number. Then, describe your issue.”  
+	•	Plan for Errors: Include fallback phrases such as, “I'm sorry, could you please repeat that?” if the input isn't clear.  
+	•	Preserve Context: Remind the agent to remember previous responses to ensure continuity in long conversations.  
+	•	Reference Actions: Clearly instruct how to use external actions at different steps. Make sure the referenced actions are enabled in the Actions tab to avoid any unexpected behavior.  
+	•	Add Guardrails: Instruct the AI Agent to respond only in the context of the goal.  
+	•	Add Examples: To improve accuracy, add examples wherever needed.  
 
 ---
 ### Precise Instructions Change Behavior
