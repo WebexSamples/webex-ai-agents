@@ -94,9 +94,9 @@ nav:
   - Security FAQ: webex-ai-agent-security-faq.md
   - multi-agent-strategy: multi-agent-strategy.md
   - model-context-protocol: model-context-protocol.md
-  - Agent Template: agent-template.md
+  - Agent2Agent: a2a.md
   - Scripted AI Agent Design: scripted-ai-agent-design.md
   - Knowledge and RAG: knowledge-and-rag.md
   - Testing and Evaluation: testing-and-evaluation.md
-  - Agent2Agent: a2a.md
+  - Agent Template: agent-template.md
   - Glossary: glossary.md
