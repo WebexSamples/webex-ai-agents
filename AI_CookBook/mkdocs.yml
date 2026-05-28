@@ -92,13 +92,11 @@ nav:
   - Architecture: architecture.md
   - Security: security.md
   - Security FAQ: webex-ai-agent-security-faq.md
-  - Governance: governance.md
-  - Prompt Design: prompt-design.md
+  - multi-agent-strategy: multi-agent-strategy.md
+  - model-context-protocol: model-context-protocol.md
   - Agent Template: agent-template.md
   - Scripted AI Agent Design: scripted-ai-agent-design.md
   - Knowledge and RAG: knowledge-and-rag.md
   - Testing and Evaluation: testing-and-evaluation.md
-  - Deployment and Operations: deployment-and-operations.md
-  - Human Handoff: human-handoff.md
-  - Common Pitfalls: common-pitfalls.md
+  - Agent2Agent: a2a.md
   - Glossary: glossary.md
