@@ -1,309 +1,287 @@
 ---
-title: Model Context Protocol
-description: Use MCP to give Webex AI Agents structured access to tools, data, and external systems.
+title: Multi Agent Strategy
+description: Design focused Webex AI Agents that collaborate safely instead of building one large monolithic bot.
 ---
 
-# Model Context Protocol
+# Multi Agent Strategy
 
-MCP stands for Model Context Protocol. It is an open standard that helps AI applications connect to outside systems in a consistent and reliable way.
+This chapter explains how to design a multi-agent Webex AI Agent architecture for contact center and healthcare workflows. It is based on slides 15 through 23 of `MultiAGentStrategy.pptx`, which focus on strategic value, workflow specialization, security, resilience, governance, human-in-the-loop operations, action design, and platform thresholds.
 
-In simple terms, MCP gives AI agents a standard method to get information from external tools and take approved actions when needed. Instead of building a different integration pattern for every tool, MCP creates one shared standard. This makes integrations cleaner, easier to govern, and more scalable.
+> Image note: The visuals in this chapter are extracted from, or derived from, the PowerPoint's native slide objects. They are not full-slide screenshots.
 
-
-
-![MCP enterprise integration picture extracted from the workshop slide deck](assets/ai-agent-protocols/mcp-enterprise-integration.png)
+![Strategic value of multi-agent systems overview derived from the workshop slide deck](assets/ai-agent-protocols/multi-agent-advantages-overview.svg)
 
 ## What
 
-In a Webex AI Agent architecture, MCP is the structured access layer that lets agents use approved tools, data, and enterprise systems without hardcoding every backend detail into the agent prompt.
+A multi-agent strategy breaks a large customer journey into smaller, focused AI agents. Instead of building one large bot that owns every instruction, action, system, and exception path, the architecture uses specialist agents that each own a clear part of the workflow.
 
-In contact center terms, the AI agent should not need to understand every backend API. It should ask an MCP server for an approved capability, such as appointment lookup, patient validation, billing status, case creation, or queue availability. The MCP server translates that structured request into the system-specific action and returns a result the agent can use.
+In a healthcare contact center, a single caller journey may include several distinct tasks:
+
+| Workflow Step | Specialist Responsibility |
+| --- | --- |
+| Identity verification | Confirm the user's identity |
+| Appointment lookup | Check for available appointments |
+| Insurance validation | Verify insurance coverage |
+| System updates | Update patient records, for example in Epic |
+| Billing review | Review billing details |
+| Live-agent escalation | Transfer to a live agent when automation should stop |
+
+The usual pattern is a hub-and-spoke model. The orchestrator owns the overall journey. Specialist agents own specific modules such as verification, scheduling, insurance, billing, system updates, or escalation.
 
 ```mermaid
 flowchart LR
-    Agent[Webex AI Agent] --> Host[MCP Host / Agent Runtime]
-    Host --> Client[MCP Client]
-    Client --> Server[MCP Server]
-    Server --> EHR[EHR / Scheduling]
-    Server --> CRM[CRM / Case System]
-    Server --> DB[Database]
-    Server --> Files[Files / Knowledge]
+    Caller[Caller] --> Orchestrator[Main AI Agent / Orchestrator]
+    Orchestrator --> Verify[Identity Verification Agent]
+    Orchestrator --> Appt[Appointment Lookup Agent]
+    Orchestrator --> Insurance[Insurance Validation Agent]
+    Orchestrator --> Updates[System Update Agent]
+    Orchestrator --> Billing[Billing Review Agent]
+    Orchestrator --> Human[Live Agent / HITL]
+    Verify --> Orchestrator
+    Appt --> Orchestrator
+    Insurance --> Orchestrator
+    Updates --> Orchestrator
+    Billing --> Orchestrator
 ```
 
-### Core Components
-
-MCP has three main parts.
-
-| Component | Role |
-| --- | --- |
-| MCP Host | The main application environment where the AI agent is running |
-| MCP Client | The AI-side client that discovers available tools and decides when to use them |
-| MCP Server | The secure bridge that exposes approved tools, resources, prompts, and system access |
-| External systems | Databases, files, APIs, code repositories, CRM, EHR, ticketing, or other business systems |
-
-The important idea is separation of responsibility. The AI agent invokes the capability. The MCP server handles backend translation, policy controls, system access, and response shaping.
-
-### Where MCP Fits
-
-Use MCP when the target is a tool, data source, API, database, file store, knowledge source, or enterprise system.
-
-Use A2A when the target is another agent.
-
-| Need | Best Fit |
-| --- | --- |
-| Look up appointments in an EHR or scheduling system | MCP |
-| Create or update a case in CRM | MCP |
-| Check queue availability before handoff | MCP |
-| Retrieve approved knowledge from controlled sources | MCP |
-| Ask a billing agent to review billing intent | A2A |
-| Transfer a caller to a scheduling agent | A2A |
+The goal is not to create more agents for the sake of it. The goal is to make each agent easier to test, secure, update, monitor, and escalate.
 
 ## Why
 
-Before MCP, many AI integrations used a prompt-based approach. Developers had to explain tools, workflows, schemas, and data formats directly inside the prompt. That meant the AI had to read long technical instructions again and again.
+Contact center operations are rarely single tasks. They are chains of events. A patient may start with identity verification, move into appointment lookup, require insurance validation, trigger a patient-record update, ask about billing, and then need live-agent help.
 
-That approach becomes fragile as workflows grow. Even a small wording change can create confusion, break behavior, or consume more of the model's context window.
+If one AI agent owns all of that, it becomes difficult to manage. The prompt grows. The action list grows. Permission boundaries become blurry. Testing becomes harder. One broken function can affect the whole journey.
 
-MCP improves this by moving tool definitions outside the prompt and into a structured protocol layer. Tools and resources are defined once, and the AI can discover them when needed.
+Multi-agent design solves this by making each module smaller and more accountable.
 
-| Prompt-Heavy Integration | MCP-Based Integration |
+| Strategic Value | Why It Matters |
 | --- | --- |
-| Tool behavior is described in agent instructions | Tools are declared by the MCP server |
-| Repetitive schemas consume context | Metadata is discovered at runtime |
-| Small wording changes can break behavior | Tool contracts are more explicit |
-| Each agent may need duplicated integration logic | One MCP capability can be reused |
-| Backend payloads may become too large | Tool output can be shaped for the next step |
+| Workflow specialization | Break down complex user requests into manageable steps |
+| Risk mitigation and security | Narrower permissions and clearer audit logs enhance security |
+| Operational resilience | Decoupled processes prevent single points of failure |
+| Simplified governance | Incremental certification and focused maintenance streamline compliance |
+| Human-in-the-loop | Human oversight adds empathy, judgment, and final approval where needed |
 
-### Key Benefits of Model Context Protocol
-
-MCP offers several important benefits for enterprise AI design.
-
-| Benefit | Why It Matters |
-| --- | --- |
-| Reduced integration complexity | One MCP server can support multiple AI agents, models, and workflows |
-| Better context efficiency | Tool details do not need to be loaded into every prompt |
-| Stronger reusability | A tool or connector can be reused across different applications |
-| Faster delivery | Teams can launch new AI use cases faster by reusing existing MCP capabilities |
-| Improved governance | Tool contracts, ownership, access rules, and audit patterns are easier to define |
-| Better scalability | MCP supports modular designs instead of one-off integrations for every system |
-
-Overall, MCP helps organizations build AI integrations that are more flexible, efficient, reusable, and scalable.
-
-### Why Not One Giant MCP Server
-
-A single large MCP server may look simple at first, but it can become a new monolith. Use the same modularity principle from the multi-agent strategy: split MCP servers when the domains have different risk, ownership, uptime, or lifecycle needs.
-
-| MCP Boundary | Why Split It |
-| --- | --- |
-| Scheduling MCP | Different uptime, payload, and validation requirements |
-| Billing MCP | Sensitive data and stronger approval controls |
-| Insurance MCP | Coverage exceptions may need human review |
-| CRM or case MCP | Different system owner and lifecycle |
-| Knowledge MCP | Read-only access and lower operational risk |
-
-This makes the architecture easier to operate. If a vendor later releases a stronger production-ready MCP server, the customer can migrate one function without rebuilding the whole AI journey.
-
-### Challenges and Considerations for MCP
-
-MCP creates a cleaner integration model, but it still needs careful planning.
-
-| Challenge | Consideration |
-| --- | --- |
-| Security | MCP reduces ad hoc integration risk, but organizations still need guardrails for prompt injection, data exposure, and unauthorized access |
-| Implementation complexity | Building and operating MCP servers may require skilled teams, infrastructure planning, testing, and monitoring |
-| Evolving ecosystem | MCP is still maturing, so early adopters may need custom development or hybrid API/MCP patterns |
-| Operational ownership | Teams must define who owns the MCP server, backend API changes, uptime, incident response, and support |
-| Healthcare compliance | MCP can support healthcare compliance needs only when access policies, logging, identity, and data controls are implemented properly |
-
-Use MCP where the reuse, governance, security, or scalability value justifies the effort. Keep simpler API-based fulfillment where it is already stable and supportable.
-
-### Why Security Matters
-
-![MCP security considerations picture extracted from the workshop slide deck](assets/ai-agent-protocols/mcp-security-considerations.jpg)
-
-If a customer builds or hosts their own MCP server, they own the operational guardrails. MCP should be treated as a production integration surface, not as a lightweight prompt helper.
-
-Key risk areas:
-
-- Over-permissioned tools.
-- Sensitive data exposure.
-- Prompt-injection attacks against tool outputs or retrieved content.
-- Unvalidated inputs passed into backend systems.
-- Large responses that leak unnecessary data.
-- Missing audit trails for tool calls.
-- No fallback path when the MCP server or backend system fails.
+The main design principle is simple: each agent should have a clear start state, a clear end state, a narrow set of actions, and a known fallback path.
 
 ## How
 
-Design MCP around small, governed capabilities that match the customer journey. Start with the action the agent needs, define the input and output contract, apply least privilege, and return only the data needed for the next step.
+Start by mapping the full customer journey, then split it into modules that naturally begin and end at clean boundaries.
 
-MCP uses structured messaging such as JSON-RPC 2.0 so systems can communicate in a predictable way. Depending on the host, server, and deployment model, MCP can run through local or HTTP-based transports.
+### Design Around Workflow Boundaries
 
-### Recommended Design Pattern
+Do not start by asking, "How many bots do we need?" Start by asking, "Where does this work naturally begin and end?"
+
+| Agent | Start State | End State |
+| --- | --- | --- |
+| Identity verification | Caller provides identifying information | Identity is confirmed, rejected, or sent for human approval |
+| Appointment lookup | Caller is verified and has scheduling intent | Available appointment options are returned |
+| Insurance validation | Required patient and coverage data are known | Coverage is verified or exception review is requested |
+| System updates | Approved update data is collected | Patient record is updated or exception is escalated |
+| Billing review | Caller is verified and billing intent is confirmed | Billing details are explained or a dispute is escalated |
+| Live-agent escalation | Automation reaches a sensitive, uncertain, or emotional point | Human receives context and owns the next step |
+
+If a module has no clear endpoint, it is probably too broad.
+
+### Use Actions Deliberately
+
+In Webex AI Agent design, actions are the building blocks that let the agent do work. The slide example shows the action menu with these options:
+
+| Action Area | What It Does |
+| --- | --- |
+| Browse actions | Select an available action that already exists |
+| Create new action: Transfer | Move the conversation to another agent, queue, or live agent |
+| Create new action: Fulfillment | Call backend logic, APIs, MCP tools, or other integrations |
+
+Use transfer actions for ownership changes. Use fulfillment actions for system work. Keep those separate so the flow is easier to understand, test, and audit.
+
+### Respect Technical Thresholds
+
+Slide 23 highlights three important design thresholds:
+
+| Threshold | Value | Design Meaning |
+| --- | --- | --- |
+| Agent instruction character limit | 5.1K | Keep instructions concise and module-specific |
+| Fulfillment limit | 16.0K | Treat backend integration payloads as bounded and shape the response |
+| Action threshold | 10 | Do not overload one agent with too many business actions |
+
+Use the action threshold as an architecture signal. Even if the platform allows up to 10 actions, keep each autonomous specialist agent near five business actions when possible. Reserve the remaining capacity for transfer, fulfillment, fallback, and human escalation.
+
+### Pass Structured Output Variables
+
+Slide 22 shows how output variables can carry structured context from fulfillment into the next step. This is important because a warm handoff should not depend on a raw transcript.
+
+| Output Variable | Source Expression |
+| --- | --- |
+| `escalation_trigger` | `$.escalation_trigger` |
+| `Firstname` | `$.actions.Validate_Name_DoB[?(@.output.Home_Address != "")].output.FirstName` |
+| `Mobilenumber` | `$.actions.Validate_Name_DoB[?(@.output.Home_Address != "")].output.mobile_number` |
+| `Lastname` | `$.actions.Validate_Name_DoB[?(@.output.Home_Address != "")].output.LastName` |
+| `PatientID` | `$.actions.Validate_Name_DoB[?(@.output.Home_Address != "")].output.PatientID` |
+| `Address` | `$.actions.Validate_Name_DoB[?(@.output.Home_Address != "")].output.Home_Address` |
+| `primaryproviderid` | `$.actions.Validate_Name_DoB[?(@.output.primaryproviderid != "")].output.primaryproviderid` |
+| `primarydepartmentid` | `$.actions.Validate_Name_DoB[?(@.output.primarydepartmentid != "")].output.primarydepartmentid` |
+
+These fields help the next module or live agent continue with context: who the patient is, what validation succeeded, whether escalation was triggered, and which provider or department should be used.
+
+For healthcare workflows, keep these payloads minimal. Pass only the fields the next step needs, validate them, and log them with correlation IDs.
+
+### Build For Downtime And Latency
+
+Each module should expose health, timeout, and fallback behavior. If a billing agent is unavailable, appointment scheduling should still continue. If one module has latency or downtime, other parts of the multi-agent system should remain functional.
 
 ```mermaid
-sequenceDiagram
-    participant Caller as Caller
-    participant Agent as Webex AI Agent
-    participant MCP as MCP Server
-    participant System as Enterprise System
-    participant Human as Human Agent
-
-    Caller->>Agent: Request help
-    Agent->>Agent: Confirm intent and required context
-    Agent->>MCP: Call approved tool
-    MCP->>MCP: Validate input and authorization
-    MCP->>System: Execute backend action
-    System-->>MCP: Return system result
-    MCP-->>Agent: Return shaped response
-    Agent-->>Caller: Continue journey
-    Agent->>Human: Escalate when confidence, policy, or system status requires it
+flowchart TD
+    Start[Caller request] --> Orchestrator[Main orchestrator]
+    Orchestrator --> Check{Module downtime or latency?}
+    Check -->|No| Specialist[Run target specialist agent]
+    Specialist --> Done[Return result to orchestrator]
+    Check -->|Yes| Fallback{Controlled fallback available?}
+    Fallback -->|Alternate module| Alternate[Route to another module]
+    Fallback -->|API or MCP path| Fulfillment[Use alternate fulfillment path]
+    Fallback -->|Human path| Human[Escalate to live agent]
+    Alternate --> Done
+    Fulfillment --> Done
+    Human --> Done
 ```
 
-### Design Each MCP Tool
+### Add Human-In-The-Loop Oversight
 
-For every MCP capability, define:
+Human-in-the-loop is not a failure path. It is part of the design. Agents are strong at speed and data retrieval, but humans are still needed for empathy, emotional support, exception review, and final approval.
 
-| Design Item | Guidance |
+| Module | Agent Responsibility | Human-in-the-Loop Role |
+| --- | --- | --- |
+| Verification | Data matching | Final approval of identity match |
+| Insurance | Policy lookup | Reviewing coverage exceptions |
+| Billing | Calculation or review | Authorizing final charges |
+| Escalation | Sentiment analysis | Providing empathetic resolution |
+
+If a module detects frustration, a sensitive situation, uncertainty, or risk, the HITL protocol should trigger a contextual handoff to a live agent who is trained to handle the emotional or compliance complexity of the interaction.
+
+## Benefits
+
+### Workflow Specialization
+
+![Workflow specialization card derived from the workshop slide deck](assets/ai-agent-protocols/multi-agent-advantage-workflow-specialization.svg)
+
+Workflow specialization breaks a complex request into manageable steps. In the slide example, a healthcare inquiry can be separated into identity verification, appointment lookup, insurance validation, Epic or system updates, billing review, and live-agent escalation.
+
+This makes each agent easier to prompt, test, and operate because it owns a smaller job.
+
+### Risk Mitigation And Security
+
+![Risk mitigation and security card derived from the workshop slide deck](assets/ai-agent-protocols/multi-agent-advantage-risk-security.svg)
+
+Specialization limits the scope of any single agent.
+
+| Security Benefit | Detail |
 | --- | --- |
-| Tool purpose | One clear business action, such as `lookupAppointment` or `createCase` |
-| Inputs | Required fields only, with validation rules |
-| Outputs | Minimal response needed by the agent |
-| Permissions | Least-privilege access to backend systems |
-| Risk level | Read-only, write, sensitive, irreversible, or human-approval required |
-| Failure behavior | Timeout, retry, fallback, and escalation path |
-| Logging | Request ID, tool name, caller context, status, latency, and failure branch |
+| Narrower permissions | Each agent only accesses the data necessary for its specific function |
+| Better auditability | Logs are tied to specific, identifiable agents instead of one "all-powerful" entity |
+| Smaller blast radius | A mistake in one module is less likely to expose unrelated tools or data |
+| Cleaner access control | Tools and MCP capabilities can be granted per specialist |
 
-### Add Operational Guardrails
+This is especially important in healthcare, where patient data, insurance data, billing data, and operational routing should not all be available to every automation path.
 
-Minimum controls for production MCP servers:
+### Operational Resilience
 
-- Strong authentication and authorization.
-- Least-privilege access per tool.
-- Input validation and output shaping.
-- Prompt-injection and data-exfiltration defenses.
-- Rate limits and abuse controls.
-- Audit logging for every tool call.
-- Timeouts, retries, circuit breakers, and fallback paths.
-- Separate production and sandbox configurations.
-- Clear ownership for API lifecycle changes.
+![Operational resilience card derived from the workshop slide deck](assets/ai-agent-protocols/multi-agent-advantage-operational-resilience.svg)
 
-### Connect MCP To Multi-Agent Design
+Decoupled processes prevent single points of failure. The slide example uses billing-agent downtime: if the billing module is unavailable, the appointment scheduling flow can still continue.
 
-Align MCP boundaries with specialist-agent boundaries.
+The orchestrator should check whether a specific module is experiencing downtime or latency. If yes, it should isolate that failure and select a fallback. If no, it should continue the normal workflow.
 
-| Specialist Agent | Likely MCP Capabilities |
+### Simplified Governance
+
+![Simplified governance card derived from the workshop slide deck](assets/ai-agent-protocols/multi-agent-advantage-simplified-governance.svg)
+
+Multi-agent design makes governance easier because individual agents and specific processes can be updated independently.
+
+| Governance Need | Multi-Agent Benefit |
 | --- | --- |
-| Identity verification | Patient search, demographic match, verification status update |
-| Scheduling | Appointment search, booking, cancellation, rescheduling |
-| Insurance | Eligibility lookup, coverage validation, exception flagging |
-| Billing | Balance lookup, payment preparation, dispute case creation |
-| Escalation | Queue lookup, callback creation, case note creation |
+| Update individual agents | Change one module without rewriting the full journey |
+| Update specific processes | Adjust identity, insurance, billing, or escalation logic independently |
+| No full system re-validation | Validate the affected module instead of the entire system |
+| No full system redeployment | Release focused changes with lower operational risk |
+| Incremental certification | Certify one workflow or module at a time |
+| Focused maintenance | Assign clear owners and keep support scoped |
 
-This keeps each agent focused and prevents unnecessary access. A scheduling agent should not need billing tools. A billing agent should not need broad appointment-management permissions.
+### Human-In-The-Loop Collaboration
 
-### Migration Strategy
+![Human-in-the-loop card derived from the workshop slide deck](assets/ai-agent-protocols/multi-agent-advantage-human-loop.svg)
 
-Do not wait for every vendor MCP server to be mature before starting the design work. Use MCP where it creates clear value, and keep existing API-based fulfillment where it is already stable.
+The best contact center experience is not purely automated. It is a collaborative intelligence ecosystem where AI handles repeatable work quickly and humans step in for emotional support, judgment, compliance, and final approval.
 
-A practical path:
+This balance matters because healthcare calls often involve sensitive information, patient anxiety, coverage exceptions, billing disputes, or identity uncertainty.
 
-1. Start with API-based fulfillment or existing flow-based fulfillment where needed.
-2. Keep AI agents and workflows modular.
-3. Wrap stable functions in customer-owned or partner-owned MCP servers when there is enough reuse, governance, or resilience value.
-4. When a vendor MCP becomes production-ready, migrate one function at a time.
-5. Keep API-based fulfillment as a fallback where it is already working and supportable.
+## Key Takeaway
 
-### Design Checklist
+Multi-agent strategy turns one large, fragile bot into a modular contact center architecture. Each agent owns a clear job, uses narrower permissions, logs cleaner actions, and has an explicit fallback or human escalation path.
 
-- Define the exact tool capability and its input/output schema.
-- Return only the data needed by the agent.
-- Separate read-only tools from write or state-changing tools.
-- Add human confirmation for sensitive or irreversible actions.
-- Decide where the MCP server is hosted and who operates it.
-- Design failover before production.
-- Log request ID, tool name, caller context, response status, latency, and failure branch.
-- Align MCP boundaries with multi-agent module boundaries.
+For Webex AI Agent design, the practical guidance is:
 
-## FAQ: MCP in Healthcare
+- Split workflows by clear start and end states.
+- Keep specialist agents small and focused.
+- Use transfer actions for handoff and fulfillment actions for backend work.
+- Pass structured output variables instead of raw transcripts.
+- Respect instruction, fulfillment, and action thresholds.
+- Add human-in-the-loop oversight for sensitive, uncertain, or emotional moments.
 
-Now let's go through some common customer questions, especially for healthcare environments.
+The result is an AI architecture that is easier to secure, easier to govern, easier to update, and more resilient when one module has trouble.
 
-### Integration
+## FAQ
 
-**Q1. Do I need to use Webex Connect to do fulfillment?**
+### Q1. What is a multi-agent strategy?
 
-No. Once the MCP is available, the Webex AI Agent can integrate with the MCP directly. Webex Connect is not required just to perform fulfillment through MCP.
+A multi-agent strategy uses several focused AI agents instead of one all-purpose bot. The orchestrator manages the journey, while specialist agents handle tasks such as identity verification, appointment lookup, insurance validation, system updates, billing review, and escalation.
 
-**Q2. How does MCP securely integrate with Electronic Health Record systems like Epic?**
+### Q2. Why not build one large AI agent?
 
-MCP servers work as secure integration layers between AI agents and EHR platforms. They expose only approved tools and functions through a standard protocol. Access can be protected with token-based authentication and OAuth so only authorized requests are allowed.
+One large agent becomes hard to prompt, test, secure, and update. It may need too many actions, too much data access, and too many exception paths. Multi-agent design keeps each module smaller and easier to govern.
 
-In a healthcare workflow, this can support capabilities such as patient context, call screen pop-ups, and telehealth session support while keeping integration boundaries controlled.
+### Q3. Which healthcare workflows should become specialist agents?
 
-**Q3. How does MCP work with third-party tools like Citrix?**
+Good candidates are identity verification, appointment lookup, insurance validation, system updates such as Epic record updates, billing review, and live-agent escalation. These workflows have clear responsibilities and natural handoff points.
 
-MCP is designed to work across many systems. It can connect securely to third-party environments and expose approved capabilities as standard tools for AI workflows.
+### Q4. How does this improve security?
 
-In healthcare, this can help AI interact with applications running through Citrix or other hosted environments without forcing users to manually switch across systems, while still keeping operational boundaries in place.
+Each agent receives only the tools and data needed for its function. That creates narrower permissions, clearer audit logs, and a smaller blast radius if something goes wrong.
 
-**Q4. Can I build my own MCP, or do I have to wait for every vendor to provide MCP?**
+### Q5. How does multi-agent design improve resilience?
 
-Yes. Customers can build their own MCP servers. This gives them complete control and makes customization easier, especially when vendor-provided MCP support is not yet available.
+Because processes are decoupled, one module can fail without stopping the full journey. If the billing agent is down, appointment scheduling can still continue. The orchestrator can detect downtime or latency and route to a fallback path.
 
-**Q5. Can Cisco or a partner build an MCP server for us?**
+### Q6. How does human-in-the-loop fit into this architecture?
 
-Potentially, yes, but it depends on scope, ownership, and system access. There are practical challenges when the MCP wraps third-party-owned APIs, so responsibilities for API access, support, security, resiliency, and lifecycle changes must be clearly defined.
+Human-in-the-loop is built into each module boundary. Humans approve uncertain identity matches, review insurance exceptions, authorize final billing actions, and provide empathetic resolution when sentiment or risk requires escalation.
 
-### Security
+### Q7. What is the difference between transfer and fulfillment actions?
 
-**Q6. Can MCP handle sensitive patient data and still support healthcare compliance requirements?**
+Transfer actions move ownership to another agent, queue, or live agent. Fulfillment actions perform backend work such as API calls, MCP tool calls, database lookups, or system updates.
 
-Yes, when implemented properly. MCP servers can apply strong authentication, authorization, detailed logging, and access controls. They can also work with multi-factor authentication solutions such as Cisco Duo.
+### Q8. What technical limits should I design around?
 
-This helps limit access to approved users and approved actions. In this model, MCP acts as a controlled gateway so AI agents only reach the data and functions they are allowed to use.
+Slide 23 highlights three thresholds: a 5.1K character limit for agent instructions, a 16.0K fulfillment limit for backend integrations, and an action threshold of 10. Use those limits as design signals and keep specialist agents focused.
 
-**Q7. How does Webex AI Agent support secure authorization and auditing when using MCP in healthcare systems?**
+### Q9. Should each agent use all 10 available actions?
 
-Webex AI Agent can use token-based authorization methods such as OAuth to connect securely to MCP servers. Each request can be validated before it is accepted.
+No. Keep each specialist near five business actions when possible. Reserve capacity for transfer, fulfillment, fallback, and human escalation actions.
 
-MCP servers can also log interactions, including who accessed data, what tool was called, when the request happened, and what result or failure branch occurred. When combined with enterprise identity systems and multi-factor authentication, this creates a stronger security and audit framework for healthcare environments where traceability is critical.
+### Q10. What context should be passed between modules?
 
-**Q8. Should we use one MCP server or many?**
+Pass structured context such as escalation trigger, first name, last name, mobile number, patient ID, address, primary provider ID, and primary department ID. These values should come from validated fulfillment outputs, not from a raw transcript alone.
 
-A single MCP server may be enough in a simple environment where systems are centralized. It is easier to manage and can reduce operational overhead.
+### Q11. How does this help governance?
 
-In a complex healthcare environment, multiple MCP servers are often better. Separate servers can be used for different functions such as EHR access, imaging, pharmacy systems, billing, or knowledge retrieval. This improves scalability, isolates problems, and supports stronger security segmentation. The best choice depends on the size, complexity, and compliance needs of the organization.
+Teams can update individual agents or specific processes without full system redeployment. They can also perform focused maintenance, incremental certification, and targeted re-validation.
 
-**Q9. If we build our own MCP, who owns security and operations?**
+### Q12. Where should we start?
 
-The customer owns the operational guardrails unless those responsibilities are explicitly assigned to Cisco, a partner, or a managed service provider. That includes authentication, authorization, resiliency, monitoring, access control, validation, logging, support, and API lifecycle management.
-
-### Operations
-
-**Q10. When should API-based fulfillment be used instead of MCP?**
-
-API-based access may be better when very direct or low-latency access is needed, or when working with systems that do not support MCP. It can also make sense for legacy systems, special workflows, or quick one-time integrations.
-
-MCP is best when the goal is a reusable, standard, and scalable integration model. APIs remain useful when flexibility or direct access is more important.
-
-**Q11. If we go live with API-based fulfillment and later our vendor provides MCP, how do we migrate?**
-
-This is exactly why a multi-agent design is important. Keep agent workflows modular so one fulfillment function can move from API-based integration to MCP without redesigning the whole journey. Migrate one capability at a time, keep the API path as a fallback until the MCP path is stable, and validate logging, security, and failure behavior before cutting over.
-
-## Put It All Together — Takeaway
-
-MCP gives AI models a standardized and scalable way to connect to tools and data. Compared with prompt-based integration, it offers better reliability, stronger structure, and more efficient use of the model's context.
-
-It also supports reusable and modular design, which is especially important in enterprise environments like healthcare. At the same time, successful adoption depends on strong security, the right level of investment, clear ownership, and awareness that the technology is still evolving.
-
-In platforms like Webex AI Agent, MCP can play an important role in building secure, reusable, and scalable AI integrations as long as organizations apply the right security controls, access policies, and governance practices.
+Start with workflows that have high volume, clear state, narrow data needs, and visible pain when transfer context is lost. Prove one hub-and-spoke journey first, then expand.
 
 ## Related Chapters
 
-- [Multi Agent Strategy](multi-agent-strategy.md)
+- [Model Context Protocol](model-context-protocol.md)
 - [A2A](a2a.md)
 
-## References
 
-- MCP specification: <https://modelcontextprotocol.io/specification/latest>
