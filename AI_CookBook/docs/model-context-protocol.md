@@ -11,7 +11,7 @@ In simple terms, MCP gives AI agents a standard method to get information from e
 
 
 
-![MCP](assets/ai-agent-protocols/mcp-English.jpg)
+![MCP](assets/mcp-English.jpg)
 
 ## What
 
@@ -43,7 +43,7 @@ MCP has three main parts.
 
 The important idea is separation of responsibility. The AI agent invokes the capability. The MCP server handles backend translation, policy controls, system access, and response shaping.
 
-![MCP-Role](assets/ai-agent-protocols/mcp-role.jpg)
+![MCP-Role](assets/mcp-role.jpg)
 
 ### Where MCP Fits
 
@@ -90,7 +90,7 @@ MCP improves this by moving tool definitions outside the prompt and into a struc
 
 MCP offers several important benefits for enterprise AI design.
 
-![MCP](assets/ai-agent-protocols/mcp-Benefits.jpg)
+![MCP](assets/mcp-Benefits.jpg)
 
 | Benefit | Why It Matters |
 | --- | --- |
