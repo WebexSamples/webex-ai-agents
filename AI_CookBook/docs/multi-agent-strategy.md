@@ -1,6 +1,6 @@
 ---
-title: Multi Agent Strategy
-description: Design focused Webex AI Agents that collaborate safely instead of building one large monolithic bot.
+Title: Multi Agent Strategy
+Description: Design focused Webex AI Agents that collaborate safely instead of building one large monolithic bot.
 ---
 
 # Multi Agent Strategy
