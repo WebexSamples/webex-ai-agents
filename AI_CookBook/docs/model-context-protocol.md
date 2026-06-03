@@ -5,19 +5,19 @@ description: Use MCP to give Webex AI Agents structured access to tools, data, a
 
 # Model Context Protocol
 
-MCP stands for Model Context Protocol. It is an open standard that helps AI applications connect to outside systems in a consistent and reliable way.
+MCP stands for Model Context Protocol that helps AI applications connect to outside systems in a consistent and reliable way. It is an open standard initial built to improve Claude's abiliity to interact with external systems, Anthropic open-sourced MCP in early 2024 to encourage industry-wide adoption.
 
 In simple terms, MCP gives AI agents a standard method to get information from external tools and take approved actions when needed. Instead of building a different integration pattern for every tool, MCP creates one shared standard. This makes integrations cleaner, easier to govern, and more scalable.
 
 
 
-![MCP enterprise integration picture extracted from the workshop slide deck](assets/ai-agent-protocols/mcp-enterprise-integration.png)
+![MCP enterprise integration picture extracted from the workshop slide deck](assets/ai-agent-protocols/mcp-English.jpg)
 
 ## What
 
 In a Webex AI Agent architecture, MCP is the structured access layer that lets agents use approved tools, data, and enterprise systems without hardcoding every backend detail into the agent prompt.
 
-In contact center terms, the AI agent should not need to understand every backend API. It should ask an MCP server for an approved capability, such as appointment lookup, patient validation, billing status, case creation, or queue availability. The MCP server translates that structured request into the system-specific action and returns a result the agent can use.
+ The AI agent should not need to understand every backend API. It should ask an MCP server for an approved capability, such as appointment lookup, patient validation, billing status, case creation, or queue availability. The MCP server translates that structured request into the system-specific action and returns a result the agent can use.
 
 ```mermaid
 flowchart LR
@@ -43,6 +43,8 @@ MCP has three main parts.
 
 The important idea is separation of responsibility. The AI agent invokes the capability. The MCP server handles backend translation, policy controls, system access, and response shaping.
 
+![MCP enterprise integration picture extracted from the workshop slide deck](assets/ai-agent-protocols/mcp-role.jpg)
+
 ### Where MCP Fits
 
 Use MCP when the target is a tool, data source, API, database, file store, knowledge source, or enterprise system.
@@ -63,6 +65,16 @@ Use A2A when the target is another agent.
 Before MCP, many AI integrations used a prompt-based approach. Developers had to explain tools, workflows, schemas, and data formats directly inside the prompt. That meant the AI had to read long technical instructions again and again.
 
 That approach becomes fragile as workflows grow. Even a small wording change can create confusion, break behavior, or consume more of the model's context window.
+
+what is Context window?
+
+In AI, the context window is the "RAM" of the conversation. It is the total amount of information (in the form of "tokens," or chunks of text) that the AI can hold in its active memory at any given moment.
+
+The Active Workspace: Just as RAM holds the files you are currently editing, the context window holds the current conversation history, the documents you’ve uploaded, and the instructions you’ve given the AI. This is what allows the AI to "remember" what you said three messages ago.
+
+Capacity Limits: Every AI model has a fixed limit for its context window (e.g., 32,000 tokens or 128,000 tokens). If your conversation or the documents you provide exceed that limit, the AI begins to "drop" the earliest parts of the conversation from its active memory to make room for new information. It essentially "forgets" the beginning of the chat, just as a computer crashes or slows down when RAM is overwhelmed.
+
+Efficiency: Just as you don't keep every file you own open in RAM at once, an AI performs best when you provide only the relevant information needed for the current task. If you provide a massive amount of irrelevant data, you are "filling up the RAM" with clutter, which can sometimes make it harder for the AI to focus on the specific request you are making.
 
 MCP improves this by moving tool definitions outside the prompt and into a structured protocol layer. Tools and resources are defined once, and the AI can discover them when needed.
 
@@ -89,27 +101,13 @@ MCP offers several important benefits for enterprise AI design.
 
 Overall, MCP helps organizations build AI integrations that are more flexible, efficient, reusable, and scalable.
 
-### Why Not One Giant MCP Server
-
-A single large MCP server may look simple at first, but it can become a new monolith. Use the same modularity principle from the multi-agent strategy: split MCP servers when the domains have different risk, ownership, uptime, or lifecycle needs.
-
-| MCP Boundary | Why Split It |
-| --- | --- |
-| Scheduling MCP | Different uptime, payload, and validation requirements |
-| Billing MCP | Sensitive data and stronger approval controls |
-| Insurance MCP | Coverage exceptions may need human review |
-| CRM or case MCP | Different system owner and lifecycle |
-| Knowledge MCP | Read-only access and lower operational risk |
-
-This makes the architecture easier to operate. If a vendor later releases a stronger production-ready MCP server, the customer can migrate one function without rebuilding the whole AI journey.
-
-### Challenges and Considerations for MCP
+### Challenges and Considerations for MCP (If the customer wants to host their own MCP Server)
 
 MCP creates a cleaner integration model, but it still needs careful planning.
 
 | Challenge | Consideration |
 | --- | --- |
-| Security | MCP reduces ad hoc integration risk, but organizations still need guardrails for prompt injection, data exposure, and unauthorized access |
+| Security | MCP reduces ad hoc integration risk, but organizations still need guardrails for prompt injection, data exposure, and unauthorized access|
 | Implementation complexity | Building and operating MCP servers may require skilled teams, infrastructure planning, testing, and monitoring |
 | Evolving ecosystem | MCP is still maturing, so early adopters may need custom development or hybrid API/MCP patterns |
 | Operational ownership | Teams must define who owns the MCP server, backend API changes, uptime, incident response, and support |
@@ -119,7 +117,6 @@ Use MCP where the reuse, governance, security, or scalability value justifies th
 
 ### Why Security Matters
 
-![MCP security considerations picture extracted from the workshop slide deck](assets/ai-agent-protocols/mcp-security-considerations.jpg)
 
 If a customer builds or hosts their own MCP server, they own the operational guardrails. MCP should be treated as a production integration surface, not as a lightweight prompt helper.
 
@@ -162,31 +159,21 @@ sequenceDiagram
 
 ### Design Each MCP Tool
 
-For every MCP capability, define:
 
-| Design Item | Guidance |
+### Why Not One Giant MCP Server
+
+A single large MCP server may look simple at first, but it can become a new monolith. Use the same modularity principle from the multi-agent strategy: split MCP servers when the domains have different risk, ownership, uptime, or lifecycle needs.
+
+| MCP Boundary | Why Split It |
 | --- | --- |
-| Tool purpose | One clear business action, such as `lookupAppointment` or `createCase` |
-| Inputs | Required fields only, with validation rules |
-| Outputs | Minimal response needed by the agent |
-| Permissions | Least-privilege access to backend systems |
-| Risk level | Read-only, write, sensitive, irreversible, or human-approval required |
-| Failure behavior | Timeout, retry, fallback, and escalation path |
-| Logging | Request ID, tool name, caller context, status, latency, and failure branch |
+| Scheduling MCP | Different uptime, payload, and validation requirements |
+| Billing MCP | Sensitive data and stronger approval controls |
+| Insurance MCP | Coverage exceptions may need human review |
+| CRM or case MCP | Different system owner and lifecycle |
+| Knowledge MCP | Read-only access and lower operational risk |
 
-### Add Operational Guardrails
+This makes the architecture easier to operate. If a vendor later releases a stronger production-ready MCP server, the customer can migrate one function without rebuilding the whole AI journey.
 
-Minimum controls for production MCP servers:
-
-- Strong authentication and authorization.
-- Least-privilege access per tool.
-- Input validation and output shaping.
-- Prompt-injection and data-exfiltration defenses.
-- Rate limits and abuse controls.
-- Audit logging for every tool call.
-- Timeouts, retries, circuit breakers, and fallback paths.
-- Separate production and sandbox configurations.
-- Clear ownership for API lifecycle changes.
 
 ### Connect MCP To Multi-Agent Design
 
@@ -214,16 +201,6 @@ A practical path:
 4. When a vendor MCP becomes production-ready, migrate one function at a time.
 5. Keep API-based fulfillment as a fallback where it is already working and supportable.
 
-### Design Checklist
-
-- Define the exact tool capability and its input/output schema.
-- Return only the data needed by the agent.
-- Separate read-only tools from write or state-changing tools.
-- Add human confirmation for sensitive or irreversible actions.
-- Decide where the MCP server is hosted and who operates it.
-- Design failover before production.
-- Log request ID, tool name, caller context, response status, latency, and failure branch.
-- Align MCP boundaries with multi-agent module boundaries.
 
 ## FAQ: MCP in Healthcare
 
@@ -249,11 +226,11 @@ In healthcare, this can help AI interact with applications running through Citri
 
 **Q4. Can I build my own MCP, or do I have to wait for every vendor to provide MCP?**
 
-Yes. Customers can build their own MCP servers. This gives them complete control and makes customization easier, especially when vendor-provided MCP support is not yet available.
+Yes. Customers can build their own MCP servers. This gives them complete control and makes customization easier, especially when vendor-provided MCP support is not yet available but Customer should take care of Security and other issue outline at Challenges and Considerations
 
 **Q5. Can Cisco or a partner build an MCP server for us?**
 
-Potentially, yes, but it depends on scope, ownership, and system access. There are practical challenges when the MCP wraps third-party-owned APIs, so responsibilities for API access, support, security, resiliency, and lifecycle changes must be clearly defined.
+Cisco do not have such practices as of today, but it depends on scope, ownership, and system access. -- Reach out to SCG team for the latest 
 
 ### Security
 
@@ -275,7 +252,7 @@ A single MCP server may be enough in a simple environment where systems are cent
 
 In a complex healthcare environment, multiple MCP servers are often better. Separate servers can be used for different functions such as EHR access, imaging, pharmacy systems, billing, or knowledge retrieval. This improves scalability, isolates problems, and supports stronger security segmentation. The best choice depends on the size, complexity, and compliance needs of the organization.
 
-**Q9. If we build our own MCP, who owns security and operations?**
+**Q9. If Customer build their own MCP, who owns security and operations?**
 
 The customer owns the operational guardrails unless those responsibilities are explicitly assigned to Cisco, a partner, or a managed service provider. That includes authentication, authorization, resiliency, monitoring, access control, validation, logging, support, and API lifecycle management.
 
@@ -303,6 +280,8 @@ In platforms like Webex AI Agent, MCP can play an important role in building sec
 
 - [Multi Agent Strategy](multi-agent-strategy.md)
 - [A2A](a2a.md)
+- Please watch below Demo Vidcast of AI Agent Integrated to Saleforce and ServiceNow using MCP
+  
 
 ## References
 
