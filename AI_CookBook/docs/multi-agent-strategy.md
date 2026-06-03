@@ -5,10 +5,8 @@ Description: Design focused Webex AI Agents that collaborate safely instead of b
 
 # Multi Agent Strategy
 
-This chapter explains how to design a multi-agent Webex AI Agent architecture for contact center and healthcare workflows, focusing on strategic value, workflow specialization, security, resilience, governance, human-in-the-loop operations, action design, and platform thresholds.
+This chapter explains how to design a multi-agent Webex AI Agent architecture for contact center workflows, focusing on strategic value, workflow specialization, security, resilience, governance, human-in-the-loop operations, action design, and platform thresholds.
 
-
-![Strategic value of multi-agent systems overview](assets/multi-agent-advantages-overview.jpg)
 
 ## What
 
@@ -63,6 +61,7 @@ Multi-agent design solves this by making each module smaller and more accountabl
 
 The main design principle is simple: each agent should have a clear start state, a clear end state, a narrow set of actions, and a known fallback path.
 
+![Strategic value of multi-agent systems overview](assets/multi-agent-advantages-overview.jpg)
 ## How
 
 Start by mapping the full customer journey, then split it into modules that naturally begin and end at clean boundaries.
@@ -82,13 +81,14 @@ Do not start by asking, "How many bots do we need?" Start by asking, "Where does
 
 If a module has no clear endpoint, it is probably too broad.
 
+![Strategic value of multi-agent systems overview](assets/ContactCenterWorkflow.jpg)
+
 ### Use Actions Deliberately
 
 In Webex AI Agent design, actions are the building blocks that let the agent do work. 
 
 | Action Area | What It Does |
 | --- | --- |
-| Browse actions | Select an available action that already exists |
 | Create new action: Transfer | Move the conversation to another agent, queue, or live agent |
 | Create new action: Fulfillment | Call backend logic, APIs, MCP tools, or other integrations |
 
@@ -105,6 +105,8 @@ There are  three important design thresholds:
 | Action threshold | 10 | Do not overload one agent with too many business actions |
 
 Use the action threshold as an architecture signal. Even if the platform allows up to 10 actions, keep each autonomous specialist agent near **five business actions when possible**. Reserve the remaining capacity for transfer, fulfillment, fallback, and human escalation.
+
+![Strategic value of multi-agent systems overview](assets/Action_Modularization_Strategy.jpg)
 
 ### Build For Downtime And Latency
 
@@ -142,15 +144,13 @@ If a module detects frustration, a sensitive situation, uncertainty, or risk, th
 
 ### Workflow Specialization
 
-![Workflow specialization card](assets/multi-agent-advantage-workflow-specialization.svg)
-
 Workflow specialization breaks a complex request into manageable steps. a healthcare inquiry can be separated into identity verification, appointment lookup, insurance validation, Epic or system updates, billing review, and live-agent escalation.
 
 This makes each agent easier to prompt, test, and operate because it owns a smaller job.
 
 ### Risk Mitigation And Security
 
-![Risk mitigation and security](assets/multi-agent-advantage-risk-security.svg)
+![Risk mitigation and security](assets/multi-agent-risk-mitigation.jpg)
 
 Specialization limits the scope of any single agent.
 
@@ -165,7 +165,7 @@ This is especially important in healthcare, where patient data, insurance data, 
 
 ### Operational Resilience
 
-![Operational resilience](assets/multi-agent-advantage-operational-resilience.svg)
+![Operational resilience](assets/multi-agent-operational-resilency.jpg)
 
 Decoupled processes prevent single points of failure, for example, if the billing module is unavailable, the appointment scheduling flow can still continue.
 
@@ -173,7 +173,7 @@ The orchestrator should check whether a specific module is experiencing downtime
 
 ### Simplified Governance
 
-![Simplified governance](assets/multi-agent-advantage-simplified-governance.svg)
+![Simplified governance](assets/multi-agent-simplified-governance.jpg)
 
 Multi-agent design makes governance easier because individual agents and specific processes can be updated independently.
 
@@ -188,7 +188,7 @@ Multi-agent design makes governance easier because individual agents and specifi
 
 ### Human-In-The-Loop Collaboration
 
-![Human-in-the-loop](assets/multi-agent-advantage-human-loop.svg)
+![Human-in-the-loop](assets/multi-agent-HILT.jpg)
 
 The best contact center experience is not purely automated. It is a collaborative intelligence ecosystem where AI handles repeatable work quickly and humans step in for emotional support, judgment, compliance, and final approval.
 
@@ -219,43 +219,39 @@ A multi-agent strategy uses several focused AI agents instead of one all-purpose
 
 One large agent becomes hard to prompt, test, secure, and update. It may need too many actions, too much data access, and too many exception paths. Multi-agent design keeps each module smaller and easier to govern.
 
-### Q3. Which healthcare workflows should become specialist agents?
-
-Good candidates are identity verification, appointment lookup, insurance validation, system updates such as Epic record updates, billing review, and live-agent escalation. These workflows have clear responsibilities and natural handoff points.
-
-### Q4. How does this improve security?
+### Q3. How does this improve security?
 
 Each agent receives only the tools and data needed for its function. That creates narrower permissions, clearer audit logs, and a smaller blast radius if something goes wrong.
 
-### Q5. How does multi-agent design improve resilience?
+### Q4. How does multi-agent design improve resilience?
 
 Because processes are decoupled, one module can fail without stopping the full journey. If the billing agent is down, appointment scheduling can still continue. The orchestrator can detect downtime or latency and route to a fallback path.
 
-### Q6. How does human-in-the-loop fit into this architecture?
+### Q5. How does human-in-the-loop fit into this architecture?
 
 Human-in-the-loop is built into each module boundary. Humans approve uncertain identity matches, review insurance exceptions, authorize final billing actions, and provide empathetic resolution when sentiment or risk requires escalation.
 
-### Q7. What is the difference between transfer and fulfillment actions?
+### Q6. What is the difference between transfer and fulfillment actions?
 
 Transfer actions move ownership to another agent, queue, or live agent. Fulfillment actions perform backend work such as API calls, MCP tool calls, database lookups, or system updates.
 
-### Q8. What technical limits should I design around?
+### Q7. What technical limits should I design around?
 
   5.1K character limit for agent instructions, a 16.0K fulfillment limit for backend integrations, and an action threshold of 10. Use those limits as design signals and keep specialist agents focused.
 
-### Q9. Should each agent use all 10 available actions?
+### Q8. Should each agent use all 10 available actions?
 
 No. Keep each specialist near five business actions when possible. Reserve capacity for transfer, fulfillment, fallback, and human escalation actions.
 
-### Q10. What context should be passed between modules?
+### Q9. What context should be passed between modules?
 
 Pass structured context such as escalation trigger, first name, last name, mobile number, patient ID, address, primary provider ID, and primary department ID. These values should come from validated fulfillment outputs, not from a raw transcript alone.
 
-### Q11. How does this help governance?
+### Q10. How does this help governance?
 
 Teams can update individual agents or specific processes without full system redeployment. They can also perform focused maintenance, incremental certification, and targeted re-validation.
 
-### Q12. Where should we start?
+### Q11. Where should we start?
 
 Start with workflows that have high volume, clear state, narrow data needs, and visible pain when transfer context is lost. Prove one hub-and-spoke journey first, then expand.
 
