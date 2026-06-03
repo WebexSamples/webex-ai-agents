@@ -5,11 +5,10 @@ Description: Design focused Webex AI Agents that collaborate safely instead of b
 
 # Multi Agent Strategy
 
-This chapter explains how to design a multi-agent Webex AI Agent architecture for contact center and healthcare workflows. It is based on slides 15 through 23 of `MultiAGentStrategy.pptx`, which focus on strategic value, workflow specialization, security, resilience, governance, human-in-the-loop operations, action design, and platform thresholds.
+This chapter explains how to design a multi-agent Webex AI Agent architecture for contact center and healthcare workflows, focusing on strategic value, workflow specialization, security, resilience, governance, human-in-the-loop operations, action design, and platform thresholds.
 
-> Image note: The visuals in this chapter are extracted from, or derived from, the PowerPoint's native slide objects. They are not full-slide screenshots.
 
-![Strategic value of multi-agent systems overview derived from the workshop slide deck](assets/ai-agent-protocols/multi-agent-advantages-overview.svg)
+![Strategic value of multi-agent systems overview](assets/ai-agent-protocols/multi-agent-advantages-overview.svg)
 
 ## What
 
@@ -85,7 +84,7 @@ If a module has no clear endpoint, it is probably too broad.
 
 ### Use Actions Deliberately
 
-In Webex AI Agent design, actions are the building blocks that let the agent do work. The slide example shows the action menu with these options:
+In Webex AI Agent design, actions are the building blocks that let the agent do work. 
 
 | Action Area | What It Does |
 | --- | --- |
@@ -97,7 +96,7 @@ Use transfer actions for ownership changes. Use fulfillment actions for system w
 
 ### Respect Technical Thresholds
 
-Slide 23 highlights three important design thresholds:
+There are  three important design thresholds:
 
 | Threshold | Value | Design Meaning |
 | --- | --- | --- |
@@ -105,26 +104,7 @@ Slide 23 highlights three important design thresholds:
 | Fulfillment limit | 16.0K | Treat backend integration payloads as bounded and shape the response |
 | Action threshold | 10 | Do not overload one agent with too many business actions |
 
-Use the action threshold as an architecture signal. Even if the platform allows up to 10 actions, keep each autonomous specialist agent near five business actions when possible. Reserve the remaining capacity for transfer, fulfillment, fallback, and human escalation.
-
-### Pass Structured Output Variables
-
-Slide 22 shows how output variables can carry structured context from fulfillment into the next step. This is important because a warm handoff should not depend on a raw transcript.
-
-| Output Variable | Source Expression |
-| --- | --- |
-| `escalation_trigger` | `$.escalation_trigger` |
-| `Firstname` | `$.actions.Validate_Name_DoB[?(@.output.Home_Address != "")].output.FirstName` |
-| `Mobilenumber` | `$.actions.Validate_Name_DoB[?(@.output.Home_Address != "")].output.mobile_number` |
-| `Lastname` | `$.actions.Validate_Name_DoB[?(@.output.Home_Address != "")].output.LastName` |
-| `PatientID` | `$.actions.Validate_Name_DoB[?(@.output.Home_Address != "")].output.PatientID` |
-| `Address` | `$.actions.Validate_Name_DoB[?(@.output.Home_Address != "")].output.Home_Address` |
-| `primaryproviderid` | `$.actions.Validate_Name_DoB[?(@.output.primaryproviderid != "")].output.primaryproviderid` |
-| `primarydepartmentid` | `$.actions.Validate_Name_DoB[?(@.output.primarydepartmentid != "")].output.primarydepartmentid` |
-
-These fields help the next module or live agent continue with context: who the patient is, what validation succeeded, whether escalation was triggered, and which provider or department should be used.
-
-For healthcare workflows, keep these payloads minimal. Pass only the fields the next step needs, validate them, and log them with correlation IDs.
+Use the action threshold as an architecture signal. Even if the platform allows up to 10 actions, keep each autonomous specialist agent near **five business actions when possible**. Reserve the remaining capacity for transfer, fulfillment, fallback, and human escalation.
 
 ### Build For Downtime And Latency
 
@@ -162,15 +142,15 @@ If a module detects frustration, a sensitive situation, uncertainty, or risk, th
 
 ### Workflow Specialization
 
-![Workflow specialization card derived from the workshop slide deck](assets/ai-agent-protocols/multi-agent-advantage-workflow-specialization.svg)
+![Workflow specialization card](assets/ai-agent-protocols/multi-agent-advantage-workflow-specialization.svg)
 
-Workflow specialization breaks a complex request into manageable steps. In the slide example, a healthcare inquiry can be separated into identity verification, appointment lookup, insurance validation, Epic or system updates, billing review, and live-agent escalation.
+Workflow specialization breaks a complex request into manageable steps. a healthcare inquiry can be separated into identity verification, appointment lookup, insurance validation, Epic or system updates, billing review, and live-agent escalation.
 
 This makes each agent easier to prompt, test, and operate because it owns a smaller job.
 
 ### Risk Mitigation And Security
 
-![Risk mitigation and security card derived from the workshop slide deck](assets/ai-agent-protocols/multi-agent-advantage-risk-security.svg)
+![Risk mitigation and security](assets/ai-agent-protocols/multi-agent-advantage-risk-security.svg)
 
 Specialization limits the scope of any single agent.
 
@@ -185,15 +165,15 @@ This is especially important in healthcare, where patient data, insurance data, 
 
 ### Operational Resilience
 
-![Operational resilience card derived from the workshop slide deck](assets/ai-agent-protocols/multi-agent-advantage-operational-resilience.svg)
+![Operational resilience](assets/ai-agent-protocols/multi-agent-advantage-operational-resilience.svg)
 
-Decoupled processes prevent single points of failure. The slide example uses billing-agent downtime: if the billing module is unavailable, the appointment scheduling flow can still continue.
+Decoupled processes prevent single points of failure, for example, if the billing module is unavailable, the appointment scheduling flow can still continue.
 
 The orchestrator should check whether a specific module is experiencing downtime or latency. If yes, it should isolate that failure and select a fallback. If no, it should continue the normal workflow.
 
 ### Simplified Governance
 
-![Simplified governance card derived from the workshop slide deck](assets/ai-agent-protocols/multi-agent-advantage-simplified-governance.svg)
+![Simplified governance](assets/ai-agent-protocols/multi-agent-advantage-simplified-governance.svg)
 
 Multi-agent design makes governance easier because individual agents and specific processes can be updated independently.
 
@@ -208,7 +188,7 @@ Multi-agent design makes governance easier because individual agents and specifi
 
 ### Human-In-The-Loop Collaboration
 
-![Human-in-the-loop card derived from the workshop slide deck](assets/ai-agent-protocols/multi-agent-advantage-human-loop.svg)
+![Human-in-the-loop](assets/ai-agent-protocols/multi-agent-advantage-human-loop.svg)
 
 The best contact center experience is not purely automated. It is a collaborative intelligence ecosystem where AI handles repeatable work quickly and humans step in for emotional support, judgment, compliance, and final approval.
 
@@ -261,7 +241,7 @@ Transfer actions move ownership to another agent, queue, or live agent. Fulfillm
 
 ### Q8. What technical limits should I design around?
 
-Slide 23 highlights three thresholds: a 5.1K character limit for agent instructions, a 16.0K fulfillment limit for backend integrations, and an action threshold of 10. Use those limits as design signals and keep specialist agents focused.
+  5.1K character limit for agent instructions, a 16.0K fulfillment limit for backend integrations, and an action threshold of 10. Use those limits as design signals and keep specialist agents focused.
 
 ### Q9. Should each agent use all 10 available actions?
 
