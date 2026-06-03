@@ -8,7 +8,7 @@ Description: Design focused Webex AI Agents that collaborate safely instead of b
 This chapter explains how to design a multi-agent Webex AI Agent architecture for contact center and healthcare workflows, focusing on strategic value, workflow specialization, security, resilience, governance, human-in-the-loop operations, action design, and platform thresholds.
 
 
-![Strategic value of multi-agent systems overview](assets/multi-agent-advantages-overview.svg)
+![Strategic value of multi-agent systems overview](assets/multi-agent-advantages-overview.jpg)
 
 ## What
 
