@@ -8,7 +8,7 @@ Description: Design focused Webex AI Agents that collaborate safely instead of b
 This chapter explains how to design a multi-agent Webex AI Agent architecture for contact center and healthcare workflows, focusing on strategic value, workflow specialization, security, resilience, governance, human-in-the-loop operations, action design, and platform thresholds.
 
 
-![Strategic value of multi-agent systems overview](assets/ai-agent-protocols/multi-agent-advantages-overview.svg)
+![Strategic value of multi-agent systems overview](assets/multi-agent-advantages-overview.svg)
 
 ## What
 
@@ -142,7 +142,7 @@ If a module detects frustration, a sensitive situation, uncertainty, or risk, th
 
 ### Workflow Specialization
 
-![Workflow specialization card](assets/ai-agent-protocols/multi-agent-advantage-workflow-specialization.svg)
+![Workflow specialization card](assets/multi-agent-advantage-workflow-specialization.svg)
 
 Workflow specialization breaks a complex request into manageable steps. a healthcare inquiry can be separated into identity verification, appointment lookup, insurance validation, Epic or system updates, billing review, and live-agent escalation.
 
@@ -150,7 +150,7 @@ This makes each agent easier to prompt, test, and operate because it owns a smal
 
 ### Risk Mitigation And Security
 
-![Risk mitigation and security](assets/ai-agent-protocols/multi-agent-advantage-risk-security.svg)
+![Risk mitigation and security](assets/multi-agent-advantage-risk-security.svg)
 
 Specialization limits the scope of any single agent.
 
@@ -165,7 +165,7 @@ This is especially important in healthcare, where patient data, insurance data, 
 
 ### Operational Resilience
 
-![Operational resilience](assets/ai-agent-protocols/multi-agent-advantage-operational-resilience.svg)
+![Operational resilience](assets/multi-agent-advantage-operational-resilience.svg)
 
 Decoupled processes prevent single points of failure, for example, if the billing module is unavailable, the appointment scheduling flow can still continue.
 
@@ -173,7 +173,7 @@ The orchestrator should check whether a specific module is experiencing downtime
 
 ### Simplified Governance
 
-![Simplified governance](assets/ai-agent-protocols/multi-agent-advantage-simplified-governance.svg)
+![Simplified governance](assets/multi-agent-advantage-simplified-governance.svg)
 
 Multi-agent design makes governance easier because individual agents and specific processes can be updated independently.
 
@@ -188,7 +188,7 @@ Multi-agent design makes governance easier because individual agents and specifi
 
 ### Human-In-The-Loop Collaboration
 
-![Human-in-the-loop](assets/ai-agent-protocols/multi-agent-advantage-human-loop.svg)
+![Human-in-the-loop](assets/multi-agent-advantage-human-loop.svg)
 
 The best contact center experience is not purely automated. It is a collaborative intelligence ecosystem where AI handles repeatable work quickly and humans step in for emotional support, judgment, compliance, and final approval.
 
