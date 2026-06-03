@@ -213,21 +213,6 @@ Use sessions to answer operational questions:
 - Which knowledge source or action needs improvement?
 - Are there recurring intents that need a new action or specialist agent?
 
-## Architecture Checklist
-
-- Define the agent type: autonomous or scripted.
-- Keep the profile goal narrow and specific.
-- Use static content first for controlled knowledge ingestion.
-- Add website ingestion only for public content you own and are allowed to crawl.
-- Map one knowledge base to the right agent and language.
-- Keep actions close to the agent's scope.
-- Use Webex Connect Flow for orchestration-heavy fulfillment.
-- Use MCP for reusable governed tool access.
-- Use Transfer or System HITL for human escalation.
-- Treat A2A as work in progress for WxCC AI Agent.
-- Tune conversation settings for the channel and customer population.
-- Review sessions regularly to improve instructions, knowledge, actions, and handoffs.
-
 ## FAQ
 
 ### Q1. What is Webex AI Agent?
