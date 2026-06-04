@@ -8,11 +8,13 @@ This cookbook is a practical guide for teams building AI agents in WxCC. It is i
 
 This cookbook is for:
 
-- Engineers building AI-powered experiences in WxCC
-- Architects defining reusable agent patterns
-- Product owners shaping AI use cases and outcomes
-- Teams new to AI agent design in contact center environments
-- Anyone who wants a clearer starting point for building responsibly
+*   **Engineers** building AI-powered experiences in WxCC
+*   **Architects** defining reusable agent patterns
+*   **Product owners** shaping AI use cases and outcomes
+*   **Account executives and sales teams** looking to articulate the business value and capabilities of AI-powered customer engagement
+*   **Teams** new to AI agent design in contact center environments
+*   **Anyone** who wants a clearer starting point for building responsibly  
+ 
 
 ## What This Cookbook Helps You Do
 
@@ -43,14 +45,15 @@ If you are new to building AI agents in WxCC, this is a good order to follow:
 
 1. Getting Started
 2. Architecture
-3. Security
-4. Governance
-5. Prompt Design
-6. Agent Template
-7. Knowledge and RAG
-8. Testing and Evaluation
-9. Deployment and Operations
-10. Human Handoff
+3. AI Security
+4. Multi Agent Strategy
+5. Model Context Protocol or MCP 
+6. Agent2Agent or A2A
+7. Scripted AI Agent Design
+8. Knowledge and RAG (WIP)
+9. How to Test AI Agent (WIP)
+10. PreBuild AI  Template
+
 
 You do not need to read the entire cookbook in one sitting, but the earlier sections provide the context needed to make better choices in the later ones.
 
