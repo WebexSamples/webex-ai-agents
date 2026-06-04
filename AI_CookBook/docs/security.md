@@ -41,7 +41,9 @@ Key design ideas include:
 
 This reduces the chance of cross-tenant bleedover and limits data persistence outside Cisco-managed systems.
 
-![Current-state overview](assets/ai-agent-security/current-state-slides/slide-01.png)
+![Current-state overview](assets/ai-agent-security1.jpg)
+
+![Current-state overview](assets/ai-agent-security2.jpg)
 
 ### Runtime Guardrails Available Today
 
@@ -56,7 +58,7 @@ Examples shown in the current security material include:
 
 These are intended to catch clearly unsafe content and attempts to manipulate or override the model.
 
-![Current runtime rails](assets/ai-agent-security/current-state-slides/slide-11.png)
+![Current-state overview](assets/ai-agent-security3.jpg)
 
 ### Runtime Visibility and Analytics
 
@@ -68,7 +70,7 @@ A major part of security is visibility. The current product direction includes r
 - compliance-related indicators
 - session-level details
 
-![Fleet analytics view](assets/ai-agent-security/current-state-slides/slide-18.png)
+![Current-state overview](assets/ai-agent-security4.jpg)
 
 ### Design-Time Security Testing
 
@@ -82,14 +84,14 @@ Instead of discovering problems only after launch, design-time testing is intend
 - privacy and data security issues
 - integration and action risks
 
-![Design-time testing](assets/ai-agent-security/current-state-slides/slide-24.png)
+![Current-state overview](assets/ai-agent-security5.jpg)
 
 
 ### Security Guardrail Filter
 
 A planned filter will help teams isolate sessions where a security or safety rail was triggered instead of manually reviewing the full session list.
 
-![Guardrail filter](assets/ai-agent-security/roadmap-slides/slide-07.png)
+![Current-state overview](assets/ai-agent-security6.jpg)
 
 
 ### AI Defense Integration
