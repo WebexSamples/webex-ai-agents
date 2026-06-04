@@ -91,7 +91,6 @@ nav:
   - Getting Started: getting-started.md
   - Architecture: architecture.md
   - Security: security.md
-  - Security FAQ: webex-ai-agent-security-faq.md
   - multi-agent-strategy: multi-agent-strategy.md
   - model-context-protocol: model-context-protocol.md
   - Agent2Agent: a2a.md
