@@ -11,7 +11,7 @@
   - [Why This Happens](#why-this-happens)
   - [Recommended Action](#recommended-action)
   - [Best Practices](#best-practices)
-    - [1. Hybrid Control Model](#1-hybrid-control-model)
+    - [Hybrid Control Model](#1-hybrid-control-model)
 
 
 
