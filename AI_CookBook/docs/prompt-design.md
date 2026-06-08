@@ -64,6 +64,10 @@ Effective prompts usually include:
 	•	Add Examples: To improve accuracy, add examples wherever needed.  
 
 ---
+### Be Specific
+Specify what the AI Agent must do, how it should do it, and any constraints that must be respected.
+For instance, explicitly state whether a set of rules is part of an authentication procedure or an identity-verification process. Providing this context helps the AI Agent better understand the purpose of the workflow and apply the rules more consistently.
+
 ### Precise Instructions Change Behavior
 Do not assume that an AI Agent behaves like a human agent. It may interpret instructions differently and produce unexpected outcomes.
 #### Weak Prompt Example:
