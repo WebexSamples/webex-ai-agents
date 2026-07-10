@@ -180,6 +180,7 @@ A useful rule of thumb is:
 
 > **If the expected output is deterministic, consider implementing it as an action rather than as prompt logic.**
 
+The goal is not to replace prompt engineering, but to complement it with deterministic components whenever stronger procedural guarantees are required.
 ---
 
 ## Prefer Specialized AI Agents for Long Procedures
