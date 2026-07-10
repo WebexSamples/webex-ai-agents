@@ -14,26 +14,25 @@
     - [Hybrid Control Model](#1-hybrid-control-model)
 
 
-
 # Prompt Engineering for AI Agents
 
-Prompt engineering is the practice of designing clear and effective instructions, written in human language, that guide how an AI Agent should behave.
+Prompt engineering is the practice of designing clear and effective instructions, written in natural language, that guide how an AI Agent should behave.
 
-This represents an important shift in system design: instead of relying only on traditional programming languages, behavior can now be influenced through natural language instructions.
+This represents an important shift in system design. Instead of relying solely on traditional programming languages, AI Agent behavior can now be influenced through carefully designed natural-language instructions.
 
-Well-designed prompts can strongly improve tone, consistency, reasoning quality, and the overall user experience.
+Well-designed prompts can significantly improve tone, consistency, reasoning quality, and the overall user experience.
 
 ## Good Practices for Natural-Language Prompts
 
-When prompts are written in human language, clarity becomes essential. Ambiguous or overly generic instructions often lead to inconsistent behavior.
+When prompts are written in natural language, clarity becomes essential. Ambiguous or overly generic instructions often lead to inconsistent behavior.
 
-Effective prompts usually include:
+Effective prompts typically include:
 
 - **Clear objective**  
   Explain what the agent is expected to achieve.
 
 - **Expected behavior**  
-  Define tone, style, priorities, or boundaries.
+  Define the desired tone, style, priorities, or boundaries.
 
 - **Context**  
   Provide relevant background information.
@@ -42,360 +41,123 @@ Effective prompts usually include:
   Specify what the agent must always do, should avoid, or must never do.
 
 - **Output expectations**  
-  Describe the desired format or level of detail.
+  Describe the expected format or level of detail.
 
-- **Prompt Engineering tips when writing instructions:**
+### General Prompt Engineering Guidelines
 
-	•	Keep It Simple: Use clear, concise language. Avoid technical jargon or overly complex sentences.  
-	•	Use Markdown: Use headings and ordered/unordered list markdown for best results.  
-	•	State Your AI Agent's Identity: Begin by clearly defining the agent's persona (e.g., “You are a helpful customer support agent…”).  
-	•	Break It Down: Outline tasks step by step. For instance, “First, confirm your account number. Then, describe your issue.”  
-	•	Plan for Errors: Include fallback phrases such as, “I'm sorry, could you please repeat that?” if the input isn't clear.  
-	•	Preserve Context: Remind the agent to remember previous responses to ensure continuity in long conversations.  
-	•	Reference Actions: Clearly instruct how to use external actions at different steps. Make sure the referenced actions are enabled in the Actions tab to avoid any unexpected behavior.  
-	•	Add Guardrails: Instruct the AI Agent to respond only in the context of the goal.  
-	•	Add Examples: To improve accuracy, add examples wherever needed.  
+- **Keep It Simple:** Use clear and concise language. Avoid technical jargon or unnecessarily complex sentences.
+- **Use Markdown:** Structure prompts using headings and ordered or unordered lists whenever appropriate.
+- **Define the Agent's Role:** Clearly describe the agent's identity or role (for example, *"You are a helpful customer support agent..."*).
+- **Break Tasks Down:** Describe complex tasks as a sequence of smaller objectives.
+- **Plan for Errors:** Include fallback instructions such as *"I'm sorry, could you please repeat that?"* when user input is unclear.
+- **Preserve Context:** Instruct the agent to consider relevant information collected earlier in the conversation.
+- **Reference Actions Clearly:** Specify when external actions should be invoked. Ensure that all referenced actions are available and enabled.
+- **Add Guardrails:** Clearly define the boundaries within which the AI Agent should operate.
+- **Provide Examples:** Include examples whenever they help clarify the expected behavior.
 
 ---
+
 ### Be Specific
+
 Specify what the AI Agent must do, how it should do it, and any constraints that must be respected.
-For instance, explicitly state whether a set of rules is part of an authentication procedure or an identity-verification process. Providing this context helps the AI Agent better understand the purpose of the workflow and apply the rules more consistently.
+
+For example, explicitly state whether a set of rules belongs to an authentication procedure or an identity-verification process. Providing this context helps the AI Agent better understand the purpose of the workflow and apply the rules more consistently.
+
+---
 
 ### Precise Instructions Change Behavior
-Do not assume that an AI Agent behaves like a human agent. It may interpret instructions differently and produce unexpected outcomes.
-#### Weak Prompt Example:
 
-`Ask the user for first name. Then ask for last name, and finally the Employee ID.`
+Do not assume that an AI Agent behaves like a human agent. It may interpret instructions differently and therefore produce unexpected outcomes.
 
-In this case, the AI Agent might ask all together with a single question, because it is not assumed that it has to wait for an answer before asking the next question.
+#### Weak Prompt Example
 
+`Ask the user for their first name, last name, and Employee ID.`
 
-#### Improved Prompt:
+The AI Agent may ask for all three pieces of information in a single question because nothing explicitly states that it should wait for the user's response before asking the next question.
 
-`Ask for first name, last name, and Employee ID one question at a time, waiting for each answer before asking the next one.`
+#### Improved Prompt
+
+`Ask for the first name. Wait for the user's response. Then ask for the last name. Wait for the response. Finally, ask for the Employee ID.`
+
+If necessary, make the constraint explicit:
+
+`Wait for the user's response before asking the next question.`
 
 ---
 
 ### Prefer Causal Logic Over Pure Sequence
 
-Prompts should express logical dependencies, not just sequence. “First do A, then do B” may be interpreted as guidance rather than a required condition. State why each step is needed and what must happen before the next one.
+Prompts should express logical dependencies, not just temporal order. Instructions such as *"First do A, then do B"* may be interpreted as guidance rather than as a strict dependency. Whenever possible, explain why a step is required and what condition enables the next one.
 
-#### Weak Example:
-
-`Collect the Employee ID, check the HR system, and inform the user of the PTO balance.`
-
-In this example, the prompt describes a sequence of tasks but does not explicitly state the required dependencies between them. This flow might work well in most cases but fail in some, as the AI Agent may attempt to check the HR system before obtaining the Employee ID, or invent or assume the response without using the actual system result.
-
-#### Stronger Example:
-
-`Ask for the Employee ID, then use it to query the HR system to retrieve the PTO balance and provide the result to the user.`
-
-In this example, causality is strengthened by explicitly stating that the Employee ID is used to retrieve the PTO balance.
-
-### Use Natural-Language Instructions, Not Code-Like Instructions
-
-You might think that an AI Agent, being fundamentally software, is more comfortable with instructions written in a code-like language. On the contrary, AI Agents process instructions as a whole, rather than executing them step by step, and may struggle with tasks that assume strict procedural logic.
-
-#### Weak Prompt Example:
-
-```
-Step 1: validate the input using the knowledge base  
-Step 2: if valid, continue to step 3. If it is not valid, go to step 5  
-Step 3: Ask what issue the user is experiencing  
-...
-```
-Here, the prompt assumes a program-like logic, including `if-then-else` and `goto` steps. But AI Agents do not maintain procedural state and do not execute control flow.
-
-#### Stronger Example:
-
-```
-## SITE VALIDATION  
-Before answering, verify that the site is valid using the document “sites.txt”.  
-If the site is not valid, do not proceed and ask the user for clarification.
-If the user cannot provide a valid site after multiple attempts, politely end the conversation. 
-
-## ISSUE RETRIEVAL  
-Once the site is validated, ask the user to describe the issue they’re experiencing.  
-```
-
-This formulation avoids relying on explicit state tracking or procedural control flow. It aligns with how LLMs actually reason: through semantic constraints, not procedural execution. The use of sections such as “Site Validation” and “Issue Retrieval” shows that the logic is organized semantically rather than as explicit control flow, relying on causal relationships instead of *if-then-else* structures.
-In the next section, we will examine why LLMs exhibit these limitations and how to address them in practice.
-
-### Use Domain-Specific Terminology
-Use Domain-Specific Terminology
-
-Whenever possible, use domain-specific terminology. Terms such as Identity Verification, Authentication, Classification, Validation, and Retrieval carry a much more precise operational meaning than generic verbs or terms such as Identification, Check, Find, or Get. This richer semantic context often leads to more reliable and consistent AI Agent behavior.
-
-For example, suppose your AI Agent occasionally skips what is intended to be a mandatory Identification procedure. From the agent’s perspective, the user may already have been identified through the conversation or previous context, causing the procedure to appear unnecessary.
-
-By renaming the procedure to Identity Verification, you make its purpose much more explicit. The expression Identity Verification conveys that the user’s identity must be confirmed by following a defined procedure, even if the agent already knows who the user is. This reduces ambiguity and helps the agent follow the intended workflow more consistently.
-
-In general, procedure names should describe their purpose rather than the individual actions they consist of.
-
-## Important Limitation
-
-Natural-language prompts are excellent for guidance, tone, reasoning, and intent recognition.
-
-However, when a workflow requires mandatory steps, strict validation, conditional branching, or repeatable execution, prompts alone may not provide enough control.
-
-# Table of Contents
-
-- [Prompt Engineering for AI Agents](#prompt-engineering-for-ai-agents)
-  - [Good Practices for Natural-Language Prompts](#good-practices-for-natural-language-prompts)
-    - [Precise Instructions Change Behavior](#precise-instructions-change-behavior)
-    - [Prefer Causal Logic Over Pure Sequence](#prefer-causal-logic-over-pure-sequence)
-	- [Use Natural-Language Instructions, Not Code-Like Instructions](#use-natural-language-instructions-not-code-like-instructions)
-  - [Important Limitation](#important-limitation)
-- [When Prompts Are Not Enough](#when-prompts-are-not-enough)
-  - [Problem Statement](#problem-statement)
-  - [Why This Happens](#why-this-happens)
-  - [Recommended Action](#recommended-action)
-  - [Best Practices](#best-practices)
-    - [Hybrid Control Model](#1-hybrid-control-model)
-
-
-
-# Prompt Engineering for AI Agents
-
-Prompt engineering is the practice of designing clear and effective instructions, written in human language, that guide how an AI Agent should behave.
-
-This represents an important shift in system design: instead of relying only on traditional programming languages, behavior can now be influenced through natural language instructions.
-
-Well-designed prompts can strongly improve tone, consistency, reasoning quality, and the overall user experience.
-
-## Good Practices for Natural-Language Prompts
-
-When prompts are written in human language, clarity becomes essential. Ambiguous or overly generic instructions often lead to inconsistent behavior.
-
-Effective prompts usually include:
-
-- **Clear objective**  
-  Explain what the agent is expected to achieve.
-
-- **Expected behavior**  
-  Define tone, style, priorities, or boundaries.
-
-- **Context**  
-  Provide relevant background information.
-
-- **Constraints**  
-  Specify what the agent must always do, should avoid, or must never do.
-
-- **Output expectations**  
-  Describe the desired format or level of detail.
-
-- **Prompt Engineering tips when writing instructions:**
-
-	•	Keep It Simple: Use clear, concise language. Avoid technical jargon or overly complex sentences.  
-	•	Use Markdown: Use headings and ordered/unordered list markdown for best results.  
-	•	State Your AI Agent's Identity: Begin by clearly defining the agent's persona (e.g., “You are a helpful customer support agent…”).  
-	•	Break It Down: Outline tasks step by step. For instance, “First, confirm your account number. Then, describe your issue.”  
-	•	Plan for Errors: Include fallback phrases such as, “I'm sorry, could you please repeat that?” if the input isn't clear.  
-	•	Preserve Context: Remind the agent to remember previous responses to ensure continuity in long conversations.  
-	•	Reference Actions: Clearly instruct how to use external actions at different steps. Make sure the referenced actions are enabled in the Actions tab to avoid any unexpected behavior.  
-	•	Add Guardrails: Instruct the AI Agent to respond only in the context of the goal.  
-	•	Add Examples: To improve accuracy, add examples wherever needed.  
-
----
-### Be Specific
-Specify what the AI Agent must do, how it should do it, and any constraints that must be respected.
-For instance, explicitly state whether a set of rules is part of an authentication procedure or an identity-verification process. Providing this context helps the AI Agent better understand the purpose of the workflow and apply the rules more consistently.
-
-### Precise Instructions Change Behavior
-Do not assume that an AI Agent behaves like a human agent. It may interpret instructions differently and produce unexpected outcomes.
-#### Weak Prompt Example:
-
-`Ask the user for first name. Then ask for last name, and finally the Employee ID.`
-
-In this case, the AI Agent might ask all together with a single question, because it is not assumed that it has to wait for an answer before asking the next question.
-
-
-#### Improved Prompt:
-
-`Ask for first name, last name, and Employee ID one question at a time, waiting for each answer before asking the next one.`
-
----
-
-### Prefer Causal Logic Over Pure Sequence
-
-Prompts should express logical dependencies, not just sequence. “First do A, then do B” may be interpreted as guidance rather than a required condition. State why each step is needed and what must happen before the next one.
-
-#### Weak Example:
+#### Weak Example
 
 `Collect the Employee ID, check the HR system, and inform the user of the PTO balance.`
 
-In this example, the prompt describes a sequence of tasks but does not explicitly state the required dependencies between them. This flow might work well in most cases but fail in some, as the AI Agent may attempt to check the HR system before obtaining the Employee ID, or invent or assume the response without using the actual system result.
+This prompt describes a sequence of tasks but does not explicitly state the dependency between them. Although it may work correctly in many cases, the AI Agent may attempt to query the HR system before obtaining the Employee ID, or generate a response without using the actual system result.
 
-#### Stronger Example:
+#### Stronger Example
 
-`Ask for the Employee ID, then use it to query the HR system to retrieve the PTO balance and provide the result to the user.`
+`Ask for the Employee ID, then use it to query the HR system to retrieve the employee's PTO balance. Provide the result returned by the HR system to the user.`
 
-In this example, causality is strengthened by explicitly stating that the Employee ID is used to retrieve the PTO balance.
+Here, causality is reinforced by explicitly stating that the Employee ID is required to retrieve the PTO balance.
+
+---
 
 ### Use Natural-Language Instructions, Not Code-Like Instructions
 
-You might think that an AI Agent, being fundamentally software, is more comfortable with instructions written in a code-like language. On the contrary, AI Agents process instructions as a whole, rather than executing them step by step, and may struggle with tasks that assume strict procedural logic.
+Although an AI Agent is software, prompts should generally be written as natural-language instructions rather than as pseudo-code. LLMs interpret instructions semantically; they do not execute them as procedural programs.
 
-#### Weak Prompt Example:
+#### Weak Prompt Example
 
-```
-Step 1: validate the input using the knowledge base  
-Step 2: if valid, continue to step 3. If it is not valid, go to step 5  
-Step 3: Ask what issue the user is experiencing  
+```text
+Step 1: Validate the user-provided value using an authoritative source.
+Step 2: If the value is valid, continue to Step 3. Otherwise, go to Step 5.
+Step 3: Ask the user to describe the issue.
 ...
 ```
-Here, the prompt assumes a program-like logic, including `if-then-else` and `goto` steps. But AI Agents do not maintain procedural state and do not execute control flow.
 
-#### Stronger Example:
+This prompt assumes procedural concepts such as state variables, conditional branching, and explicit control flow. However, AI Agents do not execute prompts as traditional programs.
 
+#### Stronger Example
+
+```text
+## INPUT VALIDATION
+
+Before continuing, verify that the user-provided value is valid using the appropriate authoritative source.
+
+If the value cannot be validated, ask the user for clarification.
+
+If the value still cannot be validated after multiple attempts, politely end the conversation.
+
+## ISSUE IDENTIFICATION
+
+Once the value has been successfully validated, ask the user to describe the issue they are experiencing.
 ```
-## SITE VALIDATION  
-Before answering, verify that the site is valid using the document “sites.txt”.  
-If the site is not valid, do not proceed and ask the user for clarification.
-If the user cannot provide a valid site after multiple attempts, politely end the conversation. 
 
-## ISSUE RETRIEVAL  
-Once the site is validated, ask the user to describe the issue they’re experiencing.  
-```
+This formulation avoids relying on explicit procedural control flow. Instead, it organizes the workflow into semantic sections connected by causal relationships rather than by explicit *if-then-else* logic.
 
-This formulation avoids relying on explicit state tracking or procedural control flow. It aligns with how LLMs actually reason: through semantic constraints, not procedural execution. The use of sections such as “Site Validation” and “Issue Retrieval” shows that the logic is organized semantically rather than as explicit control flow, relying on causal relationships instead of *if-then-else* structures.
-In the next section, we will examine why LLMs exhibit these limitations and how to address them in practice.
+---
 
 ### Use Domain-Specific Terminology
-Use Domain-Specific Terminology
 
-Whenever possible, use domain-specific terminology. Terms such as Identity Verification, Authentication, Classification, Validation, and Retrieval carry a much more precise operational meaning than generic verbs or terms such as Identification, Check, Find, or Get. This richer semantic context often leads to more reliable and consistent AI Agent behavior.
+Whenever possible, use domain-specific terminology. Terms such as **Identity Verification**, **Authentication**, **Classification**, **Validation**, and **Retrieval** carry a much more precise operational meaning than generic verbs or terms such as **Identification**, **Check**, **Find**, or **Get**. This richer semantic context often leads to more reliable and consistent AI Agent behavior.
 
-For example, suppose your AI Agent occasionally skips what is intended to be a mandatory Identification procedure. From the agent’s perspective, the user may already have been identified through the conversation or previous context, causing the procedure to appear unnecessary.
+For example, suppose your AI Agent occasionally skips what is intended to be a mandatory **Identification** procedure. From the agent's perspective, the user may already have been identified through the conversation or previous context, causing the procedure to appear unnecessary.
 
-By renaming the procedure to Identity Verification, you make its purpose much more explicit. The expression Identity Verification conveys that the user’s identity must be confirmed by following a defined procedure, even if the agent already knows who the user is. This reduces ambiguity and helps the agent follow the intended workflow more consistently.
+By renaming the procedure to **Identity Verification**, you make its purpose much more explicit. The expression **Identity Verification** conveys that the user's identity must be confirmed by following a defined procedure, even if the agent already knows who the user is. This reduces ambiguity and helps the agent follow the intended workflow more consistently.
 
 In general, procedure names should describe their purpose rather than the individual actions they consist of.
 
-## Important Limitation
+---
+
+## When Additional Control Is Needed
 
 Natural-language prompts are excellent for guidance, tone, reasoning, and intent recognition.
 
-However, when a workflow requires mandatory steps, strict validation, conditional branching, or repeatable execution, prompts alone may not provide enough control.
-
-# When Prompts Are Not Enough
-
-A common design mistake in AI agents is assuming that a prompt alone can reliably enforce a step-by-step business procedure.
-
-This becomes a problem when the agent is expected to behave intelligently in conversation while also following a **strict troubleshooting path**, **validation sequence**, or **policy-driven decision flow**.
-
-## Problem Statement
-
-In many customer contact center scenarios, the agent must do more than answer questions naturally. It must also follow a sequence of required checks, ask specific questions when certain conditions are met, and avoid skipping important steps.
-
-Examples include:
-
-- troubleshooting flows
-- procedural workflows
-- technical diagnostics
-- policy-based routing or escalation
-
-In these examples, the logic is very similar to programming code. 
-
----
-**Risk**  
-Large language models can generate code, but **cannot execute it reliably**.
-
----
-
-The challenge is that large language models do not execute business logic in the same way that software does. Even when instructions are written clearly in a prompt or a knowledge base, the model may:
-
-- skip steps
-- ask too many questions
-- ask questions out of order
-- interpret instructions loosely
-- fail to branch consistently
-- hallucinate values when exact matching is required
-
-This is especially risky when the workflow depends on **deterministic behavior**.
-
-## Why This Happens
-
-Language models are strong at understanding intent and generating natural responses, but they are less reliable when asked to follow **multi-step procedural logic** purely from free-form text.
-
-A prompt may describe rules such as:
-
-- if the user has provided an Employee ID, ask what issue they are experiencing
-- if the issue is printer-related, ask printer-specific questions
-- if the resource is shared, ask whether other users are affected
-- if the issue is software-related, ask which application is involved
-
-You might find that writing the above rules with a programming-language style might work better than using human language.
-
----
-**Key Point**  
-Flows like the one above implicitly require a **runtime environment**, **state variables**, and **causal branching**.
-
----
-
-But flows like the first one above implicitly require procedural state: for example, whether `employee_id_check` is true or false, whether a previous step has been completed, and which branch should be executed next. The problem is that an LLM does not natively operate as a deterministic workflow engine with guaranteed state tracking, conditional execution, and control flow. It generates the next response token by token.
-
-However, across the millions of documents seen during training, the model statistically captures different patterns associated with natural language and programming language data.
-
-Human language is not strictly tied to exact wording. Word order may vary, synonyms often preserve the core meaning, and the same concept can be expressed in many different ways. Typos or minor errors are often tolerated without changing the intended meaning. Human language relies heavily on semantics, while allowing broader syntactic variation.
-
-Programming languages, on the other hand, depend heavily on exact syntax. Specific keywords are required, punctuation matters, and a missing comma or bracket may break the entire program. Programming languages require strict syntax and tightly constrained semantics.
-
----
-**Practical Consequence** 
-
-Code-like formats make LLMs focus on syntax and follow instructions **more reliably**.
-
----
-
-
-For this reason, when procedures are encoded as structured JSON workflow variables, the LLM tends to follow them more precisely than equivalent free-form natural language instructions.
-
-Externalizing workflow logic into a JSON structure helps address both limitations: structured formats strengthen syntactic focus, while state, branching, and execution rules are shifted out of the LLM into an explicit machine-readable layer.
-
-
-## Recommended Action
-
-Use prompts for conversation, tone, intent recognition, summarization, and general reasoning.
-
----
-**Do Not Rely on Prompts Alone**  
-
-Prompts alone are **not enough** for reliable execution of multi-step or conditional workflows.
-
----
-
-Do not rely on prompts alone to guarantee consistent execution of multi-step procedures, troubleshooting paths, or conditional workflows.
-
-When interactions require mandatory steps, branching logic, state tracking, or repeatable outcomes, place that control logic in an external structured layer, such as a JSON workflow or database-driven flow definition.
-
-In this model, the AI Agent focuses on language understanding and user interaction, while the external workflow layer controls sequence, decisions, and next-step execution.
-
-This separation typically improves:
-
-- reliability
-- consistency
-- maintainability
-- operational control
-
-## Best Practices
-
-A good rule of thumb is:
-
-- use the model for interpretation
-- use structured data for control
-
-Two implementation models can be considered:
-
-1. **Hybrid Control Model**  
-   Workflow logic is split between prompt instructions and an external JSON/database layer.
-
-2. **Fully Externalized Control Model**   
-   Workflow logic is moved almost entirely into an external JSON/database layer, while the LLM focuses on language understanding, reasoning, and interaction. Although this model is outside the scope of this document, it is included here for architectural completeness.
-
+However, when a workflow requires many mandatory steps, strict validation, conditional branching, or repeatable execution, prompts alone may not provide sufficient control.
 # Workflow Design Guidelines
 
-Prompt engineering can significantly improve the reliability of AI Agents. However, not every aspect of a workflow should remain inside the prompt. A good design principle is to assign each task to the component that is best suited to perform it.
+Prompt engineering can significantly improve the reliability of AI Agents. However, not every aspect of a workflow should remain inside the prompt. A useful design principle is to assign each task to the component best suited to perform it.
 
 ## Use Actions for Deterministic Operations
 
@@ -412,7 +174,7 @@ Typical examples include:
 
 For example, instead of asking the LLM to compare the requested PTO days with the employee's available balance, an external action can perform the calculation and simply return the result.
 
-Similarly, if an identity verification procedure requires checking that the first name and last name provided by the user match the values stored in the database, the comparison itself should be performed by an action. The AI Agent should simply interpret and communicate the returned result.
+Similarly, if an identity-verification procedure requires checking that the first name and last name provided by the user match the values stored in the database, the comparison itself should be performed by an action. The AI Agent should simply interpret and communicate the returned result.
 
 A useful rule of thumb is:
 
@@ -422,7 +184,7 @@ A useful rule of thumb is:
 
 ## Prefer Specialized AI Agents for Long Procedures
 
-When workflows become long, contain many mandatory steps, require several external actions, or involve multiple decision points, a single AI Agent becomes increasingly difficult to control reliably.
+As workflows become longer, involve many mandatory steps, require multiple external actions, or contain several decision points, controlling a single AI Agent reliably becomes increasingly difficult.
 
 Whenever possible, the recommended architecture is to use a **concierge AI Agent** responsible for:
 
@@ -446,7 +208,7 @@ This architecture keeps prompts smaller, reduces ambiguity, and generally improv
 
 Some environments may not support specialized AI Agents, or a single AI Agent may still be preferred.
 
-In these situations, workflow adherence can be improved by progressively externalizing procedural logic into structured JSON variables stored in Webex Connect or in an external database.
+In these situations, workflow adherence can be improved by progressively externalizing procedural logic into structured JSON variables stored in Webex Connect or an external database.
 
 Instead of describing an entire workflow in natural language, the AI Agent retrieves only the structured information required for the current task.
 
@@ -458,15 +220,17 @@ Typical examples include:
 - question selection
 - business rules
 
-This approach allows the LLM to continue performing what it does best—understanding language, interpreting user intent, and interacting naturally—while procedural control is delegated to a deterministic, machine-readable workflow definition.
+This approach allows the LLM to continue doing what it does best—understanding language, interpreting user intent, and interacting naturally—while procedural control is delegated to a deterministic, machine-readable workflow definition.
 
 The following example illustrates this approach using an IT triage workflow.
 
+---
+
 ## Best Practices
 
-A good rule of thumb is:
+A useful rule of thumb is:
 
-- use the model for interpretation
+- use the LLM for interpretation
 - use structured data for control
 
 Two implementation models can be considered:
@@ -474,68 +238,78 @@ Two implementation models can be considered:
 1. **Hybrid Control Model**  
    Workflow logic is split between prompt instructions and an external JSON/database layer.
 
-2. **Fully Externalized Control Model**   
+2. **Fully Externalized Control Model**  
    Workflow logic is moved almost entirely into an external JSON/database layer, while the LLM focuses on language understanding, reasoning, and interaction. Although this model is outside the scope of this document, it is included here for architectural completeness.
+
+---
 
 ### Hybrid Control Model
 
-Imagine an AI Agent used to triage IT issues. After identifying which resource is affected, the agent must ask additional questions depending on the issue type.
+Imagine an AI Agent used to triage IT issues.
 
-Possible follow-up questions are:
+After identifying the affected resource, the agent must ask additional questions depending on the issue category.
+
+Possible follow-up questions include:
 
 - Site location
 - Whether other users are experiencing the same issue
 - Which application is involved
 
-These questions do not apply equally to every category.
+These questions are not applicable to every category.
 
-Knowing the location of a printer may be important, while it may be irrelevant for access issues on a web application.
-
----
-**Benefit of Structured Variables**  
-JSON increases syntactic focus and makes the LLM more attentive to exact fields, conditions, and transitions.
+For example, knowing the location of a printer may be essential, while it may be irrelevant for an issue involving a web application.
 
 ---
 
-If we describe this behavior only in human language, the AI Agent may behave inconsistently. However, if we convert the logic into variables stored in a database and retrieved as JSON, the structured format increases the syntactic focus of the interaction, making the LLM more attentive to exact fields, conditions, and transitions than it would typically be with plain natural language instructions.
+**Benefit of Structured Variables**
 
-Below is an example of a JSON variable that can be stored in Webex Connect or in an external database:
+Structured JSON variables strengthen the syntactic focus of the interaction, making the LLM more attentive to exact fields, conditions, and transitions.
+
+---
+
+If this behavior is described only in natural language, the AI Agent may behave inconsistently. However, if the workflow logic is represented as structured variables stored in a database and retrieved as JSON, the structured format increases the syntactic focus of the interaction, making the LLM more attentive to exact fields, conditions, and transitions than it would typically be with equivalent natural-language instructions.
+
+Below is an example of a JSON structure that can be stored in Webex Connect or an external database:
 
 ```json
-{
-  "id": "obj1",
-  "category": "Web Application",
-  "ask_site": false,
-  "check_application": true,
-  "check_other_users": false
-}
-
-{
-  "id": "obj2",
-  "category": "Printer",
-  "ask_site": true,
-  "check_application": false,
-  "check_other_users": true
-}
+[
+  {
+    "id": "obj1",
+    "category": "Web Application",
+    "ask_site": false,
+    "check_application": true,
+    "check_other_users": false
+  },
+  {
+    "id": "obj2",
+    "category": "Printer",
+    "ask_site": true,
+    "check_application": false,
+    "check_other_users": true
+  }
+]
 ```
 
-After identifying the category, the agent retrieves the corresponding configuration.
+After identifying the issue category, the AI Agent retrieves the corresponding configuration.
 
 The following are the instructions for the AI Agent:
 
 ```text
-1. Identify the user issue and use the [category_list] action to map it to a single category.
-2. Use the mapped category to call the [selected_category] action and retrieve its configuration.
+1. Identify the user's issue and use the [category_list] action to map it to a single category.
+2. Use the selected category to call the [selected_category] action and retrieve its configuration.
 
 Then evaluate the following conditions:
 
 - If `check_application` is `true` and no application has been specified, ask which application is involved.
-- If `ask_site` is `true` and no site is confirmed, ask for the site and validate it.
+- If `ask_site` is `true` and no site has been confirmed, ask for the site and validate it.
 - If `check_other_users` is `true` and you do not yet know whether other users are affected, ask the user whether anyone else is experiencing the same issue.
 ```
-In this model, logic is partly encoded in the prompt and partly externalized in the JSON/database layer.
-Natural language instructions leave broad room for interpretation.
-Structured formats such as JSON reduce that ambiguity by constraining the decision space.
-Externalizing workflow logic into machine-readable structures does not make the LLM a true executor, but it significantly improves reliability, consistency, and controllability.
-It is also possible to externalize the logic almost entirely, while the LLM still provides language understanding, reasoning, and interaction skills.
+
+In this model, workflow logic is partly encoded in the prompt and partly externalized in the JSON/database layer.
+
+Natural-language instructions leave broader room for interpretation. Structured formats such as JSON reduce that ambiguity by constraining the decision space.
+
+Externalizing workflow logic into machine-readable structures does not turn the LLM into a deterministic workflow engine, but it significantly improves reliability, consistency, maintainability, and controllability.
+
+For workflows that require even stronger procedural guarantees, the control logic can be externalized almost entirely while the LLM continues to provide language understanding, reasoning, and natural interaction.
 
