@@ -121,12 +121,22 @@ Once the site is validated, ask the user to describe the issue they’re experie
 This formulation avoids relying on explicit state tracking or procedural control flow. It aligns with how LLMs actually reason: through semantic constraints, not procedural execution. The use of sections such as “Site Validation” and “Issue Retrieval” shows that the logic is organized semantically rather than as explicit control flow, relying on causal relationships instead of *if-then-else* structures.
 In the next section, we will examine why LLMs exhibit these limitations and how to address them in practice.
 
+### Use Domain-Specific Terminology
+Use Domain-Specific Terminology
+
+Whenever possible, use domain-specific terminology. Terms such as Identity Verification, Authentication, Classification, Validation, and Retrieval carry a much more precise operational meaning than generic verbs or terms such as Identification, Check, Find, or Get. This richer semantic context often leads to more reliable and consistent AI Agent behavior.
+
+For example, suppose your AI Agent occasionally skips what is intended to be a mandatory Identification procedure. From the agent’s perspective, the user may already have been identified through the conversation or previous context, causing the procedure to appear unnecessary.
+
+By renaming the procedure to Identity Verification, you make its purpose much more explicit. The expression Identity Verification conveys that the user’s identity must be confirmed by following a defined procedure, even if the agent already knows who the user is. This reduces ambiguity and helps the agent follow the intended workflow more consistently.
+
+In general, procedure names should describe their purpose rather than the individual actions they consist of.
+
 ## Important Limitation
 
 Natural-language prompts are excellent for guidance, tone, reasoning, and intent recognition.
 
 However, when a workflow requires mandatory steps, strict validation, conditional branching, or repeatable execution, prompts alone may not provide enough control.
-
 
 # When Prompts Are Not Enough
 
