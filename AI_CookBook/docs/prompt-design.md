@@ -9,12 +9,12 @@
     - [Use Natural-Language Instructions, Not Code-Like Instructions](#use-natural-language-instructions-not-code-like-instructions)
     - [Use Domain-Specific Terminology](#use-domain-specific-terminology)
   - [When Additional Control Is Needed](#when-additional-control-is-needed)
-- [When Prompts Are Not Enough](#when-prompts-are-not-enough)
-  - [Problem Statement](#problem-statement)
-  - [Why This Happens](#why-this-happens)
-  - [Recommended Action](#recommended-action)
-  - [Best Practices](#best-practices)
-    - [Hybrid Control Model](#1-hybrid-control-model)
+    - [Workflow Design Guidelines](#workflow-design-guidelines)
+     - [Use Actions for Deterministic Operations](#use-actions-for-deterministic-operations)
+     - [Prefer Specialized AI Agents for Long Procedures](#prefer-specialized-ai-agents-for-long-procedures)
+     - [Externalize Workflow Logic When Necessary](#externalize-workflow-logic-when-necessary)
+   - [Best Practices](#best-practices)
+    - [Hybrid Control Model](#hybrid-control-model) 
 
 
 # Prompt Engineering for AI Agents
@@ -158,11 +158,11 @@ In general, procedure names should describe their purpose rather than the indivi
 Natural-language prompts are excellent for guidance, tone, reasoning, and intent recognition.
 
 However, when a workflow requires many mandatory steps, strict validation, conditional branching, or repeatable execution, prompts alone may not provide sufficient control.
-# Workflow Design Guidelines
+### Workflow Design Guidelines
 
 Prompt engineering can significantly improve the reliability of AI Agents. However, not every aspect of a workflow should remain inside the prompt. A useful design principle is to assign each task to the component best suited to perform it.
 
-## Use Actions for Deterministic Operations
+#### Use Actions for Deterministic Operations
 
 Whenever the expected result is deterministic, an external action is generally preferable to asking the LLM to produce it.
 
@@ -186,7 +186,7 @@ A useful rule of thumb is:
 
 The goal is not to replace prompt engineering, but to complement it with deterministic components whenever stronger procedural guarantees are required.
 
-## Prefer Specialized AI Agents for Long Procedures
+#### Prefer Specialized AI Agents for Long Procedures
 
 As workflows become longer, involve many mandatory steps, require multiple external actions, or contain several decision points, controlling a single AI Agent reliably becomes increasingly difficult.
 
@@ -208,7 +208,7 @@ This architecture keeps prompts smaller, reduces ambiguity, and generally improv
 
 ---
 
-## Externalize Workflow Logic When Necessary
+#### Externalize Workflow Logic When Necessary
 
 Some environments may not support specialized AI Agents, or a single AI Agent may still be preferred.
 
@@ -226,11 +226,11 @@ Typical examples include:
 
 This approach allows the LLM to continue doing what it does best—understanding language, interpreting user intent, and interacting naturally—while procedural control is delegated to a deterministic, machine-readable workflow definition.
 
-The following example illustrates this approach using an IT triage workflow.
 
 ---
 
-## Best Practices
+### Best Practices
+The following example illustrates this approach using an IT triage workflow.
 
 A useful rule of thumb is:
 
@@ -247,7 +247,7 @@ Two implementation models can be considered:
 
 ---
 
-### Hybrid Control Model
+#### Hybrid Control Model
 
 Imagine an AI Agent used to triage IT issues.
 
