@@ -6,7 +6,7 @@
     - [Be Specific](#be-specific)
 	- [Precise Instructions Change Behavior](#precise-instructions-change-behavior)
   	- [Prefer Causal Logic Over Pure Sequence](#prefer-causal-logic-over-pure-sequence)
-    - [Use Natural-Language Instructions, Not Code-Like Instructions](#use-natural-language-instructions,-not-code-like-instructions)
+    - [Use Natural-Language Instructions, Not Code-Like Instructions](#use-natural-language-instructions-not-code-like-instructions)
   - [Important Limitation](#important-limitation)
 - [When Prompts Are Not Enough](#when-prompts-are-not-enough)
   - [Problem Statement](#problem-statement)
