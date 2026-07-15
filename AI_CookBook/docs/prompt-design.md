@@ -10,10 +10,10 @@
     - [Use Domain-Specific Terminology](#use-domain-specific-terminology)
   - [When Additional Control Is Needed](#when-additional-control-is-needed)
     - [Workflow Design Guidelines](#workflow-design-guidelines)
-     - [Use Actions for Deterministic Operations](#use-actions-for-deterministic-operations)
-     - [Prefer Specialized AI Agents for Long Procedures](#prefer-specialized-ai-agents-for-long-procedures)
-     - [Externalize Workflow Logic When Necessary](#externalize-workflow-logic-when-necessary)
-   - [Best Practices](#best-practices)
+    - [Use Actions for Deterministic Operations](#use-actions-for-deterministic-operations)
+    - [Prefer Specialized AI Agents for Long Procedures](#prefer-specialized-ai-agents-for-long-procedures)
+    - [Externalize Workflow Logic When Necessary](#externalize-workflow-logic-when-necessary)
+  - [Best Practices](#best-practices)
     - [Hybrid Control Model](#hybrid-control-model) 
 
 
