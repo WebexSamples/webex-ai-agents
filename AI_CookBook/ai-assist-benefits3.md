@@ -15,20 +15,19 @@ AI Assist is a productivity, quality, insight, and agent-experience layer. It he
 | --- | --- |
 | AI Assist helps agents, it does not replace them | The strongest story is recovered capacity, better service quality, and better agent experience |
 | Every feature should map to a use case | Scenario-first selling makes value easier to understand and defend |
-| ROI starts with operational metrics | AHT, ACW, FCR, QA, CSAT, occupancy, attrition, and repeat contact create the baseline |
+| ROI starts with operational metrics | AHT, ACW, FCR, CSAT, occupancy, attrition, and repeat contact create the baseline |
 | Pilot with before-and-after data | A focused pilot turns AI value from opinion into measurable proof |
 
 ## Capability And Use-Case Map
 
 | AI Assist Feature | What It Does | Primary Use Cases | Core Metrics |
 | --- | --- | --- | --- |
-| Real-time assist | Guides agents during live conversations | New-agent ramp, complex calls, retention conversations | Ramp time, AHT, QA, FCR |
-| Knowledge surfacing | Brings approved answers into the agent experience | Policy-heavy support, troubleshooting, cross-trained queues | Search time, hold time, answer accuracy |
-| Suggested responses | Recommends consistent response language | Consistent answers, faster digital replies, sensitive topics | QA, CSAT, repeat contact |
+| Real-Time Assist | Guides agents during live conversations with approved knowledge and response guidance | New-agent ramp, complex calls, policy-heavy support, consistent answers | Ramp time, AHT, FCR, CSAT |
+| Real-Time Assist Actions | Uses live conversation context and customer intent to trigger a recommended action that the agent can review and execute in Agent Desktop | In-call workflow automation, next-best action, system updates, reduced application switching | AHT, action adoption, task completion time, error rate, FCR |
 | Real-time transcription | Captures live conversation context | Coaching, escalation, compliance review, summary generation | Review time, escalation quality, compliance review time |
 | Auto wrap-up | Reduces manual wrap-up effort | High ACW, disposition quality, repetitive admin work | ACW, occupancy, service level |
-| Post-call summaries | Creates cleaner interaction notes | CRM/case notes, QA review, downstream analytics | Case completeness, rework, summary quality |
-| Auto CSAT | Estimates customer satisfaction signals from interactions | Low survey response, targeted QA, unhappy-customer detection | CSAT coverage, low-score trends, complaint rate |
+| Post-call summaries | Creates cleaner interaction notes | CRM/case notes, supervisor review, downstream analytics | Case completeness, rework, summary quality |
+| Auto CSAT | Estimates customer satisfaction signals from interactions | Low survey response, targeted supervisor review, unhappy-customer detection | CSAT coverage, low-score trends, complaint rate |
 | Agent Wellness | Identifies agent stress or burnout signals | Burnout risk, attrition reduction, supervisor intervention | Attrition, absenteeism, agent satisfaction |
 | Topic Analytics | Finds recurring topics and interaction drivers | Root-cause analysis, KB improvement, routing and staffing decisions | Top topics, repeat drivers, transfer rate |
 
@@ -42,7 +41,7 @@ flowchart LR
     LiveHelp --> Experience[Better Agent And Customer Experience]
     AfterCall --> Capacity[Recovered Agent Capacity]
     Insights --> Decisions[Better Coaching, KB, Routing, And Staffing Decisions]
-    Experience --> Metrics[CSAT, QA, FCR, Attrition]
+    Experience --> Metrics[CSAT, FCR, Attrition]
     Capacity --> Metrics
     Decisions --> Metrics
     Metrics --> ROI[ROI And Expansion Case]
@@ -58,27 +57,27 @@ flowchart TD
     Start --> CX[Low CSAT Visibility]
     Start --> Burnout[Agent Burnout Risk]
     Start --> Trends[Unknown Call Drivers]
+    Start --> Tasks[Repetitive In-Call Tasks]
     Start --> ROI[Needs ROI Proof]
 
     Ramp --> RTA[Real-Time Assist]
     Ramp --> Wellness[Agent Wellness]
-    Search --> Knowledge[Knowledge Surfacing]
-    Search --> Suggested[Suggested Responses]
+    Search --> RTA
     Notes --> Wrap[Auto Wrap-Up]
     Notes --> Summary[Post-Call Summaries]
     CX --> AutoCSAT[Auto CSAT]
     Burnout --> Wellness
     Trends --> Topic[Topic Analytics]
+    Tasks --> RTAA[Real-Time Assist Actions]
     ROI --> Pilot[Measured Pilot]
 
     RTA --> Metrics[Measure Baseline And Outcome]
-    Knowledge --> Metrics
-    Suggested --> Metrics
     Wrap --> Metrics
     Summary --> Metrics
     AutoCSAT --> Metrics
     Wellness --> Metrics
     Topic --> Metrics
+    RTAA --> Metrics
     Pilot --> Metrics
 ```
 
@@ -89,10 +88,10 @@ flowchart TD
 | Field | Guidance |
 | --- | --- |
 | Problem | New agents take too long to become productive and supervisors spend too much time helping during live calls |
-| Best-fit features | Real-time assist, knowledge surfacing, suggested responses, agent wellness |
-| Use case | Help new agents during live interactions with contextual guidance and approved answers |
+| Best-fit features | Real-Time Assist, agent wellness |
+| Use case | Help new agents during live interactions with contextual guidance, approved knowledge, and response suggestions |
 | Business value | Shorter ramp time, fewer supervisor assists, better consistency, lower agent frustration |
-| Measures | Training time, new-agent AHT, QA score, supervisor assists, early-tenure attrition |
+| Measures | Training time, new-agent AHT, FCR, supervisor assists, early-tenure attrition |
 
 ```mermaid
 flowchart LR
@@ -127,8 +126,8 @@ flowchart LR
 | Field | Guidance |
 | --- | --- |
 | Problem | Agents search across multiple sources and response quality varies by agent |
-| Best-fit features | Knowledge surfacing, suggested responses, real-time assist |
-| Use case | Bring approved knowledge and response guidance into the agent workflow |
+| Best-fit features | Real-Time Assist |
+| Use case | Bring approved knowledge and response guidance into the agent workflow during live interactions |
 | Business value | Faster answers, fewer holds, better consistency, fewer escalations |
 | Measures | Hold time, search time, answer accuracy, repeat contacts, escalation rate |
 
@@ -136,7 +135,7 @@ flowchart LR
 flowchart TD
     Question[Customer Question] --> Intent[Identify Intent]
     Intent --> Knowledge[Surface Approved Knowledge]
-    Knowledge --> Suggested[Suggested Response]
+    Knowledge --> Suggested[Response Guidance]
     Suggested --> Agent[Agent Reviews And Responds]
     Agent --> Outcome[Consistent Answer]
 ```
@@ -148,14 +147,14 @@ flowchart TD
 | Problem | Only a small percentage of customers respond to surveys, so leaders lack a full view of customer satisfaction |
 | Best-fit features | Auto CSAT, post-call summaries, topic analytics |
 | Use case | Use interaction signals to estimate satisfaction trends and prioritize follow-up, coaching, and process fixes |
-| Business value | Better CX coverage, faster detection of dissatisfied customers, more targeted quality review |
-| Measures | CSAT coverage, low-score detection, complaint rate, repeat contact, QA sampling efficiency |
+| Business value | Better CX coverage, faster detection of dissatisfied customers, more targeted supervisor review |
+| Measures | CSAT coverage, low-score detection, complaint rate, repeat contact, review coverage |
 
 ```mermaid
 flowchart LR
     Interaction[Interaction Data] --> AutoCSAT[Auto CSAT]
     AutoCSAT --> LowScore[Low Satisfaction Signals]
-    LowScore --> Review[QA Or Supervisor Review]
+    LowScore --> Review[Supervisor Review]
     LowScore --> Topics[Topic Analytics]
     Topics --> Fixes[Coaching, KB, Or Process Fixes]
 ```
@@ -165,7 +164,7 @@ flowchart LR
 | Field | Guidance |
 | --- | --- |
 | Problem | Agents handle repeated difficult conversations and leaders do not see stress signals early enough |
-| Best-fit features | Agent Wellness, real-time assist, auto wrap-up |
+| Best-fit features | Agent Wellness, Real-Time Assist, auto wrap-up |
 | Use case | Identify wellness risk signals and reduce repetitive work that contributes to burnout |
 | Business value | Better agent support, lower attrition risk, improved morale, more sustainable performance |
 | Measures | Attrition, absenteeism, adherence, agent satisfaction, wellness alerts, ACW |
@@ -197,29 +196,50 @@ flowchart LR
     Actions --> Impact[Lower Repeat Volume And Better Experience]
 ```
 
+### 7. Repetitive In-Call Tasks And Application Switching
+
+| Field | Guidance |
+| --- | --- |
+| Problem | Agents must recognize the next step, switch applications, and manually complete routine tasks while speaking with the customer |
+| Best-fit features | Real-Time Assist Actions, Real-Time Assist, real-time transcription |
+| Trigger | The AI Assistant skill detects relevant customer intent and conversation context, then proposes a configured action |
+| Use case | Present the next-best action in Agent Desktop so the agent can review and execute a workflow such as retrieving information, updating a record, or initiating a business process |
+| Business value | Less application switching, faster task completion, fewer manual errors, lower handle time, and more consistent process execution |
+| Measures | Action suggestion rate, agent acceptance rate, successful action completion, task time, error rate, AHT, FCR |
+
+```mermaid
+flowchart LR
+    Conversation[Live Conversation] --> Context[Intent And Context Detected]
+    Context --> Trigger[Real-Time Assist Action Trigger]
+    Trigger --> Review[Agent Reviews Suggested Action]
+    Review --> Execute[Action Executes Configured Workflow]
+    Execute --> Result[Result Returned In Agent Desktop]
+```
+
 ## Feature Bundle Patterns
 
 | Customer Motion | Recommended Bundle | Why This Works |
 | --- | --- | --- |
-| Agent productivity | Real-time assist, knowledge surfacing, suggested responses | Helps agents answer faster during the interaction |
+| Agent productivity | Real-Time Assist | Helps agents answer faster with approved knowledge and response guidance during the interaction |
+| In-call workflow automation | Real-Time Assist Actions, Real-Time Assist, real-time transcription | Detects the right moment, proposes a configured action, and lets the agent complete work without leaving the interaction workflow |
 | After-call automation | Real-time transcription, post-call summaries, auto wrap-up | Reduces manual work after the call and improves note quality |
 | Customer experience visibility | Auto CSAT, topic analytics, post-call summaries | Finds satisfaction patterns and the topics behind them |
-| Agent experience | Agent wellness, real-time assist, auto wrap-up | Supports agents while reducing repetitive work |
+| Agent experience | Agent wellness, Real-Time Assist, auto wrap-up | Supports agents while reducing repetitive work |
 | Operational intelligence | Topic analytics, transcription, summaries, auto CSAT | Converts interactions into signals leaders can act on |
 
 ## Metric Map
 
 | Metric | Features That Influence It | How To Validate |
 | --- | --- | --- |
-| Average handle time | Real-time assist, knowledge surfacing, suggested responses | Compare AHT before and after pilot by queue |
+| Average handle time | Real-Time Assist | Compare AHT before and after pilot by queue |
+| In-call task completion | Real-Time Assist Actions | Compare task time, action acceptance, successful completion, and manual error rates |
 | After-call work | Auto wrap-up, post-call summaries, transcription | Measure ACW by queue and agent group |
-| First contact resolution | Knowledge surfacing, suggested responses, real-time assist | Compare repeat contacts and escalations |
-| Agent ramp time | Real-time assist, knowledge surfacing, suggested responses | Track new-agent productivity curve |
-| QA score | Suggested responses, transcription, summaries, Auto CSAT | Review supervisor scorecards and sample interactions |
+| First contact resolution | Real-Time Assist | Compare repeat contacts and escalations |
+| Agent ramp time | Real-Time Assist | Track new-agent productivity curve |
 | CSAT visibility | Auto CSAT, topic analytics, summaries | Compare survey-only coverage vs AI-assisted coverage |
-| Agent attrition risk | Agent wellness, auto wrap-up, real-time assist | Track attrition, absenteeism, burnout indicators, and agent surveys |
+| Agent attrition risk | Agent Wellness, auto wrap-up, Real-Time Assist | Track attrition, absenteeism, burnout indicators, and agent surveys |
 | Business visibility | Topic analytics, transcription, summaries, wrap-up | Review reporting completeness and topic trend usefulness |
-| Cost per contact | Real-time assist, knowledge surfacing, auto wrap-up | Compare time saved and cost per contact before and after pilot |
+| Cost per contact | Real-Time Assist, auto wrap-up | Compare time saved and cost per contact before and after pilot |
 
 ## Pilot Design
 
@@ -241,9 +261,9 @@ sequenceDiagram
 | Pilot Step | What To Do | Output |
 | --- | --- | --- |
 | Pick the use case | Choose one queue, call type, or business outcome | Clear pilot scope |
-| Capture baseline | Measure AHT, ACW, volume, QA, FCR, CSAT, attrition, and cost where relevant | Before view |
+| Capture baseline | Measure AHT, ACW, volume, FCR, CSAT, attrition, and cost where relevant | Before view |
 | Select features | Choose the smallest feature bundle tied to the pain | Controlled pilot |
-| Validate quality | Review summaries, suggestions, Auto CSAT patterns, wellness signals, and topics | Trust validation |
+| Validate quality | Review real-time guidance, action triggers and results, summaries, Auto CSAT patterns, wellness signals, and topics | Trust validation |
 | Compare results | Measure before-and-after changes | ROI evidence |
 | Decide next step | Tune, expand, or pause based on data | Expansion plan |
 
@@ -258,6 +278,22 @@ Start with a model the customer already understands: agent minutes, call volume,
 | Average handle time | About 7 minutes |
 | AI Assist time saved | About 70 seconds per call |
 | Cost per productive minute | About $0.65 |
+
+### Easy Daily Calculation
+
+| Step | Calculation | Result |
+| --- | --- | --- |
+| Total calls per day | 100 agents x 50 calls | 5,000 calls |
+| Time saved per agent | 50 calls x 70 seconds | About 58 minutes |
+| Total time saved | 5,000 calls x 70 seconds | 350,000 seconds |
+| Recovered hours | 350,000 seconds / 3,600 | About 97 hours per day |
+| Productive cost per hour | $0.65 x 60 minutes | $39 per hour |
+| Daily capacity value | 97.2 hours x $39 | About $3,792 per day |
+| Monthly capacity value | $3,792 x 22 working days | About $83,400 per month |
+
+The 70 seconds saved reduces the example average handle time from 7 minutes to about 5 minutes 50 seconds, an improvement of approximately 16.7%.
+
+> Capacity value is not automatically a cash saving. It represents productive time that can be used to handle more contacts, reduce customer wait times, improve service, complete follow-up work, or reduce overtime. Validate the 70-second assumption with actual before-and-after pilot data.
 
 ```mermaid
 flowchart LR
@@ -278,19 +314,6 @@ flowchart LR
 | Lower agent attrition risk | Track wellness signals, surveys, absenteeism, and attrition | More stable teams and lower onboarding pressure |
 | Better topic visibility | Track top drivers and fixes over time | Better routing, KB, staffing, and automation decisions |
 
-Simple capacity formula:
-
-```text
-Recovered hours per day =
-(seconds saved per interaction * interactions per day) / 3600
-
-Capacity value =
-recovered hours * productive agent cost per hour
-
-Net ROI =
-capacity value + measurable quality gains - AI usage cost
-```
-
 Customer-facing framing:
 
 | Message | Meaning |
@@ -306,8 +329,9 @@ Customer-facing framing:
 | --- | --- |
 | What is your average handle time by queue? | Time-saving opportunity |
 | How much after-call work do agents perform? | Wrap-up and summary opportunity |
-| How do agents find answers today? | Knowledge surfacing opportunity |
-| How long does new-agent training take? | Real-time assist opportunity |
+| How do agents find answers today, and where do they need live guidance? | Real-Time Assist opportunity |
+| Which routine tasks require agents to leave the desktop or switch applications during a live interaction? | Real-Time Assist Actions opportunity |
+| How long does new-agent training take? | Real-Time Assist opportunity |
 | Are summaries or dispositions consistent? | Summary and wrap-up quality opportunity |
 | How much of your customer feedback comes from surveys? | Auto CSAT opportunity |
 | Which queues show the highest agent stress or attrition? | Agent Wellness opportunity |
@@ -320,10 +344,10 @@ Customer-facing framing:
 | Phase | Checklist |
 | --- | --- |
 | Discover | Pick the pain point, queue, business owner, and target outcome |
-| Baseline | Capture AHT, ACW, QA, FCR, CSAT, volume, attrition, and agent cost where relevant |
+| Baseline | Capture AHT, ACW, FCR, CSAT, volume, attrition, and agent cost where relevant |
 | Design | Choose the smallest feature bundle that maps to the pain |
 | Pilot | Run a focused pilot with clear start and end dates |
-| Review | Validate quality of suggestions, summaries, Auto CSAT, wellness signals, and topic outputs |
+| Review | Validate quality of real-time guidance, action triggers and results, summaries, Auto CSAT, wellness signals, and topic outputs |
 | Measure | Compare before-and-after results and convert time savings into recovered capacity |
 | Expand | Scale to more queues only after value is proven |
 
@@ -341,7 +365,7 @@ No. Handle time is one metric. AI Assist also improves after-call work, agent ra
 
 ### Q2. Which feature should come first?
 
-Start with the customer's pain point. If the pain is training, lead with real-time assist. If the pain is manual notes, lead with auto wrap-up and summaries. If the pain is low satisfaction visibility, lead with Auto CSAT. If the pain is unknown call drivers, lead with Topic Analytics.
+Start with the customer's pain point. If the pain is training, knowledge search, or inconsistent answers, lead with Real-Time Assist. If agents repeatedly switch applications or manually perform routine in-call tasks, lead with Real-Time Assist Actions. If the pain is manual notes, lead with auto wrap-up and summaries. If the pain is low satisfaction visibility, lead with Auto CSAT. If the pain is unknown call drivers, lead with Topic Analytics.
 
 ### Q3. How should ROI be calculated?
 
@@ -353,4 +377,4 @@ Explain it as recovered capacity, better service quality, better agent experienc
 
 ### Q5. What makes a good pilot?
 
-A good pilot has one target queue, clear baseline metrics, a small feature bundle, before-and-after reporting, quality review, and an expansion decision.
+A good pilot has one target queue, clear baseline metrics, a small feature bundle, before-and-after reporting, supervisor review, and an expansion decision.
