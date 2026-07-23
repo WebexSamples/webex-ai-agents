@@ -1,6 +1,7 @@
 ---
 title: AI Assist Benefits
 description: Fast-read chapter for explaining AI Assist benefits, scenarios, and ROI validation.
+Author: ChandraMouli Vaithiyanathan
 ---
 
 # AI Assist Benefits
