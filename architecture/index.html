@@ -1,0 +1,1642 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A practical guide for building secure, governed, and production-ready AI agents in WxCC">
+      
+      
+        <meta name="author" content="Chandramouli Vaithiyanathan">
+      
+      
+        <link rel="canonical" href="https://webexsamples.github.io/webex-ai-agents/architecture/">
+      
+      
+        <link rel="prev" href="../getting-started/">
+      
+      
+        <link rel="next" href="../security/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/cisco-logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Architecture - AI Agent Cookbook for WxCC</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#webex-ai-agent-architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AI Agent Cookbook for WxCC" class="md-header__button md-logo" aria-label="AI Agent Cookbook for WxCC" data-md-component="logo">
+      
+  <img src="../assets/cisco-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI Agent Cookbook for WxCC
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../security/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../multi-agent-strategy/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  multi-agent-strategy
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../model-context-protocol/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  model-context-protocol
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../a2a/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Agent2Agent
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../scripted-ai-agent-design/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Scripted AI Agent Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../knowledge-and-rag/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Knowledge and RAG
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../testing-and-evaluation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Testing and Evaluation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../agent-template/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  PreBuilt_AIAgent
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../glossary/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Glossary
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AI Agent Cookbook for WxCC" class="md-nav__button md-logo" aria-label="AI Agent Cookbook for WxCC" data-md-component="logo">
+      
+  <img src="../assets/cisco-logo.png" alt="logo">
+
+    </a>
+    AI Agent Cookbook for WxCC
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#what-is-webex-ai-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Is Webex AI Agent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Profile
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#knowledge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Knowledge
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Knowledge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ingesting-static-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ingesting Static Content
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#action-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Action Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flow Action
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transfer-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transfer Action
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcp-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCP Action
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-hitl-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System HITL Action
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a2a-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A2A Action
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conversation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conversation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FAQ
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FAQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-what-is-webex-ai-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q1. What is Webex AI Agent?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-what-is-the-difference-between-the-profile-and-knowledge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q2. What is the difference between the profile and knowledge?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-what-are-the-three-ways-to-ingest-knowledge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q3. What are the three ways to ingest knowledge?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-what-is-static-content-ingestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q4. What is static content ingestion?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-when-should-i-use-flow-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q5. When should I use Flow actions?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6-when-should-i-use-mcp-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q6. When should I use MCP actions?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q7-what-is-the-system-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q7. What is the System action?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q8-does-wxcc-ai-agent-support-a2a-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q8. Does WxCC AI Agent support A2A today?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q9-what-is-the-difference-between-a-conversation-and-a-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q9. What is the difference between a conversation and a session?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q10-why-do-sessions-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q10. Why do sessions matter?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multi-agent-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    multi-agent-strategy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model-context-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    model-context-protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../a2a/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent2Agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripted-ai-agent-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripted AI Agent Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge-and-rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knowledge and RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-and-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing and Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PreBuilt_AIAgent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="webex-ai-agent-architecture">Webex AI Agent Architecture</h1>
+<p>This chapter explains the practical architecture of a Webex AI Agent: what the agent is, how its profile shapes behavior, how knowledge is ingested, how actions connect the agent to work, and how conversations become auditable sessions.</p>
+<h2 id="what-is-webex-ai-agent">What Is Webex AI Agent</h2>
+<p>Webex AI Agent is a Webex Contact Center AI capability used to create, manage, deploy, and analyze automated agents for customer service and support workflows. The agent can answer questions, retrieve information, collect details from the customer, perform approved actions, and hand off to a human when needed.</p>
+<p>Webex AI Agent Studio supports two main agent patterns:</p>
+<table>
+<thead>
+<tr>
+<th>Agent Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Autonomous AI Agent</td>
+<td>Works toward defined goals, uses knowledge, understands intent, and invokes configured actions with less rigid scripting</td>
+</tr>
+<tr>
+<td>Scripted AI Agent</td>
+<td>Follows predefined rules, scripts, intents, responses, and training examples for more controlled workflows</td>
+</tr>
+</tbody>
+</table>
+<p>For production contact center design, the architecture usually has these layers:</p>
+<pre class="mermaid"><code>flowchart LR
+    Customer[Customer] --&gt; Channel[Voice or Digital Channel]
+    Channel --&gt; Agent[Webex AI Agent]
+    Agent --&gt; Profile[Profile]
+    Agent --&gt; Knowledge[Knowledge Base]
+    Agent --&gt; Actions[Actions]
+    Agent --&gt; Conversation[Conversation Settings]
+    Actions --&gt; Flow[Webex Connect Flow]
+    Actions --&gt; MCP[MCP Tools]
+    Actions --&gt; Transfer[Transfer / Handoff]
+    Actions --&gt; System[System HITL]
+    Conversation --&gt; Session[Session Record]</code></pre>
+<p>The profile gives the agent identity and operating instructions. Knowledge gives it trusted content. Actions let it do work. Conversation settings control language, voice, interruptions, and timing. Sessions capture what happened for audit, troubleshooting, and improvement.</p>
+<h2 id="profile">Profile</h2>
+<p>The profile is the agent's identity and behavioral contract. It defines how the agent appears, what goal it is trying to achieve, what AI engine it uses, and what instructions guide its responses.</p>
+<table>
+<thead>
+<tr>
+<th>Profile Item</th>
+<th>What It Controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent name</td>
+<td>Human-readable name shown in Studio and operational views</td>
+</tr>
+<tr>
+<td>System ID</td>
+<td>Unique identifier used by the platform and integrations</td>
+</tr>
+<tr>
+<td>Profile image URL</td>
+<td>Visual identity or logo for the agent</td>
+</tr>
+<tr>
+<td>Time zone</td>
+<td>Time context for the agent</td>
+</tr>
+<tr>
+<td>AI engine</td>
+<td>Determines available language, voice, DTMF, interruption, and vocabulary options</td>
+</tr>
+<tr>
+<td>Welcome message</td>
+<td>First message or prompt used to start the interaction</td>
+</tr>
+<tr>
+<td>Agent goal</td>
+<td>The business outcome the agent is designed to complete</td>
+</tr>
+<tr>
+<td>Instructions</td>
+<td>Behavioral guidance, constraints, tone, and task rules</td>
+</tr>
+</tbody>
+</table>
+<p>Profile design guidance:</p>
+<ul>
+<li>Keep the goal narrow and measurable.</li>
+<li>Keep instructions concise and aligned to the action list.</li>
+<li>Use one agent for one clear journey or module.</li>
+<li>Create multiple focused agents instead of one broad agent with a complex scope.</li>
+<li>Make the welcome message channel-appropriate and language-specific.</li>
+</ul>
+<h2 id="knowledge">Knowledge</h2>
+<p>Knowledge is the trusted content the AI Agent can use to answer customer questions. For autonomous agents, a knowledge base acts as a central repository that the LLM-powered agent can use to generate more grounded and relevant responses.</p>
+<p>Webex AI Agent Studio supports three main ways to create knowledge sources:</p>
+<table>
+<thead>
+<tr>
+<th>Knowledge Source</th>
+<th>How It Works</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Upload files</td>
+<td>Upload supported static files into the knowledge base</td>
+<td>Policies, FAQs, forms, guides, spreadsheets, process documents</td>
+</tr>
+<tr>
+<td>Create articles</td>
+<td>Write and maintain article content directly in Studio</td>
+<td>Short curated answers, manually authored procedures, quick updates</td>
+</tr>
+<tr>
+<td>Extract website</td>
+<td>Crawl owned public website content and convert it into knowledge</td>
+<td>Public help pages, published support content, web-based documentation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ingesting-static-content">Ingesting Static Content</h3>
+<p>Static content is usually the best first step because it is controlled, reviewable, and easier to govern. Examples include PDFs, Word documents, Excel files, CSV files, text files, Markdown files, internal FAQs, approved policy documents, and customer service procedures.</p>
+<p>Recommended flow for static content:</p>
+<ol>
+<li>Collect approved source documents.</li>
+<li>Remove stale, duplicate, sensitive, or contradictory content.</li>
+<li>Split large documents into smaller topic-focused files when needed.</li>
+<li>Use descriptive filenames because the file name becomes part of source management.</li>
+<li>Upload files to the knowledge base.</li>
+<li>Review processing status and edit or delete sources as needed.</li>
+<li>Map the knowledge base to the AI Agent.</li>
+<li>Test customer questions in preview before publishing.</li>
+</ol>
+<p>Design considerations:</p>
+<ul>
+<li>Keep one topic or policy area per file where possible.</li>
+<li>Use clear headings and tables that are easy to retrieve.</li>
+<li>Avoid uploading payment card data, PHI, PII, credentials, or other regulated data unless the workflow and controls explicitly allow it.</li>
+<li>Match the knowledge base language to the AI Agent language for better performance.</li>
+<li>Treat knowledge updates as a governed content lifecycle, not a one-time upload.</li>
+</ul>
+<h2 id="actions">Actions</h2>
+<p>Actions are the work layer of the AI Agent. An action is a task the agent performs after understanding the customer's intent. Actions can collect required slots, invoke fulfillment, call MCP tools, or transfer the interaction.</p>
+<p>The basic building blocks are:</p>
+<table>
+<thead>
+<tr>
+<th>Building Block</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Action</td>
+<td>A task the AI Agent performs based on user intent</td>
+</tr>
+<tr>
+<td>Entity or slot</td>
+<td>Required information the agent collects before executing an action</td>
+</tr>
+<tr>
+<td>Fulfillment</td>
+<td>The backend execution path that completes the action</td>
+</tr>
+</tbody>
+</table>
+<h3 id="action-types">Action Types</h3>
+<table>
+<thead>
+<tr>
+<th>Action Type</th>
+<th>Meaning</th>
+<th>Current Design Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Flow</td>
+<td>Uses Webex Connect Flow Builder for fulfillment</td>
+<td>Good for API orchestration, business logic, and workflow integration</td>
+</tr>
+<tr>
+<td>Transfer</td>
+<td>Transfers to another bot, AI Agent, human agent, queue, voicemail, hunt group, or destination</td>
+<td>Use for ownership changes or escalation</td>
+</tr>
+<tr>
+<td>MCP</td>
+<td>Uses Model Context Protocol tools</td>
+<td>Best for structured tool, data, and system access</td>
+</tr>
+<tr>
+<td>System</td>
+<td>System default HITL action</td>
+<td>Default human handoff / agent handover capability</td>
+</tr>
+<tr>
+<td>A2A</td>
+<td>Agent-to-Agent</td>
+<td>Work in progress; WxCC AI Agent does not currently support native A2A</td>
+</tr>
+</tbody>
+</table>
+<h3 id="flow-action">Flow Action</h3>
+<p>Flow actions use Webex Connect. They are useful when fulfillment needs API calls, branching logic, validation, notifications, backend updates, or integration with an existing Webex Connect flow.</p>
+<p>Use Flow when:</p>
+<ul>
+<li>The integration already exists in Webex Connect.</li>
+<li>You need orchestration across multiple systems.</li>
+<li>The workflow needs conditional business logic.</li>
+<li>You need controlled fulfillment instead of direct tool access.</li>
+</ul>
+<h3 id="transfer-action">Transfer Action</h3>
+<p>Transfer actions move the conversation to another destination. That destination can be another AI Agent, a human agent, a queue, voicemail, a hunt group, or another configured endpoint. Transfers can be announced or silent, depending on the customer experience.</p>
+<p>Use Transfer when:</p>
+<ul>
+<li>Another agent or human should own the next step.</li>
+<li>The customer needs live support.</li>
+<li>The current agent's scope is complete.</li>
+<li>Compliance, sentiment, uncertainty, or risk requires escalation.</li>
+</ul>
+<h3 id="mcp-action">MCP Action</h3>
+<p>MCP actions allow an autonomous AI Agent to connect to third-party tools and services through MCP. MCP can retrieve real-time data, invoke tools during live conversations, and perform approved actions without building a one-off API integration for every tool.</p>
+<p>Use MCP when:</p>
+<ul>
+<li>The target is a tool, data source, API, EHR, CRM, ticketing system, or enterprise system.</li>
+<li>You want reusable and governed tool definitions.</li>
+<li>You want the MCP server to own backend translation and access controls.</li>
+</ul>
+<h3 id="system-hitl-action">System HITL Action</h3>
+<p>The system handover action is available by default and lets the AI Agent escalate the conversation to a human agent. Treat this as the baseline human-in-the-loop control.</p>
+<p>Use System HITL when:</p>
+<ul>
+<li>The customer is frustrated.</li>
+<li>Identity, billing, eligibility, or policy confidence is low.</li>
+<li>The request is sensitive or irreversible.</li>
+<li>The agent reaches a failure or unsupported path.</li>
+</ul>
+<h3 id="a2a-action">A2A Action</h3>
+<p>A2A means Agent-to-Agent. It is the forward-looking pattern for structured collaboration between agents. However, WxCC AI Agent does not currently support native A2A. Treat A2A as a work-in-progress architecture concept and design modular agents, payloads, correlation IDs, and transfer readiness so the implementation can migrate later.</p>
+<h2 id="conversation">Conversation</h2>
+<p>Conversation settings control how the AI Agent speaks, listens, waits, and responds during the customer interaction. These settings are influenced by the selected AI engine.</p>
+<table>
+<thead>
+<tr>
+<th>Conversation Area</th>
+<th>What It Controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Language</td>
+<td>Language or locale available for the selected AI engine</td>
+</tr>
+<tr>
+<td>Response style</td>
+<td>Whether the agent gives quick acknowledgments before substantive answers or responds more directly</td>
+</tr>
+<tr>
+<td>Voice</td>
+<td>Voice used for voice interactions</td>
+</tr>
+<tr>
+<td>Speaking rate</td>
+<td>Speed of generated speech</td>
+</tr>
+<tr>
+<td>Custom vocabulary</td>
+<td>Names, terms, or domain-specific words the agent should recognize better</td>
+</tr>
+<tr>
+<td>Delays and interruptions</td>
+<td>Barge-in, end-of-speech sensitivity, fulfillment timeout, caller turn timeout, and no-input timeout</td>
+</tr>
+<tr>
+<td>DTMF</td>
+<td>Digit timeout, termination character, and maximum input length</td>
+</tr>
+</tbody>
+</table>
+<p>Conversation design guidance:</p>
+<ul>
+<li>Tune response style to the use case. Healthcare and support flows often benefit from short acknowledgments before substantive answers.</li>
+<li>Add custom vocabulary for provider names, clinic names, product names, acronyms, and domain terms.</li>
+<li>Enable interruption handling where callers naturally speak over prompts.</li>
+<li>Set fulfillment and no-input timeouts so the journey fails cleanly instead of hanging.</li>
+<li>Test voice and chat previews before publishing.</li>
+</ul>
+<h2 id="session">Session</h2>
+<p>A session is the record of an interaction between a customer and the AI Agent. Sessions are important for audit, troubleshooting, analytics, and continuous improvement.</p>
+<p>Session records can include:</p>
+<table>
+<thead>
+<tr>
+<th>Session Field</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Session ID</td>
+<td>Unique room or session identifier</td>
+</tr>
+<tr>
+<td>Consumer ID</td>
+<td>User or customer identifier</td>
+</tr>
+<tr>
+<td>Channel</td>
+<td>Voice or digital channel used for the interaction</td>
+</tr>
+<tr>
+<td>Updated At</td>
+<td>Time the room or session was closed or updated</td>
+</tr>
+<tr>
+<td>Room Metadata</td>
+<td>Additional room or interaction context</td>
+</tr>
+<tr>
+<td>Transcript</td>
+<td>Chronological interaction history when the viewer has decrypt access</td>
+</tr>
+<tr>
+<td>Agent responses</td>
+<td>Responses generated by the AI Agent</td>
+</tr>
+<tr>
+<td>Handover marker</td>
+<td>Indicates whether the interaction was handed to a human agent</td>
+</tr>
+<tr>
+<td>Error/downvote markers</td>
+<td>Helps identify sessions needing review</td>
+</tr>
+</tbody>
+</table>
+<p>Use sessions to answer operational questions:</p>
+<ul>
+<li>Did the customer complete the journey?</li>
+<li>Did the agent hand off to a human?</li>
+<li>Did fulfillment fail or time out?</li>
+<li>Did the caller interrupt the agent?</li>
+<li>Which knowledge source or action needs improvement?</li>
+<li>Are there recurring intents that need a new action or specialist agent?</li>
+</ul>
+<h2 id="faq">FAQ</h2>
+<h3 id="q1-what-is-webex-ai-agent">Q1. What is Webex AI Agent?</h3>
+<p>Webex AI Agent is an AI-powered contact center agent that can support customers through voice or digital channels. It can answer questions, use knowledge, collect details, invoke configured actions, and hand off to a human when needed.</p>
+<h3 id="q2-what-is-the-difference-between-the-profile-and-knowledge">Q2. What is the difference between the profile and knowledge?</h3>
+<p>The profile defines the agent's identity, goal, instructions, engine, welcome message, and operating behavior. Knowledge provides the approved content the agent can use to answer questions.</p>
+<h3 id="q3-what-are-the-three-ways-to-ingest-knowledge">Q3. What are the three ways to ingest knowledge?</h3>
+<p>The three main knowledge-source options are uploading files, creating articles, and extracting website content.</p>
+<h3 id="q4-what-is-static-content-ingestion">Q4. What is static content ingestion?</h3>
+<p>Static content ingestion means uploading controlled documents or authoring fixed articles so the agent can use them as trusted knowledge. This is useful for policy documents, FAQs, approved procedures, forms, and support guides.</p>
+<h3 id="q5-when-should-i-use-flow-actions">Q5. When should I use Flow actions?</h3>
+<p>Use Flow actions when fulfillment should run through Webex Connect, especially when you need API orchestration, business logic, validation, notifications, or backend workflow control.</p>
+<h3 id="q6-when-should-i-use-mcp-actions">Q6. When should I use MCP actions?</h3>
+<p>Use MCP when the agent needs structured access to tools, data, APIs, or enterprise systems through a reusable MCP server.</p>
+<h3 id="q7-what-is-the-system-action">Q7. What is the System action?</h3>
+<p>The System action is the default human-in-the-loop handover path. It lets the AI Agent escalate to a human agent when automation should stop.</p>
+<h3 id="q8-does-wxcc-ai-agent-support-a2a-today">Q8. Does WxCC AI Agent support A2A today?</h3>
+<p>No. A2A is work in progress for WxCC AI Agent. Design modular agent boundaries and structured handoff payloads now, but do not assume native A2A support is available today.</p>
+<h3 id="q9-what-is-the-difference-between-a-conversation-and-a-session">Q9. What is the difference between a conversation and a session?</h3>
+<p>The conversation is the live customer interaction. The session is the stored record of that interaction, including metadata, messages, responses, handover indicators, and review signals.</p>
+<h3 id="q10-why-do-sessions-matter">Q10. Why do sessions matter?</h3>
+<p>Sessions let teams audit conversations, inspect transcripts when they have decrypt access, identify failures, analyze handovers, and improve the agent's knowledge, instructions, actions, and conversation settings.</p>
+<h2 id="references">References</h2>
+<ul>
+<li>Webex AI Agent Studio Administration guide: <a href="https://help.webex.com/en-us/article/ncs9r37">https://help.webex.com/en-us/article/ncs9r37</a></li>
+<li>Related chapter: <a href="../multi-agent-strategy/">Multi Agent Strategy</a></li>
+<li>Related chapter: <a href="../model-context-protocol/">Model Context Protocol</a></li>
+<li>Related chapter: <a href="../a2a/">A2A</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../getting-started/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Getting Started">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Getting Started
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../security/" class="md-footer__link md-footer__link--next" aria-label="Next: Security">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Security
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 Cisco Systems Inc. All Rights Reserved.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.top", "navigation.footer", "search.suggest", "content.code.copy", "toc.integrate", "content.tooltips", "content.footnote.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": false, "openEffect": "fade", "closeEffect": "fade", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

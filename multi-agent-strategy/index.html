@@ -1,0 +1,1661 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A practical guide for building secure, governed, and production-ready AI agents in WxCC">
+      
+      
+        <meta name="author" content="Chandramouli Vaithiyanathan">
+      
+      
+        <link rel="canonical" href="https://webexsamples.github.io/webex-ai-agents/multi-agent-strategy/">
+      
+      
+        <link rel="prev" href="../security/">
+      
+      
+        <link rel="next" href="../model-context-protocol/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/cisco-logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>multi-agent-strategy - AI Agent Cookbook for WxCC</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#multi-agent-strategy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AI Agent Cookbook for WxCC" class="md-header__button md-logo" aria-label="AI Agent Cookbook for WxCC" data-md-component="logo">
+      
+  <img src="../assets/cisco-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI Agent Cookbook for WxCC
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              multi-agent-strategy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../security/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  multi-agent-strategy
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../model-context-protocol/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  model-context-protocol
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../a2a/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Agent2Agent
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../scripted-ai-agent-design/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Scripted AI Agent Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../knowledge-and-rag/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Knowledge and RAG
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../testing-and-evaluation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Testing and Evaluation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../agent-template/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  PreBuilt_AIAgent
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../glossary/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Glossary
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AI Agent Cookbook for WxCC" class="md-nav__button md-logo" aria-label="AI Agent Cookbook for WxCC" data-md-component="logo">
+      
+  <img src="../assets/cisco-logo.png" alt="logo">
+
+    </a>
+    AI Agent Cookbook for WxCC
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    multi-agent-strategy
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    multi-agent-strategy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#what" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#design-around-workflow-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Around Workflow Boundaries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-actions-deliberately" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use Actions Deliberately
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#respect-technical-thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Respect Technical Thresholds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-for-downtime-and-latency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build For Downtime And Latency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-human-in-the-loop-oversight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add Human-In-The-Loop Oversight
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benefits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Benefits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#workflow-specialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow Specialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risk-mitigation-and-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk Mitigation And Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operational-resilience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operational Resilience
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplified-governance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Simplified Governance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#human-in-the-loop-collaboration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Human-In-The-Loop Collaboration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Takeaway
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FAQ
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FAQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-what-is-a-multi-agent-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q1. What is a multi-agent strategy?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-why-not-build-one-large-ai-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q2. Why not build one large AI agent?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-how-does-this-improve-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q3. How does this improve security?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-how-does-multi-agent-design-improve-resilience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q4. How does multi-agent design improve resilience?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-how-does-human-in-the-loop-fit-into-this-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q5. How does human-in-the-loop fit into this architecture?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6-what-is-the-difference-between-transfer-and-fulfillment-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q6. What is the difference between transfer and fulfillment actions?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q7-what-technical-limits-should-i-design-around" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q7. What technical limits should I design around?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q8-should-each-agent-use-all-10-available-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q8. Should each agent use all 10 available actions?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q9-what-context-should-be-passed-between-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q9. What context should be passed between modules?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q10-how-does-this-help-governance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q10. How does this help governance?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q11-where-should-we-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q11. Where should we start?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-chapters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Chapters
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model-context-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    model-context-protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../a2a/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent2Agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripted-ai-agent-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripted AI Agent Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge-and-rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knowledge and RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-and-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing and Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PreBuilt_AIAgent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="multi-agent-strategy">Multi Agent Strategy</h1>
+<p>This chapter explains how to design a multi-agent Webex AI Agent architecture for contact center workflows, focusing on strategic value, workflow specialization, security, resilience, governance, human-in-the-loop operations, action design, and platform thresholds.</p>
+<h2 id="what">What</h2>
+<p>A multi-agent strategy breaks a large customer journey into smaller, focused AI agents. Instead of building one large bot that owns every instruction, action, system, and exception path, the architecture uses specialist agents that each own a clear part of the workflow.</p>
+<p>In a healthcare contact center, a single caller journey may include several distinct tasks:</p>
+<table>
+<thead>
+<tr>
+<th>Workflow Step</th>
+<th>Specialist Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Identity verification</td>
+<td>Confirm the user's identity</td>
+</tr>
+<tr>
+<td>Appointment lookup</td>
+<td>Check for available appointments</td>
+</tr>
+<tr>
+<td>Insurance validation</td>
+<td>Verify insurance coverage</td>
+</tr>
+<tr>
+<td>System updates</td>
+<td>Update patient records, for example in Epic</td>
+</tr>
+<tr>
+<td>Billing review</td>
+<td>Review billing details</td>
+</tr>
+<tr>
+<td>Live-agent escalation</td>
+<td>Transfer to a live agent when automation should stop</td>
+</tr>
+</tbody>
+</table>
+<p>The usual pattern is a hub-and-spoke model. The orchestrator owns the overall journey. Specialist agents own specific modules such as verification, scheduling, insurance, billing, system updates, or escalation.</p>
+<pre class="mermaid"><code>flowchart LR
+    Caller[Caller] --&gt; Orchestrator[Main AI Agent / Orchestrator]
+    Orchestrator --&gt; Verify[Identity Verification Agent]
+    Orchestrator --&gt; Appt[Appointment Lookup Agent]
+    Orchestrator --&gt; Insurance[Insurance Validation Agent]
+    Orchestrator --&gt; Updates[System Update Agent]
+    Orchestrator --&gt; Billing[Billing Review Agent]
+    Orchestrator --&gt; Human[Live Agent / HITL]
+    Verify --&gt; Orchestrator
+    Appt --&gt; Orchestrator
+    Insurance --&gt; Orchestrator
+    Updates --&gt; Orchestrator
+    Billing --&gt; Orchestrator</code></pre>
+<p>The goal is not to create more agents for the sake of it. The goal is to make each agent easier to test, secure, update, monitor, and escalate.</p>
+<h2 id="why">Why</h2>
+<p>Contact center operations are rarely single tasks. They are chains of events. A patient may start with identity verification, move into appointment lookup, require insurance validation, trigger a patient-record update, ask about billing, and then need live-agent help.</p>
+<p>If one AI agent owns all of that, it becomes difficult to manage. The prompt grows. The action list grows. Permission boundaries become blurry. Testing becomes harder. One broken function can affect the whole journey.</p>
+<p>Multi-agent design solves this by making each module smaller and more accountable.</p>
+<table>
+<thead>
+<tr>
+<th>Strategic Value</th>
+<th>Why It Matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Workflow specialization</td>
+<td>Break down complex user requests into manageable steps</td>
+</tr>
+<tr>
+<td>Risk mitigation and security</td>
+<td>Narrower permissions and clearer audit logs enhance security</td>
+</tr>
+<tr>
+<td>Operational resilience</td>
+<td>Decoupled processes prevent single points of failure</td>
+</tr>
+<tr>
+<td>Simplified governance</td>
+<td>Incremental certification and focused maintenance streamline compliance</td>
+</tr>
+<tr>
+<td>Human-in-the-loop</td>
+<td>Human oversight adds empathy, judgment, and final approval where needed</td>
+</tr>
+</tbody>
+</table>
+<p>The main design principle is simple: each agent should have a clear start state, a clear end state, a narrow set of actions, and a known fallback path.</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/multi-agent-advantages-overview.jpg" data-title="Strategic value of multi-agent systems overview" data-desc-position="top"><img alt="Strategic value of multi-agent systems overview" src="../assets/multi-agent-advantages-overview.jpg"></a></p>
+<h2 id="how">How</h2>
+<p>Start by mapping the full customer journey, then split it into modules that naturally begin and end at clean boundaries.</p>
+<h3 id="design-around-workflow-boundaries">Design Around Workflow Boundaries</h3>
+<p>Do not start by asking, "How many bots do we need?" Start by asking, "Where does this work naturally begin and end?"</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Start State</th>
+<th>End State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Identity verification</td>
+<td>Caller provides identifying information</td>
+<td>Identity is confirmed, rejected, or sent for human approval</td>
+</tr>
+<tr>
+<td>Appointment lookup</td>
+<td>Caller is verified and has scheduling intent</td>
+<td>Available appointment options are returned</td>
+</tr>
+<tr>
+<td>Insurance validation</td>
+<td>Required patient and coverage data are known</td>
+<td>Coverage is verified or exception review is requested</td>
+</tr>
+<tr>
+<td>System updates</td>
+<td>Approved update data is collected</td>
+<td>Patient record is updated or exception is escalated</td>
+</tr>
+<tr>
+<td>Billing review</td>
+<td>Caller is verified and billing intent is confirmed</td>
+<td>Billing details are explained or a dispute is escalated</td>
+</tr>
+<tr>
+<td>Live-agent escalation</td>
+<td>Automation reaches a sensitive, uncertain, or emotional point</td>
+<td>Human receives context and owns the next step</td>
+</tr>
+</tbody>
+</table>
+<p>If a module has no clear endpoint, it is probably too broad.</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/ContactCenterWorkflow.jpg" data-title="Strategic value of multi-agent systems overview" data-desc-position="top"><img alt="Strategic value of multi-agent systems overview" src="../assets/ContactCenterWorkflow.jpg"></a></p>
+<h3 id="use-actions-deliberately">Use Actions Deliberately</h3>
+<p>In Webex AI Agent design, actions are the building blocks that let the agent do work. </p>
+<table>
+<thead>
+<tr>
+<th>Action Area</th>
+<th>What It Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Create new action: Transfer</td>
+<td>Move the conversation to another agent, queue, or live agent</td>
+</tr>
+<tr>
+<td>Create new action: Fulfillment</td>
+<td>Call backend logic, APIs, MCP tools, or other integrations</td>
+</tr>
+</tbody>
+</table>
+<p>Use transfer actions for ownership changes. Use fulfillment actions for system work. Keep those separate so the flow is easier to understand, test, and audit.</p>
+<h3 id="respect-technical-thresholds">Respect Technical Thresholds</h3>
+<p>There are  three important design thresholds:</p>
+<table>
+<thead>
+<tr>
+<th>Threshold</th>
+<th>Value</th>
+<th>Design Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent instruction character limit</td>
+<td>5.1K</td>
+<td>Keep instructions concise and module-specific</td>
+</tr>
+<tr>
+<td>Fulfillment limit</td>
+<td>16.0K</td>
+<td>Treat backend integration payloads as bounded and shape the response</td>
+</tr>
+<tr>
+<td>Action threshold</td>
+<td>10</td>
+<td>Do not overload one agent with too many business actions</td>
+</tr>
+</tbody>
+</table>
+<p>Use the action threshold as an architecture signal. Even if the platform allows up to 10 actions, keep each autonomous specialist agent near <strong>five business actions when possible</strong>. Reserve the remaining capacity for transfer, fulfillment, fallback, and human escalation.</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/Action_Modularization_Strategy.jpg" data-title="Strategic value of multi-agent systems overview" data-desc-position="top"><img alt="Strategic value of multi-agent systems overview" src="../assets/Action_Modularization_Strategy.jpg"></a></p>
+<h3 id="build-for-downtime-and-latency">Build For Downtime And Latency</h3>
+<p>Each module should expose health, timeout, and fallback behavior. If a billing agent is unavailable, appointment scheduling should still continue. If one module has latency or downtime, other parts of the multi-agent system should remain functional.</p>
+<pre class="mermaid"><code>flowchart TD
+    Start[Caller request] --&gt; Orchestrator[Main orchestrator]
+    Orchestrator --&gt; Check{Module downtime or latency?}
+    Check --&gt;|No| Specialist[Run target specialist agent]
+    Specialist --&gt; Done[Return result to orchestrator]
+    Check --&gt;|Yes| Fallback{Controlled fallback available?}
+    Fallback --&gt;|Alternate module| Alternate[Route to another module]
+    Fallback --&gt;|API or MCP path| Fulfillment[Use alternate fulfillment path]
+    Fallback --&gt;|Human path| Human[Escalate to live agent]
+    Alternate --&gt; Done
+    Fulfillment --&gt; Done
+    Human --&gt; Done</code></pre>
+<h3 id="add-human-in-the-loop-oversight">Add Human-In-The-Loop Oversight</h3>
+<p>Human-in-the-loop is not a failure path. It is part of the design. Agents are strong at speed and data retrieval, but humans are still needed for empathy, emotional support, exception review, and final approval.</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Agent Responsibility</th>
+<th>Human-in-the-Loop Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Verification</td>
+<td>Data matching</td>
+<td>Final approval of identity match</td>
+</tr>
+<tr>
+<td>Insurance</td>
+<td>Policy lookup</td>
+<td>Reviewing coverage exceptions</td>
+</tr>
+<tr>
+<td>Billing</td>
+<td>Calculation or review</td>
+<td>Authorizing final charges</td>
+</tr>
+<tr>
+<td>Escalation</td>
+<td>Sentiment analysis</td>
+<td>Providing empathetic resolution</td>
+</tr>
+</tbody>
+</table>
+<p>If a module detects frustration, a sensitive situation, uncertainty, or risk, the HITL protocol should trigger a contextual handoff to a live agent who is trained to handle the emotional or compliance complexity of the interaction.</p>
+<h2 id="benefits">Benefits</h2>
+<h3 id="workflow-specialization">Workflow Specialization</h3>
+<p>Workflow specialization breaks a complex request into manageable steps. a healthcare inquiry can be separated into identity verification, appointment lookup, insurance validation, Epic or system updates, billing review, and live-agent escalation.</p>
+<p>This makes each agent easier to prompt, test, and operate because it owns a smaller job.</p>
+<h3 id="risk-mitigation-and-security">Risk Mitigation And Security</h3>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/multi-agent-risk-mitigation.jpg" data-title="Risk mitigation and security" data-desc-position="top"><img alt="Risk mitigation and security" src="../assets/multi-agent-risk-mitigation.jpg"></a></p>
+<p>Specialization limits the scope of any single agent.</p>
+<table>
+<thead>
+<tr>
+<th>Security Benefit</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Narrower permissions</td>
+<td>Each agent only accesses the data necessary for its specific function</td>
+</tr>
+<tr>
+<td>Better auditability</td>
+<td>Logs are tied to specific, identifiable agents instead of one "all-powerful" entity</td>
+</tr>
+<tr>
+<td>Smaller blast radius</td>
+<td>A mistake in one module is less likely to expose unrelated tools or data</td>
+</tr>
+<tr>
+<td>Cleaner access control</td>
+<td>Tools and MCP capabilities can be granted per specialist</td>
+</tr>
+</tbody>
+</table>
+<p>This is especially important in healthcare, where patient data, insurance data, billing data, and operational routing should not all be available to every automation path.</p>
+<h3 id="operational-resilience">Operational Resilience</h3>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/multi-agent-operational-resilency.jpg" data-title="Operational resilience" data-desc-position="top"><img alt="Operational resilience" src="../assets/multi-agent-operational-resilency.jpg"></a></p>
+<p>Decoupled processes prevent single points of failure, for example, if the billing module is unavailable, the appointment scheduling flow can still continue.</p>
+<p>The orchestrator should check whether a specific module is experiencing downtime or latency. If yes, it should isolate that failure and select a fallback. If no, it should continue the normal workflow.</p>
+<h3 id="simplified-governance">Simplified Governance</h3>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/multi-agent-simplified-governance.jpg" data-title="Simplified governance" data-desc-position="top"><img alt="Simplified governance" src="../assets/multi-agent-simplified-governance.jpg"></a></p>
+<p>Multi-agent design makes governance easier because individual agents and specific processes can be updated independently.</p>
+<table>
+<thead>
+<tr>
+<th>Governance Need</th>
+<th>Multi-Agent Benefit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Update individual agents</td>
+<td>Change one module without rewriting the full journey</td>
+</tr>
+<tr>
+<td>Update specific processes</td>
+<td>Adjust identity, insurance, billing, or escalation logic independently</td>
+</tr>
+<tr>
+<td>No full system re-validation</td>
+<td>Validate the affected module instead of the entire system</td>
+</tr>
+<tr>
+<td>No full system redeployment</td>
+<td>Release focused changes with lower operational risk</td>
+</tr>
+<tr>
+<td>Incremental certification</td>
+<td>Certify one workflow or module at a time</td>
+</tr>
+<tr>
+<td>Focused maintenance</td>
+<td>Assign clear owners and keep support scoped</td>
+</tr>
+</tbody>
+</table>
+<h3 id="human-in-the-loop-collaboration">Human-In-The-Loop Collaboration</h3>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/multi-agent-HILT.jpg" data-title="Human-in-the-loop" data-desc-position="top"><img alt="Human-in-the-loop" src="../assets/multi-agent-HILT.jpg"></a></p>
+<p>The best contact center experience is not purely automated. It is a collaborative intelligence ecosystem where AI handles repeatable work quickly and humans step in for emotional support, judgment, compliance, and final approval.</p>
+<p>This balance matters because healthcare calls often involve sensitive information, patient anxiety, coverage exceptions, billing disputes, or identity uncertainty.</p>
+<h2 id="key-takeaway">Key Takeaway</h2>
+<p>Multi-agent strategy turns one large, fragile bot into a modular contact center architecture. Each agent owns a clear job, uses narrower permissions, logs cleaner actions, and has an explicit fallback or human escalation path.</p>
+<p>For Webex AI Agent design, the practical guidance is:</p>
+<ul>
+<li>Split workflows by clear start and end states.</li>
+<li>Keep specialist agents small and focused.</li>
+<li>Use transfer actions for handoff and fulfillment actions for backend work.</li>
+<li>Pass structured output variables instead of raw transcripts.</li>
+<li>Respect instruction, fulfillment, and action thresholds.</li>
+<li>Add human-in-the-loop oversight for sensitive, uncertain, or emotional moments.</li>
+</ul>
+<p>The result is an AI architecture that is easier to secure, easier to govern, easier to update, and more resilient when one module has trouble.</p>
+<h2 id="faq">FAQ</h2>
+<h3 id="q1-what-is-a-multi-agent-strategy">Q1. What is a multi-agent strategy?</h3>
+<p>A multi-agent strategy uses several focused AI agents instead of one all-purpose bot. The orchestrator manages the journey, while specialist agents handle tasks such as identity verification, appointment lookup, insurance validation, system updates, billing review, and escalation.</p>
+<h3 id="q2-why-not-build-one-large-ai-agent">Q2. Why not build one large AI agent?</h3>
+<p>One large agent becomes hard to prompt, test, secure, and update. It may need too many actions, too much data access, and too many exception paths. Multi-agent design keeps each module smaller and easier to govern.</p>
+<h3 id="q3-how-does-this-improve-security">Q3. How does this improve security?</h3>
+<p>Each agent receives only the tools and data needed for its function. That creates narrower permissions, clearer audit logs, and a smaller blast radius if something goes wrong.</p>
+<h3 id="q4-how-does-multi-agent-design-improve-resilience">Q4. How does multi-agent design improve resilience?</h3>
+<p>Because processes are decoupled, one module can fail without stopping the full journey. If the billing agent is down, appointment scheduling can still continue. The orchestrator can detect downtime or latency and route to a fallback path.</p>
+<h3 id="q5-how-does-human-in-the-loop-fit-into-this-architecture">Q5. How does human-in-the-loop fit into this architecture?</h3>
+<p>Human-in-the-loop is built into each module boundary. Humans approve uncertain identity matches, review insurance exceptions, authorize final billing actions, and provide empathetic resolution when sentiment or risk requires escalation.</p>
+<h3 id="q6-what-is-the-difference-between-transfer-and-fulfillment-actions">Q6. What is the difference between transfer and fulfillment actions?</h3>
+<p>Transfer actions move ownership to another agent, queue, or live agent. Fulfillment actions perform backend work such as API calls, MCP tool calls, database lookups, or system updates.</p>
+<h3 id="q7-what-technical-limits-should-i-design-around">Q7. What technical limits should I design around?</h3>
+<p>5.1K character limit for agent instructions, a 16.0K fulfillment limit for backend integrations, and an action threshold of 10. Use those limits as design signals and keep specialist agents focused.</p>
+<h3 id="q8-should-each-agent-use-all-10-available-actions">Q8. Should each agent use all 10 available actions?</h3>
+<p>No. Keep each specialist near five business actions when possible. Reserve capacity for transfer, fulfillment, fallback, and human escalation actions.</p>
+<h3 id="q9-what-context-should-be-passed-between-modules">Q9. What context should be passed between modules?</h3>
+<p>Pass structured context such as escalation trigger, first name, last name, mobile number, patient ID, address, primary provider ID, and primary department ID. These values should come from validated fulfillment outputs, not from a raw transcript alone.</p>
+<h3 id="q10-how-does-this-help-governance">Q10. How does this help governance?</h3>
+<p>Teams can update individual agents or specific processes without full system redeployment. They can also perform focused maintenance, incremental certification, and targeted re-validation.</p>
+<h3 id="q11-where-should-we-start">Q11. Where should we start?</h3>
+<p>Start with workflows that have high volume, clear state, narrow data needs, and visible pain when transfer context is lost. Prove one hub-and-spoke journey first, then expand.</p>
+<h2 id="related-chapters">Related Chapters</h2>
+<ul>
+<li><a href="../model-context-protocol/">Model Context Protocol</a></li>
+<li><a href="../a2a/">A2A</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../security/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Security">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Security
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../model-context-protocol/" class="md-footer__link md-footer__link--next" aria-label="Next: model-context-protocol">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                model-context-protocol
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 Cisco Systems Inc. All Rights Reserved.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.top", "navigation.footer", "search.suggest", "content.code.copy", "toc.integrate", "content.tooltips", "content.footnote.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": false, "openEffect": "fade", "closeEffect": "fade", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

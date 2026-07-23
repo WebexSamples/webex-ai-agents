@@ -1,0 +1,1533 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Use Agent-to-Agent patterns for structured handoffs, consults, and collaboration across agent ecosystems.">
+      
+      
+        <meta name="author" content="Chandramouli Vaithiyanathan">
+      
+      
+        <link rel="canonical" href="https://webexsamples.github.io/webex-ai-agents/a2a/">
+      
+      
+        <link rel="prev" href="../model-context-protocol/">
+      
+      
+        <link rel="next" href="../scripted-ai-agent-design/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/cisco-logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>A2A - AI Agent Cookbook for WxCC</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#a2a" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AI Agent Cookbook for WxCC" class="md-header__button md-logo" aria-label="AI Agent Cookbook for WxCC" data-md-component="logo">
+      
+  <img src="../assets/cisco-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI Agent Cookbook for WxCC
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              A2A
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../security/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../multi-agent-strategy/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  multi-agent-strategy
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../model-context-protocol/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  model-context-protocol
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Agent2Agent
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../scripted-ai-agent-design/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Scripted AI Agent Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../knowledge-and-rag/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Knowledge and RAG
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../testing-and-evaluation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Testing and Evaluation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../agent-template/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  PreBuilt_AIAgent
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../glossary/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Glossary
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AI Agent Cookbook for WxCC" class="md-nav__button md-logo" aria-label="AI Agent Cookbook for WxCC" data-md-component="logo">
+      
+  <img src="../assets/cisco-logo.png" alt="logo">
+
+    </a>
+    AI Agent Cookbook for WxCC
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multi-agent-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    multi-agent-strategy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model-context-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    model-context-protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent2Agent
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent2Agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#what" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-actors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Actors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-card-mental-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Card Mental Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recommended-interaction-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended Interaction Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consult-vs-transfer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consult Vs Transfer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a2a-and-mcp-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A2A And MCP Together
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failure-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure Controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benefits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Benefits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#better-collaboration-between-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Better Collaboration Between Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cleaner-handoffs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cleaner Handoffs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stronger-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stronger Observability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safer-ownership-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Safer Ownership Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#better-human-escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Better Human Escalation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FAQ
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FAQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-what-is-a2a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q1. What is A2A?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-when-should-i-use-a2a-instead-of-mcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q2. When should I use A2A instead of MCP?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-what-is-an-agent-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q3. What is an Agent Card?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-what-is-the-difference-between-consult-and-transfer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q4. What is the difference between consult and transfer?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-should-the-handoff-include-the-full-transcript" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q5. Should the handoff include the full transcript?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6-how-does-a2a-help-healthcare-contact-centers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q6. How does A2A help healthcare contact centers?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q7-what-happens-if-the-target-agent-is-unavailable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q7. What happens if the target agent is unavailable?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q8-how-do-a2a-and-mcp-work-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q8. How do A2A and MCP work together?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Takeaway
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-chapters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Chapters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripted-ai-agent-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripted AI Agent Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge-and-rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knowledge and RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-and-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing and Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PreBuilt_AIAgent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="a2a">A2A</h1>
+<p>A2A means Agent-to-Agent. It is the collaboration layer that lets one AI agent discover another agent, understand what it can do, send it a task, pass structured context, and receive a result.</p>
+<p>It was Originally developed by Google, Now managed by  to the Linux Foundation</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/a2a-english.jpg" data-title="A2A" data-desc-position="top"><img alt="A2A" src="../assets/a2a-english.jpg"></a></p>
+<h2 id="what">What</h2>
+<p>A2A is a shared way for one agent to ask another agent to do work.</p>
+<p>Use A2A when the target is another agent. Use MCP when the target is a tool, data source, API, database, or enterprise system.</p>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Best Fit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ask a billing agent to review a billing intent</td>
+<td>A2A</td>
+</tr>
+<tr>
+<td>Ask a scheduling agent to own appointment booking</td>
+<td>A2A</td>
+</tr>
+<tr>
+<td>Pass a task and context to a remote agent</td>
+<td>A2A</td>
+</tr>
+<tr>
+<td>Look up appointments in an EHR or scheduling system</td>
+<td>MCP</td>
+</tr>
+<tr>
+<td>Create a case in CRM</td>
+<td>MCP</td>
+</tr>
+<tr>
+<td>Check queue availability before handoff</td>
+<td>MCP</td>
+</tr>
+</tbody>
+</table>
+<h3 id="core-actors">Core Actors</h3>
+<table>
+<thead>
+<tr>
+<th>Actor</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>User</td>
+<td>A human, service, or initiating AI agent with a goal</td>
+</tr>
+<tr>
+<td>A2A Client</td>
+<td>The agent or application acting on behalf of the user</td>
+</tr>
+<tr>
+<td>A2A Server</td>
+<td>The remote agent that exposes capabilities through an endpoint</td>
+</tr>
+</tbody>
+</table>
+<p>The remote agent remains opaque. The client does not need to know the remote agent's internal prompts, tools, memory, or reasoning path. It only needs to know what capability the agent advertises and how to request it.</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../assets/a2a-coreplayers.jpg" data-title="A2A" data-desc-position="top"><img alt="A2A" src="../assets/a2a-coreplayers.jpg"></a></p>
+<h3 id="agent-card-mental-model">Agent Card Mental Model</h3>
+<p>Imagine Agent Card is  like a resume. It advertises what the agent can do.</p>
+<p>An Agent Card should describe:</p>
+<ul>
+<li>Agent name and description.</li>
+<li>Skills and supported tasks.</li>
+<li>Input and output formats.</li>
+<li>Authentication requirements.</li>
+<li>Supported transports and streaming behavior.</li>
+<li>Contact, owner, or operational metadata.</li>
+<li>Limits, safety constraints, and escalation expectations.</li>
+</ul>
+<h2 id="why">Why</h2>
+<p>Contact center handoffs often fail because the receiving agent or human does not get enough context. The customer has to repeat information, verification may happen twice, and the next team may not know what was already attempted.</p>
+<p>A2A helps move from blind transfers to structured collaboration.</p>
+<table>
+<thead>
+<tr>
+<th>Without Structured A2A</th>
+<th>With A2A</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The source agent transfers with little context</td>
+<td>The source agent sends intent, state, and required fields</td>
+</tr>
+<tr>
+<td>The receiving agent may not know why the handoff happened</td>
+<td>The handoff reason is explicit</td>
+</tr>
+<tr>
+<td>The customer may repeat identity or appointment details</td>
+<td>Verification status and required slots can be passed forward</td>
+</tr>
+<tr>
+<td>Failures are hard to trace</td>
+<td>Correlation IDs connect the journey across agents</td>
+</tr>
+<tr>
+<td>Long work may appear stalled</td>
+<td>The target agent can stream progress or return interim status</td>
+</tr>
+</tbody>
+</table>
+<p>A2A is especially valuable in multi-agent healthcare and contact center workflows where a main orchestrator needs help from specialists such as scheduling, billing, insurance, verification, or escalation agents.</p>
+<h2 id="how">How</h2>
+<p>Design A2A around task ownership, context payloads, readiness checks, and failure controls.</p>
+<h3 id="recommended-interaction-pattern">Recommended Interaction Pattern</h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Client as A2A Client Agent
+    participant Server as A2A Server Agent
+    Client-&gt;&gt;Server: Discover Agent Card
+    Server--&gt;&gt;Client: Capabilities and auth requirements
+    Client-&gt;&gt;Server: Send task with structured context
+    Server--&gt;&gt;Client: Request missing details if needed
+    Server--&gt;&gt;Client: Stream progress for long work
+    Server--&gt;&gt;Client: Return final result</code></pre>
+<h3 id="consult-vs-transfer">Consult Vs Transfer</h3>
+<p>A2A is useful for both consult and transfer mechanics.</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="assets/ai-agent-protocols/a2a-transfer-mechanics.jpeg" data-title="A2A transfer mechanics picture extracted from the workshop slide deck" data-desc-position="top"><img alt="A2A transfer mechanics picture extracted from the workshop slide deck" src="assets/ai-agent-protocols/a2a-transfer-mechanics.jpeg"></a></p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Ownership</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Consult</td>
+<td>Primary agent keeps control</td>
+<td>Main agent asks insurance agent to validate coverage and then continues</td>
+</tr>
+<tr>
+<td>Transfer</td>
+<td>Target agent takes control</td>
+<td>Main agent sends the caller to a scheduling agent after verification</td>
+</tr>
+<tr>
+<td>Human handoff</td>
+<td>Human takes control</td>
+<td>Customer is frustrated, identity match is uncertain, or action is sensitive</td>
+</tr>
+</tbody>
+</table>
+<p>Use consult when the source agent only needs help. Use transfer when the target agent or human should own the next part of the conversation.</p>
+<p>Consult first when transfer failure is expensive. Validate the destination, required slots, identity state, queue availability, and fallback path before moving ownership.</p>
+<h3 id="a2a-and-mcp-together">A2A And MCP Together</h3>
+<p>A2A and MCP solve different parts of the architecture.</p>
+<pre class="mermaid"><code>flowchart LR
+    Main[Main Webex AI Agent] -- A2A consult / transfer --&gt; Specialist[Specialist AI Agent]
+    Main -- MCP tool call --&gt; Queue[Queue Availability Tool]
+    Specialist -- MCP tool call --&gt; System[EHR / Billing / CRM]
+    Specialist -- result --&gt; Main
+    Main -- warm handoff --&gt; Human[Live Agent]</code></pre>
+<p>The pattern is simple:</p>
+<ol>
+<li>The main agent understands the caller goal.</li>
+<li>MCP checks data, system readiness, or queue availability.</li>
+<li>A2A consults or transfers to the right specialist agent.</li>
+<li>MCP lets that specialist complete approved backend work.</li>
+<li>The orchestrator or human receives a clean result.</li>
+</ol>
+<h3 id="failure-controls">Failure Controls</h3>
+<p>Every A2A task should have a failure plan.</p>
+<p>Handle:</p>
+<ul>
+<li>Target unavailable.</li>
+<li>Authentication failure.</li>
+<li>Unsupported task.</li>
+<li>Missing required fields.</li>
+<li>Long-running task timeout.</li>
+<li>Conflicting result.</li>
+<li>Customer changes intent mid-handoff.</li>
+<li>Human escalation trigger.</li>
+</ul>
+<p>Fallback options:</p>
+<ul>
+<li>Return to orchestrator.</li>
+<li>Ask one clarifying question.</li>
+<li>Retry with backoff.</li>
+<li>Route to a human queue.</li>
+<li>Offer callback.</li>
+<li>Create a case and provide confirmation.</li>
+</ul>
+<h2 id="benefits">Benefits</h2>
+<h3 id="better-collaboration-between-agents">Better Collaboration Between Agents</h3>
+<p>A2A lets specialist agents work together without exposing their internal implementation. A billing agent can review a billing intent, a scheduling agent can own appointment booking, and an insurance agent can validate coverage while the main orchestrator keeps the customer journey coherent.</p>
+<h3 id="cleaner-handoffs">Cleaner Handoffs</h3>
+<p>Structured payloads reduce repeated questions. The receiving agent can see the customer intent, verification status, required slots, last successful action, and handoff reason.</p>
+<h3 id="stronger-observability">Stronger Observability</h3>
+<p>Correlation IDs make the journey easier to trace across A2A requests, MCP calls, contact center events, and human handoffs. This is important for debugging, governance, and compliance review.</p>
+<h3 id="safer-ownership-changes">Safer Ownership Changes</h3>
+<p>A2A makes consult and transfer decisions explicit. The system can validate readiness before moving ownership and can fall back to the orchestrator or a human route if the target is unavailable.</p>
+<h3 id="better-human-escalation">Better Human Escalation</h3>
+<p>When sentiment, confidence, compliance, or risk requires a human, A2A-style context passing supports a warm handoff. The live agent receives the reason for escalation and the context needed to continue without making the customer start over.</p>
+<h2 id="faq">FAQ</h2>
+<h3 id="q1-what-is-a2a">Q1. What is A2A?</h3>
+<p>A2A means Agent-to-Agent. It is a structured way for one AI agent to discover another agent, send it a task, pass context, and receive a result.</p>
+<h3 id="q2-when-should-i-use-a2a-instead-of-mcp">Q2. When should I use A2A instead of MCP?</h3>
+<p>Use A2A when the target is another agent. Use MCP when the target is a tool, data source, API, database, file store, knowledge source, or enterprise system.</p>
+<h3 id="q3-what-is-an-agent-card">Q3. What is an Agent Card?</h3>
+<p>An Agent Card advertises what an agent can do. It should describe the agent's skills, supported tasks, input and output formats, authentication needs, transports, limits, safety rules, escalation expectations, and owner metadata.</p>
+<h3 id="q4-what-is-the-difference-between-consult-and-transfer">Q4. What is the difference between consult and transfer?</h3>
+<p>In a consult, the source agent keeps ownership and asks another agent for help. In a transfer, ownership moves to the target agent or human. Use consult when the main agent only needs validation or lookup. Use transfer when the next part of the journey belongs to another agent.</p>
+<h3 id="q5-should-the-handoff-include-the-full-transcript">Q5. Should the handoff include the full transcript?</h3>
+<p>No. Pass structured context instead of a raw transcript. A transcript may be useful for audit or review, but the receiving agent should get a compact payload with the fields it needs to continue.</p>
+<h3 id="q6-how-does-a2a-help-healthcare-contact-centers">Q6. How does A2A help healthcare contact centers?</h3>
+<p>It lets a main agent coordinate with specialist agents for verification, scheduling, insurance, billing, and escalation. This reduces repeated questions, improves routing, and supports cleaner human handoffs when the caller is frustrated, identity is uncertain, or the action is sensitive.</p>
+<h3 id="q7-what-happens-if-the-target-agent-is-unavailable">Q7. What happens if the target agent is unavailable?</h3>
+<p>The source agent should use a defined fallback. It can return to the orchestrator, retry with backoff, ask one clarifying question, route to a human queue, offer a callback, or create a case and provide confirmation.</p>
+<h3 id="q8-how-do-a2a-and-mcp-work-together">Q8. How do A2A and MCP work together?</h3>
+<p>A2A coordinates work between agents. MCP gives agents structured access to tools, data, and enterprise systems. In a typical journey, the orchestrator uses MCP to check readiness, A2A to consult or transfer to a specialist, and MCP again when the specialist needs approved backend access.</p>
+<h2 id="key-takeaway">Key Takeaway</h2>
+<p>A2A is the collaboration layer. MCP is the system-access layer. Together with a multi-agent strategy, they let contact center journeys move from blind transfers to structured, observable, recoverable handoffs. For WxCC AI Agent, this is a forward-looking pattern until native A2A support is available.</p>
+<h2 id="related-chapters">Related Chapters</h2>
+<ul>
+<li><a href="../multi-agent-strategy/">Multi Agent Strategy</a></li>
+<li><a href="../model-context-protocol/">Model Context Protocol</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>A2A protocol specification: <a href="https://a2a-protocol.org/latest/specification/">https://a2a-protocol.org/latest/specification/</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../model-context-protocol/" class="md-footer__link md-footer__link--prev" aria-label="Previous: model-context-protocol">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                model-context-protocol
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../scripted-ai-agent-design/" class="md-footer__link md-footer__link--next" aria-label="Next: Scripted AI Agent Design">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Scripted AI Agent Design
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 Cisco Systems Inc. All Rights Reserved.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.top", "navigation.footer", "search.suggest", "content.code.copy", "toc.integrate", "content.tooltips", "content.footnote.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": false, "openEffect": "fade", "closeEffect": "fade", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
